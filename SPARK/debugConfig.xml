@@ -17,14 +17,8 @@
 <APPLET aid="25 10 19 99 00 00 06 00" instanceaid="" parameter="" authority="" privileges="" index="28576" name="buoi6"/>
 <APPLET aid="25 10 19 99 00 00 06 01" instanceaid="44 49 45 4D 5F 54 48 49" parameter="53 56 30 31 09" authority="00" privileges="--------" index="-32112" name="BTH4"/>
 </PKG>
-<PKG name="buoi7" aid="25 10 19 99 00 00 07" major="1" minor="0">
-<APPLET aid="25 10 19 99 00 00 07 00" instanceaid="" parameter="" authority="" privileges="" index="-17672" name="buoi7"/>
-<APPLET aid="25 10 19 99 00 00 07 01" instanceaid="" parameter="" authority="" privileges="" index="-17912" name="applet1"/>
-<APPLET aid="25 10 19 99 00 00 07 03" instanceaid="" parameter="" authority="" privileges="" index="-16880" name="masterInterface"/>
-<APPLET aid="25 10 19 99 00 00 07 04" instanceaid="" parameter="" authority="" privileges="" index="-15800" name="masterApp"/>
-</PKG>
-<PKG name="buoi7app" aid="25 10 19 99 00 01" major="1" minor="0">
-<APPLET aid="25 10 19 99 00 01 00" instanceaid="" parameter="" authority="" privileges="" index="-7280" name="buoi7app"/>
+<PKG name="inputSV" aid="25 10 19 99 01 00" major="1" minor="0">
+<APPLET aid="25 10 19 99 01 00 00" instanceaid="" parameter="" authority="" privileges="" index="29192" name="inputSV"/>
 </PKG>
 <Libs/>
 </USER>
