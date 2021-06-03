@@ -20,7 +20,7 @@ public class buoi5 extends Applet
 
 	public void process(APDU apdu)
 	{
-		
+			
 		if (selectingApplet())
 		{
 			return;
