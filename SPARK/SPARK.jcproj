@@ -21,6 +21,14 @@
 <PKG name="inputSV" aid="25 10 19 99 01 00" major="1" minor="0">
 <APPLET aid="25 10 19 99 01 00 00" instanceaid="" parameter="" authority="" privileges="" index="27272" name="inputSV"/>
 </PKG>
+<PKG name="buoi7" aid="25 10 19 99 00 00 07" major="1" minor="0">
+<APPLET aid="25 10 19 99 00 00 07 00" instanceaid="" parameter="" authority="" privileges="" index="17800" name="buoi7"/>
+<APPLET aid="25 10 19 99 00 00 07 01" instanceaid="" parameter="" authority="" privileges="" index="18760" name="masterApp"/>
+<CLASS name="masterInterface"/>
+</PKG>
+<PKG name="buoi7app" aid="25 10 19 99 00 01 07" major="1" minor="0">
+<APPLET aid="25 10 19 99 00 01 07 00" instanceaid="" parameter="" authority="" privileges="" index="17560" name="buoi7app"/>
+</PKG>
 <Libs/>
 </USER>
 </JavaCardProject>
