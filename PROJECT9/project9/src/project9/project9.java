@@ -1,14 +1,14 @@
 package project9;
 
 import javacard.framework.*;
+import javacard.framework.OwnerPIN;
 
 public class project9 extends Applet
 {
 	// code of CLA byte in the command APDU header
     final static byte project9_CLA =(byte)0xB0;
 	private final static byte[] test = new byte[8];
-	private final static byte[] TESTCHECK = {(byte)'9',(byte)'9',(byte)'9',(byte)'9'};
-	private final static boolean checked = false;
+	private final static byte[] TEST_CHECK = new byte[]{(byte)0x01,(byte)0x02,(byte)0x03,(byte)0x04,(byte)0x05};
     //Kích thc mã pin
 	private final static byte PIN_MIN_SIZE = (byte) 4;
 	private final static byte PIN_MAX_SIZE = (byte) 16;
@@ -35,6 +35,7 @@ public class project9 extends Applet
 	
 	/** Invalid input parameter to command */
 	private final static short SW_INVALID_PARAMETER = (short) 0x9C0F;
+	private final static short SW_INVALID_PARAMETER_1 = (short) 0x9C1F;
 	/** Operation has been blocked for security reason */
 	private final static short SW_IDENTITY_BLOCKED = (short) 0x9C0C;
 	/** Entered PIN is not correct */
@@ -43,7 +44,10 @@ public class project9 extends Applet
 	private final static short SW_INTERNAL_ERROR = (short) 0x9CFF;
 	/** Required setup is not not done */
 	private final static short SW_SETUP_NOT_DONE = (short) 0x9C04;
-	
+	/** Li P1*/
+	private final static short SW_INCORRECT_P1 = (short) 0x9C10;
+	/** Li P2*/
+	private final static short SW_INCORRECT_P2 = (short) 0x9C11;
 	private project9(byte[] bArray, short bOffset, byte bLength){
 		if (!CheckPINPolicy(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length))
 		    ISOException.throwIt(SW_INTERNAL_ERROR);
@@ -96,9 +100,12 @@ public class project9 extends Applet
 		case INS_CREATE_PIN:
 			CreatePIN(apdu, buffer);
 			break;
-		// case INS_CHANGE_PIN:
-			// ChangePIN(apdu, buffer);
-			// break;
+		case INS_VERIFY_PIN:
+			VerifyPIN(apdu, buffer);
+			break;
+		case INS_CHANGE_PIN:
+			ChangePIN(apdu, buffer);
+			break;
 		// case INS_UNBLOCK_PIN:
 			// UnblockPIN(apdu, buffer);
 			// break;
@@ -140,23 +147,21 @@ public class project9 extends Applet
 		//send B0 40 00 03 05 0409090909
 		//send CLA:B0 INS:40 P1:00 P2:*max-tries-03* LC:*05* DATA:*pinsize-04|pincode-09090909*
 		//byte pin_nb = buffer[ISO7816.OFFSET_P1];
-		apdu.setIncomingAndReceive();
 		byte num_tries = buffer[ISO7816.OFFSET_P2];
-		/* Check that Identity n.0 is logged */
+		/* Kim tra ng nhp */
 		// if ((create_pin_ACL == (byte) 0xFF)
 				// || (((logged_ids & create_pin_ACL) == (short) 0x0000) && (create_pin_ACL != (byte) 0x00)))
 			// ISOException.throwIt(SW_UNAUTHORIZED);
 		// if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS) || (pins[pin_nb] != null))
 			// ISOException.throwIt(SW_INCORRECT_P1);
-		/* Allow pin lengths > 127 (useful at all ?) */
 		short avail = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]); // 05
 		if (apdu.setIncomingAndReceive() != avail)
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-		// At least 1 character for PIN and 1 for unblock code (+ lengths)
-		if (avail < 4)
+		// ti thiu 1 byte s size pin và 1 byte pin code
+		if (avail < (short)2)
 			ISOException.throwIt(SW_INVALID_PARAMETER);
 		byte pin_size = buffer[ISO7816.OFFSET_CDATA]; // 04
-		if (avail < (short) (1 + pin_size + 1))
+		if (avail < (short) (1 + pin_size))
 			ISOException.throwIt(SW_INVALID_PARAMETER);
 		if (!CheckPINPolicy(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size))
 			ISOException.throwIt(SW_INVALID_PARAMETER);
@@ -171,7 +176,8 @@ public class project9 extends Applet
 		pins[0] = new OwnerPIN(num_tries, PIN_MAX_SIZE);
 		pins[0].update(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size);
 		
-		if(pins[0].check(TESTCHECK,(short)0,(byte)TESTCHECK.length)){
+		/*===CHECK PIN===*/
+		if(pins[0].check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
 			test[1] = (byte)0x02;
 		}
 		else{
@@ -181,13 +187,90 @@ public class project9 extends Applet
 		apdu.setOutgoingLength((short)test.length);
 		Util.arrayCopy(test,(short)0,buffer,(short)0,(short)test.length);
 		apdu.sendBytes((short)0,(short)test.length);
+		/*===END CHECK PIN===*/
+		
 		////unblock
 		//ublk_pins[pin_nb] = new OwnerPIN((byte) 3, PIN_MAX_SIZE);
 		// Recycle variable pin_size
 		//pin_size = (byte) (ISO7816.OFFSET_CDATA + 1 + pin_size + 1);
 		//ublk_pins[pin_nb].update(buffer, pin_size, ucode_size);
 	}
-	/*CHECK PIN*/
+	private void VerifyPIN(APDU apdu, byte[] buffer) {
+		//pin_nb: th t ca pin trong mng các pin
+		// byte pin_nb = buffer[ISO7816.OFFSET_P1];
+		
+		byte pin_nb = (byte)0;
+		if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS))
+			ISOException.throwIt(SW_INCORRECT_P1);
+		OwnerPIN pin = pins[pin_nb];
+		if (pin == null)
+			ISOException.throwIt(SW_INCORRECT_P1);
+		if (buffer[ISO7816.OFFSET_P2] != 0x00)
+			ISOException.throwIt(SW_INCORRECT_P2);
+		short numBytes = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
+		
+		if (numBytes != apdu.setIncomingAndReceive())
+			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
+		if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (pin.getTriesRemaining() == (byte) 0x00)
+			ISOException.throwIt(SW_IDENTITY_BLOCKED);
+		if (!pin.check(buffer, (short) ISO7816.OFFSET_CDATA, (byte) numBytes)) {
+			LogoutIdentity(pin_nb);
+			ISOException.throwIt(SW_AUTH_FAILED);
+		}
+		logged_ids |= (short) (0x0001 << pin_nb);
+	}
+	private void ChangePIN(APDU apdu, byte[] buffer) {
+		//send B0 44 00 00 09 040909090903010203
+		//send CLA:B0 INS:40 P1:00 P2:*max-tries-03* LC:*05* DATA:*pinsize-04|pincode-09090909*
+		//byte pin_nb = buffer[ISO7816.OFFSET_P1];
+		byte pin_nb = (byte)0;
+		if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS))
+			ISOException.throwIt(SW_INCORRECT_P1);
+		OwnerPIN pin = pins[pin_nb];
+		if (pin == null)
+			ISOException.throwIt(SW_INCORRECT_P1);
+		if (buffer[ISO7816.OFFSET_P2] != (byte) 0x00)
+			ISOException.throwIt(SW_INCORRECT_P2);
+		short avail = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
+		if (apdu.setIncomingAndReceive() != avail)
+			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
+		// có ti thiu 1 byte pin-size 1 byte pin-code
+		if (avail < (short)4)
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		byte pin_size = buffer[ISO7816.OFFSET_CDATA];
+		if (avail < (short) (1 + pin_size))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (!CheckPINPolicy(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		byte new_pin_size = buffer[(short) (ISO7816.OFFSET_CDATA + 1 + pin_size)];
+		if (avail < (short) (1 + pin_size + new_pin_size))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (!CheckPINPolicy(buffer, (short) (ISO7816.OFFSET_CDATA + 1 + pin_size + 1), new_pin_size))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (pin.getTriesRemaining() == (byte) 0x00)
+			ISOException.throwIt(SW_IDENTITY_BLOCKED);
+		if (!pin.check(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size)) {
+			LogoutIdentity(pin_nb);
+			ISOException.throwIt(SW_AUTH_FAILED);
+		}
+		pin.update(buffer, (short) (ISO7816.OFFSET_CDATA + 1 + pin_size + 1), new_pin_size);
+		/*===CHECK PIN===*/
+		if(pins[0].check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
+			test[1] = (byte)0x02;
+		}
+		else{
+			test[1] = (byte)0x03;
+		}
+		apdu.setOutgoing();
+		apdu.setOutgoingLength((short)test.length);
+		Util.arrayCopy(test,(short)0,buffer,(short)0,(short)test.length);
+		apdu.sendBytes((short)0,(short)test.length);
+		/*===END CHECK PIN===*/
+		logged_ids &= (short) ((short) 0xFFFF ^ (0x01 << pin_nb));
+	}
+	/*CHECK PIN POLICY*/
 	private boolean CheckPINPolicy(byte[] pin_buffer, short pin_offset, byte pin_size) {
 		if ((pin_size < PIN_MIN_SIZE) || (pin_size > PIN_MAX_SIZE))
 			return false;
@@ -199,5 +282,9 @@ public class project9 extends Applet
 		for (i = (byte) 0; i < MAX_NUM_PINS; i++)
 			if (pins[i] != null)
 				pins[i].reset();
+	}
+	/*ng xut*/
+	private void LogoutIdentity(byte id_nb) {
+		logged_ids &= (short) ~(0x0001 << id_nb);
 	}
 }
