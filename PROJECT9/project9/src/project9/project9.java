@@ -150,13 +150,14 @@ public class project9 extends Applet
 		//send B0 40 00 03 05 0409090909
 		//send CLA:B0 INS:40 P1:00 P2:*max-tries-03* LC:*05* DATA:*pinsize-04|pincode-09090909*
 		//byte pin_nb = buffer[ISO7816.OFFSET_P1];
+		byte pin_nb = (byte)0;
 		byte num_tries = buffer[ISO7816.OFFSET_P2];
 		/* Kim tra ng nhp */
 		// if ((create_pin_ACL == (byte) 0xFF)
 				// || (((logged_ids & create_pin_ACL) == (short) 0x0000) && (create_pin_ACL != (byte) 0x00)))
 			// ISOException.throwIt(SW_UNAUTHORIZED);
-		// if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS) || (pins[pin_nb] != null))
-			// ISOException.throwIt(SW_INCORRECT_P1);
+		if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS) || (pins[pin_nb] != null))
+			ISOException.throwIt(SW_INCORRECT_P1);
 		short avail = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]); // 05
 		if (apdu.setIncomingAndReceive() != avail)
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
@@ -176,11 +177,11 @@ public class project9 extends Applet
 		// if (!CheckPINPolicy(buffer, (short) (ISO7816.OFFSET_CDATA + 1 + pin_size + 1), ucode_size))
 			// ISOException.throwIt(SW_INVALID_PARAMETER);
 			
-		pins[0] = new OwnerPIN(num_tries, PIN_MAX_SIZE);
-		pins[0].update(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size);
+		pins[pin_nb] = new OwnerPIN(num_tries, PIN_MAX_SIZE);
+		pins[pin_nb].update(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size);
 		
 		/*===CHECK PIN===*/
-		if(pins[0].check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
+		if(pins[pin_nb].check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
 			test[1] = (byte)0x02;
 		}
 		else{
@@ -311,7 +312,7 @@ public class project9 extends Applet
 		return true;
 	}
 	private void LogOutAll() {
-		logged_ids = (short) 0x0000; // Nobody is logged in
+		logged_ids = (short) 0x0000;
 		byte i;
 		for (i = (byte) 0; i < MAX_NUM_PINS; i++)
 			if (pins[i] != null)

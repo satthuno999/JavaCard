@@ -9,9 +9,13 @@
 <fileName>C:\JavaCardKit\SDK\Tools\JCIDE\apis\jc222\javacard\framework\OwnerPIN.java</fileName>
 <line>97</line>
 </fnode>
-<ActiveFile>
+<fnode>
 <fileName>src\project9\project9.java</fileName>
-<line>10</line>
+<line>320</line>
+</fnode>
+<ActiveFile>
+<fileName>src\project9\ObjectStaff.java</fileName>
+<line>3</line>
 </ActiveFile>
 </FileNodes>
 </StateInfo>
