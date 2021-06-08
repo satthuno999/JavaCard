@@ -5,8 +5,9 @@ import javacard.framework.OwnerPIN;
 
 public class project9 extends Applet
 {
-	// code of CLA byte in the command APDU header
+	// CLA
     final static byte project9_CLA =(byte)0xB0;
+    /** test và TESTCHECK  kim tra pin sau khi thay i*/
 	private final static byte[] test = new byte[8];
 	private final static byte[] TEST_CHECK = new byte[]{(byte)0x01,(byte)0x02,(byte)0x03,(byte)0x04,(byte)0x05};
     //Kích thc mã pin
@@ -20,29 +21,29 @@ public class project9 extends Applet
 	private final static byte INS_VERIFY_PIN = (byte) 0x42;
 	private final static byte INS_CHANGE_PIN = (byte) 0x44;
 	private final static byte INS_UNBLOCK_PIN = (byte) 0x46;
+	
+	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
 	private final static byte INS_LOGOUT_ALL = (byte) 0x60;
-	/* For the setup function - should only be called once */
+	/* Kim tra trng thái setup */
 	private boolean setupDone = false;
-	// Applet initialization
+	// INS - Khi to
 	private final static byte INS_SETUP = (byte) 0x2A;
 	private OwnerPIN[] pins, ublk_pins;
-	/*
-	 * Logged identities: this is used for faster access control, so we don't
-	 * have to ping each PIN object
-	 */
+	/** ghi trng thái ng nhp*/
 	private short logged_ids;
 	
 	
-	/** Invalid input parameter to command */
+	/** tham s truyn vào lnh không hp l */
 	private final static short SW_INVALID_PARAMETER = (short) 0x9C0F;
-	private final static short SW_INVALID_PARAMETER_1 = (short) 0x9C1F;
-	/** Operation has been blocked for security reason */
+	/** tr li 9c0c khi th b khoá */
 	private final static short SW_IDENTITY_BLOCKED = (short) 0x9C0C;
-	/** Entered PIN is not correct */
+	/** tr li 9c02 khi nhp mã pin sai */
 	private final static short SW_AUTH_FAILED = (short) 0x9C02;
-	/** For debugging purposes */
+	/** tr li khi pin không b khoá*/
+	private final static short SW_OPERATION_NOT_ALLOWED = (short) 0x9C03;
+	/** Kim soát li */
 	private final static short SW_INTERNAL_ERROR = (short) 0x9CFF;
-	/** Required setup is not not done */
+	/** tr li 9c04 khi th cha c setup */
 	private final static short SW_SETUP_NOT_DONE = (short) 0x9C04;
 	/** Li P1*/
 	private final static short SW_INCORRECT_P1 = (short) 0x9C10;
@@ -59,7 +60,6 @@ public class project9 extends Applet
 		pins[0] = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
 		pins[0].update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
 		
-		// debug
 		register();
 	}
 	public boolean select() {
@@ -106,11 +106,14 @@ public class project9 extends Applet
 		case INS_CHANGE_PIN:
 			ChangePIN(apdu, buffer);
 			break;
-		// case INS_UNBLOCK_PIN:
-			// UnblockPIN(apdu, buffer);
-			// break;
+		case INS_UNBLOCK_PIN:
+			UnblockPIN(apdu, buffer);
+			break;
 		case INS_LOGOUT_ALL:
 			LogOutAll();
+			break;
+		case INS_CREATE_INFORMATION:
+			SetupInformation(apdu,buffer);
 			break;
 		default:
 			ISOException.throwIt(ISO7816.SW_INS_NOT_SUPPORTED);
@@ -269,6 +272,37 @@ public class project9 extends Applet
 		apdu.sendBytes((short)0,(short)test.length);
 		/*===END CHECK PIN===*/
 		logged_ids &= (short) ((short) 0xFFFF ^ (0x01 << pin_nb));
+	}
+	private void UnblockPIN(APDU apdu, byte[] buffer) {
+		//byte pin_nb = buffer[ISO7816.OFFSET_P1];
+		byte pin_nb = (byte)0;
+		if ((pin_nb < 0) || (pin_nb >= MAX_NUM_PINS))
+			ISOException.throwIt(SW_INCORRECT_P1);
+		//bin ca unblock pin ~ li
+		OwnerPIN pin = pins[pin_nb];
+		//OwnerPIN ublk_pin = ublk_pins[pin_nb];
+		if (pin == null)
+			ISOException.throwIt(SW_INCORRECT_P1);
+		//if (ublk_pin == null)
+			//ISOException.throwIt(SW_INTERNAL_ERROR);
+		// Nu mã PIN không b chn, không hp l
+		if (pin.getTriesRemaining() != 0)
+			ISOException.throwIt(SW_OPERATION_NOT_ALLOWED);
+		if (buffer[ISO7816.OFFSET_P2] != 0x00)
+			ISOException.throwIt(SW_INCORRECT_P2);
+		short numBytes = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
+		
+		if (numBytes != apdu.setIncomingAndReceive())
+			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
+		if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
+		// if (!ublk_pin.check(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
+			// ISOException.throwIt(SW_AUTH_FAILED);
+		//
+		pin.resetAndUnblock();
+	}
+	private void SetupInformation(APDU apdu, byte[] buffer){
+		
 	}
 	/*CHECK PIN POLICY*/
 	private boolean CheckPINPolicy(byte[] pin_buffer, short pin_offset, byte pin_size) {
