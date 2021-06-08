@@ -12,7 +12,20 @@ Author: [Vu Xuan Binh](http://facebook.com/xuanbinh.vu.6464)
 ### Mô tả chi tiết các chức năng:
 1. **Cơ chế xác thực thẻ bằng mã pin - VERIFY_PIN**
   * Lưu trạng thái đăng nhập
-  * 
-
-  
-
+  * <sau khi kết nối thẻ, yêu cầu VERIFY_PIN nếu nhập sai quá số lần cho phép sẽ khoá thẻ>
+2. **Thay đổi mã pin - CHANGE_PIN**
+  * Sau khi đăng nhập thẻ thành công có thể chọn chức năng thay đổi mã PIN
+  * Yêu cầu nhập mã pin cũ và mới (khoá thẻ nếu số lần nhập mã pin cũ vượt quá số lần cho phép)
+3. **Giới hạn số lần nhập sai đối với từng mã pin**
+  * Khi *CREATE_PIN* sẽ truyền thêm tham số là số lần nhập sai cho phép
+  * Các pin khi bị khoá sẽ lưu lại phục vụ cho mở khoá thẻ và thay đổi pin (không trùng với mã pin cũ)
+4. **Lưu thông tin cá nhân của chủ thẻ**
+  * Tạo thông tin cá nhân cho lần sử dụng thẻ đầu tiên
+5. **Cho phép thay đổi thông tin cá nhân**
+  * Sau khi đăng nhập thẻ thành công cho phép chọn chức năng thay đổi thông tin cá nhân
+  * Hiển thị thông tin cũ và cho phép cập nhật thông tin mới
+6. **Mã hoá thông tin trước khi lưu xuống thẻ -  sử dụng khoá AES**
+7. **Chức năng điểm danh**
+ * Có chức năng điểm danh khi đến và về
+ * Xác thực bằng mã khoá công khai ECC
+9. **Dựng phần mềm giao tiếp trên máy tính**
