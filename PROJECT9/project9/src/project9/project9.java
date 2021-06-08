@@ -13,8 +13,6 @@ public class project9 extends Applet
     //Kích thc mã pin
 	private final static byte PIN_MIN_SIZE = (byte) 4;
 	private final static byte PIN_MAX_SIZE = (byte) 16;
-	// S lng mã pin ti a
-	private final static byte MAX_NUM_PINS = (byte) 8;
 	private final static byte[] PIN_INIT_VALUE={(byte)'S',(byte)'p',(byte)'a',(byte)'r',(byte)'k',(byte)'9',(byte)'9'};
 	//INS-PIN
 	private final static byte INS_CREATE_PIN = (byte) 0x40;
@@ -28,7 +26,9 @@ public class project9 extends Applet
 	private boolean setupDone = false;
 	// INS - Khi to
 	private final static byte INS_SETUP = (byte) 0x2A;
-	private OwnerPIN[] pins, ublk_pins;
+	//PIN - mã s nhn dng cá nhân lu trong pins
+	//PUK - mã m khoá cá nhân lu trong unlk_pins
+	private OwnerPIN pin, ublk_pin;
 	/** ghi trng thái ng nhp*/
 	private short logged_ids;
 	
@@ -53,22 +53,22 @@ public class project9 extends Applet
 		if (!CheckPINPolicy(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length))
 		    ISOException.throwIt(SW_INTERNAL_ERROR);
 
-	    ublk_pins = new OwnerPIN[MAX_NUM_PINS];
-		pins = new OwnerPIN[MAX_NUM_PINS];
+	    ublk_pin = new OwnerPIN;
+		pin = new OwnerPIN;
 
-		/* Cài giá tr pin mc nh*/
-		pins[0] = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
-		pins[0].update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
+		/* Cài giá tr pin khi to*/
+		pin = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
+		pin.update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
 		
 		register();
 	}
 	public boolean select() {
-		LogOutAll();
+		LogOut();
 		return true;
 	}
 
 	public void deselect() {
-		LogOutAll();
+		LogOut();
 	}
 	public static void install(byte[] bArray, short bOffset, byte bLength) 
 	{
@@ -110,7 +110,7 @@ public class project9 extends Applet
 			UnblockPIN(apdu, buffer);
 			break;
 		case INS_LOGOUT_ALL:
-			LogOutAll();
+			LogOut();
 			break;
 		case INS_CREATE_INFORMATION:
 			SetupInformation(apdu,buffer);
@@ -121,28 +121,28 @@ public class project9 extends Applet
 	}
 	/*SETUP*/
 	private void setup(APDU apdu, byte[] buffer) {
-		// short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		// if (bytesLeft != apdu.setIncomingAndReceive())
-			// ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
+		short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
+		if (bytesLeft != apdu.setIncomingAndReceive())
+			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 
-		// short base = (short) (ISO7816.OFFSET_CDATA);
+		short base = (short) (ISO7816.OFFSET_CDATA);
 
-		// byte numBytes = buffer[base++];
-		// bytesLeft--;
+		byte numBytes = buffer[base++];
+		bytesLeft--;
 
-		// OwnerPIN pin = pins[0];
+		OwnerPIN pin = pins[0];
 
-		// if (!CheckPINPolicy(buffer, base, numBytes))
-			// ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (!CheckPINPolicy(buffer, base, numBytes))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
 
-		// if (pin.getTriesRemaining() == (byte) 0x00)
-			// ISOException.throwIt(SW_IDENTITY_BLOCKED);
+		if (pin.getTriesRemaining() == (byte) 0x00)
+			ISOException.throwIt(SW_IDENTITY_BLOCKED);
 
-		// if (!pin.check(buffer, base, numBytes))
-			// ISOException.throwIt(SW_AUTH_FAILED);
+		if (!pin.check(buffer, base, numBytes))
+			ISOException.throwIt(SW_AUTH_FAILED);
 			
-		// base += numBytes;
-		// bytesLeft-=numBytes;
+		base += numBytes;
+		bytesLeft-=numBytes;
 		
 		setupDone = true;
 	}
@@ -310,12 +310,9 @@ public class project9 extends Applet
 			return false;
 		return true;
 	}
-	private void LogOutAll() {
-		logged_ids = (short) 0x0000; // Nobody is logged in
-		byte i;
-		for (i = (byte) 0; i < MAX_NUM_PINS; i++)
-			if (pins[i] != null)
-				pins[i].reset();
+	private void LogOut() {
+		logged_ids = (short) 0x0000; 
+		pin.reset();
 	}
 	/*ng xut*/
 	private void LogoutIdentity(byte id_nb) {
