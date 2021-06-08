@@ -1,9 +1,9 @@
 # PROJECT9 - Xây dựng thẻ cán bộ nhân viên sử dụng Smart card
 Author: [Vu Xuan Binh](http://facebook.com/xuanbinh.vu.6464) :scorpius:	
 > Version 0.1 08/06/2021 :+1:
-1.[ Mô tả chức năng dự kiến](#mô-tả-chức-năng-dự-kiến)
-2.[ Mô tả chi tiết](#mô-tả-chi-tiết-các-chức-năng)
-3.[ Demo Code](#demo-code)
+1. [ Mô tả chức năng dự kiến](#mô-tả-chức-năng-dự-kiến)
+2. [ Mô tả chi tiết](#mô-tả-chi-tiết-các-chức-năng)
+3. [ Demo Code](#demo-code)
 ***
 ***
 ### Mô tả chức năng dự kiến: 
