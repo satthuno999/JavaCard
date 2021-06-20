@@ -7,14 +7,12 @@ public class project9 extends Applet
 {
 	// CLA
     final static byte project9_CLA =(byte)0xB0;
-    /** test và TESTCHECK  kim tra pin sau khi thay i*/
+    /** test v TESTCHECK  kim tra pin sau khi thay i*/
 	private final static byte[] test = new byte[8];
 	private final static byte[] TEST_CHECK = new byte[]{(byte)0x01,(byte)0x02,(byte)0x03,(byte)0x04,(byte)0x05};
-    //Kích thc mã pin
+    //Kch thc m pin
 	private final static byte PIN_MIN_SIZE = (byte) 4;
 	private final static byte PIN_MAX_SIZE = (byte) 16;
-	// S lng mã pin ti a
-	private final static byte MAX_NUM_PINS = (byte) 8;
 	private final static byte[] PIN_INIT_VALUE={(byte)'S',(byte)'p',(byte)'a',(byte)'r',(byte)'k',(byte)'9',(byte)'9'};
 	//INS-PIN
 	private final static byte INS_CREATE_PIN = (byte) 0x40;
@@ -24,24 +22,28 @@ public class project9 extends Applet
 	
 	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
 	private final static byte INS_LOGOUT_ALL = (byte) 0x60;
-	/* Kim tra trng thái setup */
+	/* Kim tra trng thi setup */
 	private boolean setupDone = false;
 	// INS - Khi to
 	private final static byte INS_SETUP = (byte) 0x2A;
-	private OwnerPIN[] pins, ublk_pins;
-	/** ghi trng thái ng nhp*/
+	//PIN - m s nhn dng c nhn lu trong pins
+	//PUK - m m kho c nhn lu trong unlk_pins
+	private OwnerPIN pin, ublk_pin;
+	/** ghi trng thi ng nhp*/
 	private short logged_ids;
 	
-	
-	/** tham s truyn vào lnh không hp l */
+	/**
+	* ERROR CONTROL*
+	**/
+	/** parameter passed invalid */
 	private final static short SW_INVALID_PARAMETER = (short) 0x9C0F;
-	/** tr li 9c0c khi th b khoá */
+	/** returns error 9c0c when card is locked */
 	private final static short SW_IDENTITY_BLOCKED = (short) 0x9C0C;
-	/** tr li 9c02 khi nhp mã pin sai */
+	/** tr li 9c02 khi nhp m pin sai */
 	private final static short SW_AUTH_FAILED = (short) 0x9C02;
-	/** tr li khi pin không b khoá*/
+	/** tr li khi pin khng b kho*/
 	private final static short SW_OPERATION_NOT_ALLOWED = (short) 0x9C03;
-	/** Kim soát li */
+	/** Kim sot li */
 	private final static short SW_INTERNAL_ERROR = (short) 0x9CFF;
 	/** tr li 9c04 khi th cha c setup */
 	private final static short SW_SETUP_NOT_DONE = (short) 0x9C04;
@@ -53,22 +55,22 @@ public class project9 extends Applet
 		if (!CheckPINPolicy(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length))
 		    ISOException.throwIt(SW_INTERNAL_ERROR);
 
-	    ublk_pins = new OwnerPIN[MAX_NUM_PINS];
-		pins = new OwnerPIN[MAX_NUM_PINS];
+	    ublk_pin = new OwnerPIN;
+		pin = new OwnerPIN;
 
-		/* Cài giá tr pin mc nh*/
-		pins[0] = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
-		pins[0].update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
+		/* Ci gi tr pin khi to*/
+		pin = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
+		pin.update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
 		
 		register();
 	}
 	public boolean select() {
-		LogOutAll();
+		LogOut();
 		return true;
 	}
 
 	public void deselect() {
-		LogOutAll();
+		LogOut();
 	}
 	public static void install(byte[] bArray, short bOffset, byte bLength) 
 	{
@@ -110,7 +112,7 @@ public class project9 extends Applet
 			UnblockPIN(apdu, buffer);
 			break;
 		case INS_LOGOUT_ALL:
-			LogOutAll();
+			LogOut();
 			break;
 		case INS_CREATE_INFORMATION:
 			SetupInformation(apdu,buffer);
@@ -121,28 +123,28 @@ public class project9 extends Applet
 	}
 	/*SETUP*/
 	private void setup(APDU apdu, byte[] buffer) {
-		// short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		// if (bytesLeft != apdu.setIncomingAndReceive())
-			// ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
+		short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
+		if (bytesLeft != apdu.setIncomingAndReceive())
+			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 
-		// short base = (short) (ISO7816.OFFSET_CDATA);
+		short base = (short) (ISO7816.OFFSET_CDATA);
 
-		// byte numBytes = buffer[base++];
-		// bytesLeft--;
+		byte numBytes = buffer[base++];
+		bytesLeft--;
 
-		// OwnerPIN pin = pins[0];
+		OwnerPIN pin = pins[0];
 
-		// if (!CheckPINPolicy(buffer, base, numBytes))
-			// ISOException.throwIt(SW_INVALID_PARAMETER);
+		if (!CheckPINPolicy(buffer, base, numBytes))
+			ISOException.throwIt(SW_INVALID_PARAMETER);
 
-		// if (pin.getTriesRemaining() == (byte) 0x00)
-			// ISOException.throwIt(SW_IDENTITY_BLOCKED);
+		if (pin.getTriesRemaining() == (byte) 0x00)
+			ISOException.throwIt(SW_IDENTITY_BLOCKED);
 
-		// if (!pin.check(buffer, base, numBytes))
-			// ISOException.throwIt(SW_AUTH_FAILED);
+		if (!pin.check(buffer, base, numBytes))
+			ISOException.throwIt(SW_AUTH_FAILED);
 			
-		// base += numBytes;
-		// bytesLeft-=numBytes;
+		base += numBytes;
+		bytesLeft-=numBytes;
 		
 		setupDone = true;
 	}
@@ -161,7 +163,7 @@ public class project9 extends Applet
 		short avail = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]); // 05
 		if (apdu.setIncomingAndReceive() != avail)
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-		// ti thiu 1 byte s size pin và 1 byte pin code
+		// ti thiu 1 byte s size pin v 1 byte pin code
 		if (avail < (short)2)
 			ISOException.throwIt(SW_INVALID_PARAMETER);
 		byte pin_size = buffer[ISO7816.OFFSET_CDATA]; // 04
@@ -200,7 +202,7 @@ public class project9 extends Applet
 		//ublk_pins[pin_nb].update(buffer, pin_size, ucode_size);
 	}
 	private void VerifyPIN(APDU apdu, byte[] buffer) {
-		//pin_nb: th t ca pin trong mng các pin
+		//pin_nb: th t ca pin trong mng cc pin
 		// byte pin_nb = buffer[ISO7816.OFFSET_P1];
 		
 		byte pin_nb = (byte)0;
@@ -220,7 +222,7 @@ public class project9 extends Applet
 		if (pin.getTriesRemaining() == (byte) 0x00)
 			ISOException.throwIt(SW_IDENTITY_BLOCKED);
 		if (!pin.check(buffer, (short) ISO7816.OFFSET_CDATA, (byte) numBytes)) {
-			LogoutIdentity(pin_nb);
+			Logout(pin_nb);
 			ISOException.throwIt(SW_AUTH_FAILED);
 		}
 		logged_ids |= (short) (0x0001 << pin_nb);
@@ -240,7 +242,7 @@ public class project9 extends Applet
 		short avail = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
 		if (apdu.setIncomingAndReceive() != avail)
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-		// có ti thiu 1 byte pin-size 1 byte pin-code
+		// c ti thiu 1 byte pin-size 1 byte pin-code
 		if (avail < (short)4)
 			ISOException.throwIt(SW_INVALID_PARAMETER);
 		byte pin_size = buffer[ISO7816.OFFSET_CDATA];
@@ -286,7 +288,7 @@ public class project9 extends Applet
 			ISOException.throwIt(SW_INCORRECT_P1);
 		//if (ublk_pin == null)
 			//ISOException.throwIt(SW_INTERNAL_ERROR);
-		// Nu mã PIN không b chn, không hp l
+		// Nu m PIN khng b chn, khng hp l
 		if (pin.getTriesRemaining() != 0)
 			ISOException.throwIt(SW_OPERATION_NOT_ALLOWED);
 		if (buffer[ISO7816.OFFSET_P2] != 0x00)
@@ -311,15 +313,8 @@ public class project9 extends Applet
 			return false;
 		return true;
 	}
-	private void LogOutAll() {
-		logged_ids = (short) 0x0000;
-		byte i;
-		for (i = (byte) 0; i < MAX_NUM_PINS; i++)
-			if (pins[i] != null)
-				pins[i].reset();
-	}
-	/*ng xut*/
-	private void LogoutIdentity(byte id_nb) {
-		logged_ids &= (short) ~(0x0001 << id_nb);
+	private void LogOut() {
+		logged_ids = (short) 0x0000; 
+		pin.reset();
 	}
 }
