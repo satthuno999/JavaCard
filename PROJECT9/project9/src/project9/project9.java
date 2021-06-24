@@ -2,6 +2,10 @@ package project9;
 
 import javacard.framework.*;
 import javacard.framework.OwnerPIN;
+import javacard.security.KeyBuilder;
+import javacard.security.RandomData;
+import javacardx.crypto.Cipher;
+import javacard.security.AESKey;
 
 public class project9 extends Applet
 {
@@ -31,6 +35,10 @@ public class project9 extends Applet
 	private OwnerPIN pin, ublk_pin;
 	/** ghi trng thi ng nhp*/
 	private short logged_ids;
+	
+	private Cipher aesCipher;
+	private AESKey aesKey;
+	private static short KEY_SIZE= 32;
 	
 	/**
 	* ERROR CONTROL*
@@ -94,7 +102,9 @@ public class project9 extends Applet
 		switch (ins)
 		{
 		case INS_SETUP:
-			setup(apdu, buffer);
+			if(logged_ids == (short) (0x0010)){
+				setup(apdu, buffer);
+			}
 			break;
 		case INS_CREATE_PIN:
 			CreatePIN(apdu, buffer);
@@ -120,26 +130,17 @@ public class project9 extends Applet
 	}
 	/*SETUP*/
 	private void setup(APDU apdu, byte[] buffer) {
-		// short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		// if (bytesLeft != apdu.setIncomingAndReceive())
-			// ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-
-		// short base = (short) (ISO7816.OFFSET_CDATA);
-
-		// byte numBytes = buffer[base++];
-		// bytesLeft--;
-
-		// if (!CheckPINPolicy(buffer, base, numBytes))
-			// ISOException.throwIt(SW_INVALID_PARAMETER);
-
-		// if (pin.getTriesRemaining() == (byte) 0x00)
-			// ISOException.throwIt(SW_IDENTITY_BLOCKED);
-
-		// if (!pin.check(buffer, base, numBytes))
-			// ISOException.throwIt(SW_AUTH_FAILED);
-			
-		// base += numBytes;
-		// bytesLeft-=numBytes;
+		
+		aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
+        aesKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
+        byte[] keyBytes = JCSystem.makeTransientByteArray(KEY_SIZE, JCSystem.CLEAR_ON_DESELECT);
+        try {
+            RandomData rng = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
+            rng.generateData(keyBytes, (short) 0, KEY_SIZE);
+            aesKey.setKey(keyBytes, (short) 0);
+        } finally {
+            Util.arrayFillNonAtomic(keyBytes, (short) 0, KEY_SIZE, (byte) 0);
+        }
 		
 		setupDone = true;
 	}
@@ -293,4 +294,58 @@ public class project9 extends Applet
 		logged_ids = (short) 0x0000; 
 		pin.reset();
 	}
+	
+	/*AES*/
+	private byte[] encrypt(byte[] encryptData) {
+        aesCipher.init(aesKey, Cipher.MODE_ENCRYPT);
+        short newLength = addPadding(encryptData, (short) 0, (short) encryptData.length);
+        byte[] temp = JCSystem.makeTransientByteArray(newLength, JCSystem.CLEAR_ON_DESELECT);
+        aesCipher.doFinal(encryptData, (short) 0 , newLength, temp, (short) 0x00);
+        return temp;
+    }
+
+    /**
+     * Decrypt data.
+     */
+    private byte[] decrypt(byte[] encryptData) {
+        aesCipher.init(aesKey, Cipher.MODE_DECRYPT);
+        byte[] temp = JCSystem.makeTransientByteArray((short) encryptData.length, JCSystem.CLEAR_ON_DESELECT);
+        aesCipher.doFinal(encryptData, (short) 0, (short) encryptData.length, temp, (short) 0x00);
+        short newLength = removePadding(temp, (short) encryptData.length);
+        
+        return temp;
+    }
+	 /**
+     * Add padding for AES encryption.
+     *
+     * @param data
+     * @param offset
+     * @param length
+     * @return
+     */
+    private short addPadding(byte[] data, short offset, short length) {
+        data[(short) (offset + length++)] = (byte) 0x80;
+        while (length < 16 || (length % 16 != 0)) {
+            data[(short) (offset + length++)] = 0x00;
+        }
+        return length;
+    }
+
+    /**
+     * remove padding from decrypted result.
+     *
+     * @param buffer
+     * @param length
+     * @return
+     */
+    private short removePadding(byte[] buffer, short length) {
+        while ((length != 0) && buffer[(short) (length - 1)] == (byte) 0x00) {
+            length--;
+        }
+        if (buffer[(short) (length - 1)] != (byte) 0x80) {
+            ISOException.throwIt(ISO7816.SW_DATA_INVALID);
+        }
+        length--;
+        return length;
+    }
 }
