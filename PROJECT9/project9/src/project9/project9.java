@@ -182,9 +182,7 @@ public class project9 extends Applet
 		switch (ins)
 		{
 		case INS_SETUP:
-			if(logged_ids == (short) (0x0010)){
-				setup(apdu, buffer);
-			}
+			setup(apdu, buffer);
 			break;
 		case INS_CREATE_PIN:
 			CreatePIN(apdu, buffer);
