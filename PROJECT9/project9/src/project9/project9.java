@@ -25,7 +25,7 @@ public class project9 extends Applet
 	private final static byte PIN_MAX_SIZE = (byte) 16;
 	private final static byte[] PIN_INIT_VALUE={(byte)'S',(byte)'p',(byte)'a',(byte)'r',(byte)'k',(byte)'9',(byte)'9'};
 	//Information
-	public static byte[] OpData = new byte[6];
+	public static byte[] OpData = new byte[60];
 	public static byte lenData = (byte)0;
 	
 	public static byte[] OpID = new byte[6];
@@ -381,7 +381,7 @@ public class project9 extends Applet
 	}
 	private void SetupInformation(APDU apdu, byte[] buffer){
 			lenData = buffer[ISO7816.OFFSET_LC];
-			if(lenData>(byte) 32){
+			if(lenData>(byte) 0x3C){
 				ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 			}
 			
@@ -638,11 +638,6 @@ public class project9 extends Applet
 			keys[key_nb] = KeyBuilder.buildKey(key_type, key_size, false);
 			
 		} else {
-			// Key already exists: check size & type
-			/*
-			 * TODO: As an option, we could just discard and recreate if not of
-			 * the correct type, but creates trash objects
-			 */
 			if ((keys[key_nb].getSize() != key_size) || (keys[key_nb].getType() != key_type))
 				ISOException.throwIt(SW_OPERATION_NOT_ALLOWED);
 		}
