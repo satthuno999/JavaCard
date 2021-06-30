@@ -5,12 +5,14 @@
  */
 package javacard;
 
+import javax.swing.JOptionPane;
+import javacard.ConnectCard;
 /**
  *
  * @author Bawcs
  */
 public class LoginForm extends javax.swing.JFrame {
-
+    ConnectCard connect = new ConnectCard();
     /**
      * Creates new form LoginForm
      */
@@ -138,10 +140,13 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
         // TODO add your handling code here:
-        jlbLogin.setEnabled(true);
-        txtPIN.setEnabled(true);
-        checkbox.setEnabled(true);
-        btnLogin.setEnabled(true);
+//        jlbLogin.setEnabled(true);
+//        txtPIN.setEnabled(true);
+//        checkbox.setEnabled(true);
+//        btnLogin.setEnabled(true);
+          
+          
+          connect.connectapplet();
     }//GEN-LAST:event_btnConnectMouseClicked
 
     /**
