@@ -140,13 +140,27 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
         // TODO add your handling code here:
-//        jlbLogin.setEnabled(true);
-//        txtPIN.setEnabled(true);
-//        checkbox.setEnabled(true);
-//        btnLogin.setEnabled(true);
+        
           
           
-          connect.connectapplet();
+          //connect.connectapplet();
+          String response = connect.connectapplet();
+          if(response.equals("Error")){
+              JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
+              
+          }
+          else{
+              if(connect.output[1].equals("9000")){
+              JOptionPane.showMessageDialog(null, "Kết nối thẻ thành công");    
+              jlbLogin.setEnabled(true);
+              txtPIN.setEnabled(true);
+              checkbox.setEnabled(true);
+              btnLogin.setEnabled(true);
+              }
+              else{
+                  JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
+              }
+          }
     }//GEN-LAST:event_btnConnectMouseClicked
 
     /**

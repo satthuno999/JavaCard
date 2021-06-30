@@ -20,6 +20,8 @@ public class HomeForm extends javax.swing.JFrame {
         initComponents();
         jpnInfo.setVisible(true);
         jpnPIN.setVisible(false);
+        txtTencoquan.setText("Học Viện Kỹ Thuật Mật Mã");
+        txtTencoquan.setEnabled(false);
     }
 
     /**
@@ -66,7 +68,7 @@ public class HomeForm extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jTextField3 = new javax.swing.JTextField();
+        txtTencoquan = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -311,8 +313,8 @@ public class HomeForm extends javax.swing.JFrame {
 
         jDateChooser1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txtTencoquan.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtTencoquan.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -352,14 +354,14 @@ public class HomeForm extends javax.swing.JFrame {
                         .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField3)
+                                .addComponent(txtTencoquan)
                                 .addComponent(jTextField4)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel10, jLabel11, jLabel12, jLabel13, jLabel14, jLabel9});
 
-        jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jDateChooser1, jTextField1, jTextField2, jTextField3, jTextField4});
+        jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jDateChooser1, jTextField1, jTextField2, jTextField4, txtTencoquan});
 
         jpnInfoLayout.setVerticalGroup(
             jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,7 +389,7 @@ public class HomeForm extends javax.swing.JFrame {
                 .addGap(58, 58, 58)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTencoquan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
@@ -399,7 +401,7 @@ public class HomeForm extends javax.swing.JFrame {
 
         jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel10, jLabel11, jLabel12, jLabel13, jLabel14, jLabel9});
 
-        jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jDateChooser1, jTextField1, jTextField2, jTextField3, jTextField4});
+        jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jDateChooser1, jTextField1, jTextField2, jTextField4, txtTencoquan});
 
         jPanel4.add(jpnInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -553,7 +555,6 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel jlbConnect;
     private javax.swing.JLabel jlbInfo;
@@ -561,5 +562,6 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JPanel jpnInfo;
     private javax.swing.JPanel jpnInfor;
     private javax.swing.JPanel jpnPIN;
+    private javax.swing.JTextField txtTencoquan;
     // End of variables declaration//GEN-END:variables
 }
