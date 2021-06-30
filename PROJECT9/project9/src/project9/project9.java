@@ -28,13 +28,13 @@ public class project9 extends Applet
 	public static byte[] OpData = new byte[60];
 	public static byte lenData = (byte)0;
 	
-	public static byte[] OpID = new byte[6];
+	public static byte[] OpID = new byte[256];
 	public static byte lenID = (byte)0;
-	public static byte[] OpNAME = new byte[25];
+	public static byte[] OpNAME = new byte[256];
 	public static byte lenNAME = (byte)0;
-	public static byte[] OpDATE = new byte[10];
+	public static byte[] OpDATE = new byte[256];
 	public static byte lenDATE= (byte)0;
-	public static byte[] OpPHONE = new byte[10];
+	public static byte[] OpPHONE = new byte[256];
 	public static byte lenPHONE= (byte)0;
 	
 	public static byte[] OpImage,size;
@@ -100,7 +100,9 @@ public class project9 extends Applet
 	//crypt
 	private Cipher aesCipher;
 	private AESKey aesKey;
-	private static short KEY_SIZE= 32;
+	private static short KEY_SIZE = 32;
+	//define
+	private static byte LENGTH_BLOCK_AES = (byte)128;
 	/*****
 	*RSA**
 	*****/
@@ -397,7 +399,6 @@ public class project9 extends Applet
 				}
 				else if((byte)(OpData[i]) == (byte)0x03){
 					flag = (short)0;
-					objData = new byte[0];
 				};
 				if(flag == (short)1){
 					byte[] temp = new byte[objDatalen];
@@ -405,10 +406,16 @@ public class project9 extends Applet
 						for(short t=0;t<(short)temp.length;t++){
 							temp[t] = objData[t];
 						}
+						
 					}
+					
 					objData = new byte[objDatalen+1];
-					for(short j=0;j<(short)objData.length;t++){
-						objData[j] = temp[j];
+					if(objDatalen>0){
+						for(short j=0;j<(short)objData.length;j++){
+							if(j!=(short)temp.length){
+								objData[j] = temp[j];
+							}
+						}
 					}
 					objData[objDatalen] = OpData[i];
 					objDatalen++;
@@ -419,18 +426,18 @@ public class project9 extends Applet
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
-						Util.arrayCopyNonAtomic(temp,(short)0x00,OpID,(short)0x00,(byte)(temp.length));
+						Util.arrayCopyNonAtomic(temp,(short)0x00,OpID,(short)0x00,(short)(temp.length));
 						lenID = (byte)(objDatalen);
-						objData = new byte[25];
+						objData = new byte[0];
 					}
 					else if(lenNAME == (byte)0){
 						if(objDatalen > 25){
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
-						Util.arrayCopyNonAtomic(temp,(short)0x00,OpNAME,(short)0x00,(byte)(temp.length));
+						Util.arrayCopyNonAtomic(temp,(short)0x00,OpNAME,(short)0x00,(short)(temp.length));
 						lenNAME = (byte)(objDatalen);
-						objData = new byte[10];
+						objData = new byte[0];
 					}
 					else if(lenDATE == (byte)0){
 						if(objDatalen > 10){
@@ -439,7 +446,7 @@ public class project9 extends Applet
 						byte[] temp = encrypt(objData);
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpDATE,(short)0x00,(byte)(temp.length));
 						lenDATE = (byte)(objDatalen);
-						objData = new byte[10];
+						objData = new byte[0];
 					}
 					else{
 						if(objDatalen > 10){
@@ -457,25 +464,25 @@ public class project9 extends Applet
 			if(buffer[ISO7816.OFFSET_P1] == OUT_ID){
 				apdu.setOutgoing();
 				apdu.setOutgoingLength(lenID);
-				Util.arrayCopy(decrypt(OpID),(short)0,buffer,(short)0,lenID);
+				Util.arrayCopy(decrypt(OpID,lenID),(short)0,buffer,(short)0,lenID);
 				apdu.sendBytes((short)0,lenID);
 			}
 			else if(buffer[ISO7816.OFFSET_P1] == OUT_NAME){
 				apdu.setOutgoing();
 				apdu.setOutgoingLength(lenNAME);
-				Util.arrayCopy(decrypt(OpNAME),(short)0,buffer,(short)0,lenNAME);
+				Util.arrayCopy(decrypt(OpNAME,lenNAME),(short)0,buffer,(short)0,lenNAME);
 				apdu.sendBytes((short)0,lenNAME);
 			}
 			else if(buffer[ISO7816.OFFSET_P1] == OUT_DATE){
 				apdu.setOutgoing();
 				apdu.setOutgoingLength(lenDATE);
-				Util.arrayCopy(decrypt(OpDATE),(short)0,buffer,(short)0,lenDATE);
+				Util.arrayCopy(decrypt(OpDATE,lenDATE),(short)0,buffer,(short)0,lenDATE);
 				apdu.sendBytes((short)0,lenDATE);
 			}
 			else if(buffer[ISO7816.OFFSET_P1] == OUT_PHONE){
 				apdu.setOutgoing();
 				apdu.setOutgoingLength(lenPHONE);
-				Util.arrayCopy(decrypt(OpPHONE),(short)0,buffer,(short)0,lenPHONE);
+				Util.arrayCopy(decrypt(OpPHONE,lenPHONE),(short)0,buffer,(short)0,lenPHONE);
 				apdu.sendBytes((short)0,lenPHONE);
 			}
 	}
@@ -515,22 +522,34 @@ public class project9 extends Applet
     /**Encrypt*/
 	private byte[] encrypt(byte[] encryptData) {
         aesCipher.init(aesKey, Cipher.MODE_ENCRYPT);
-        short newLength = addPadding(encryptData, (short) 0, (short) encryptData.length);
-        byte[] temp = JCSystem.makeTransientByteArray(newLength, JCSystem.CLEAR_ON_DESELECT);
-        aesCipher.doFinal(encryptData, (short) 0 , newLength, temp, (short) 0x00);
-        return temp;
+        short flag = (short) 1;
+	    byte[] temp = new byte[256];
+    	while(flag == (short)1){
+    		for(short i=0;i<=(short) encryptData.length;i++){
+    			if(i!=(short) encryptData.length){
+					temp[i] = encryptData[i];
+    			}
+    			else{
+	    			flag = (short) 0;
+    			}
+    		}
+    	}
+        // short newLength = addPadding(temp, (short) 0, (short) encryptData.length);
+        byte[] dataEncrypted = JCSystem.makeTransientByteArray((short)256, JCSystem.CLEAR_ON_DESELECT);
+        
+        aesCipher.doFinal(temp, (short) 0 , (short)256, dataEncrypted, (short) 0x00);
+        return dataEncrypted;
     }
 
     /**Decrypt
      * Decrypt data.
      */
-    private byte[] decrypt(byte[] encryptData) {
+    private byte[] decrypt(byte[] decryptData, byte length) {
         aesCipher.init(aesKey, Cipher.MODE_DECRYPT);
-        byte[] temp = JCSystem.makeTransientByteArray((short) encryptData.length, JCSystem.CLEAR_ON_DESELECT);
-        aesCipher.doFinal(encryptData, (short) 0, (short) encryptData.length, temp, (short) 0x00);
-        short newLength = removePadding(temp, (short) encryptData.length);
-        
-        return temp;
+        byte[] dataDecrypted = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
+        aesCipher.doFinal(decryptData, (short) 0, (short) 256, dataDecrypted, (short) 0x00);
+        // short newLength = removePadding(dataDecrypted, (short) length);
+        return dataDecrypted;
     }
 	 /**Add padding
      * Add padding for AES encryption.
@@ -540,31 +559,31 @@ public class project9 extends Applet
      * @param length
      * @return
      */
-    private short addPadding(byte[] data, short offset, short length) {
-        data[(short) (offset + length++)] = (byte) 0x80;
-        while (length < 16 || (length % 16 != 0)) {
-            data[(short) (offset + length++)] = 0x00;
-        }
-        return length;
-    }
+    // private short addPadding(byte[] data, short offset, short length) {
+        // data[(short) (offset + length++)] = (byte) 0x80;
+        // while (length < 16 || (length % 16 != 0)) {
+            // data[(short) (offset + length++)] = 0x00;
+        // }
+        // return length;
+    // }
 
     /**remove padding
      * remove padding from decrypted result.
      *
-     * @param buffer
+     * @param data
      * @param length
      * @return
      */
-    private short removePadding(byte[] buffer, short length) {
-        while ((length != 0) && buffer[(short) (length - 1)] == (byte) 0x00) {
-            length--;
-        }
-        if (buffer[(short) (length - 1)] != (byte) 0x80) {
-            ISOException.throwIt(ISO7816.SW_DATA_INVALID);
-        }
-        length--;
-        return length;
-    }
+    // private short removePadding(byte[] data, short length) {
+        // while ((length != 0) && data[(short) (length - 1)] == (byte) 0x00) {
+            // length--;
+        // }
+        // if (data[(short) (length - 1)] != (byte) 0x80) {
+            // ISOException.throwIt(ISO7816.SW_DATA_INVALID);
+        // }
+        // length--;
+        // return length;
+    // }
     /************RSA
     *     RSA   *
     *************/
