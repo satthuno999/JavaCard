@@ -1,5 +1,5 @@
 // converted by version 1.3
-// on Thu Jul 01 01:25:36 ICT 2021
+// on Thu Jul 01 02:33:45 ICT 2021
 
 .package project9 {
 	.aid 0x25:0x10:0x19:0x99:0x0:0x0;
@@ -44,191 +44,197 @@
 		// 12
 		virtualMethodRef 1.3.1()V;		// javacard/framework/Applet.register()V
 		// 13
-		staticMethodRef project9/LogOut()V;
-		// 14
-		classRef project9;
-		// 15
-		staticMethodRef project9/<init>([BSB)V;
-		// 16
-		virtualMethodRef 1.3.3()Z;		// javacard/framework/Applet.selectingApplet()Z
-		// 17
 		virtualMethodRef 1.10.1()[B;		// javacard/framework/APDU.getBuffer()[B
+		// 14
+		staticMethodRef project9/CheckFisrtUse(Ljavacard/framework/APDU;[B)V;
+			.descriptor	Ljavacard/framework/APDU;	1.10;
+
+		// 15
+		staticMethodRef project9/LogOut()V;
+		// 16
+		classRef project9;
+		// 17
+		staticMethodRef project9/<init>([BSB)V;
 		// 18
-		virtualMethodRef 1.10.6()S;		// javacard/framework/APDU.setIncomingAndReceive()S
+		virtualMethodRef 1.3.3()Z;		// javacard/framework/Applet.selectingApplet()Z
 		// 19
+		virtualMethodRef 1.10.6()S;		// javacard/framework/APDU.setIncomingAndReceive()S
+		// 20
 		staticMethodRef project9/setup(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 20
+		// 21
 		staticMethodRef project9/CreatePIN(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 21
+		// 22
 		staticMethodRef project9/VerifyPIN(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 22
+		// 23
 		staticMethodRef project9/ChangePIN(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 23
+		// 24
 		staticMethodRef project9/UnblockPIN(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 24
+		// 25
 		staticMethodRef project9/SetupInformation(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 25
+		// 26
 		staticMethodRef project9/OutputInformation(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 26
+		// 27
 		staticMethodRef project9/SetupImage(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 27
+		// 28
 		staticMethodRef project9/SetCount(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 28
+		// 29
 		staticMethodRef project9/OuputSize(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 29
+		// 30
 		staticMethodRef project9/OututImage(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 30
+		// 31
 		staticMethodRef project9/GenerateKeyPair(Ljavacard/framework/APDU;[B)V;
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-		// 31
+		// 32
 		staticMethodRef 3.1.0(BZ)Ljavacardx/crypto/Cipher;;		// javacardx/crypto/Cipher.getInstance(BZ)Ljavacardx/crypto/Cipher;
 			.descriptor	Ljavacardx/crypto/Cipher;	3.1;
 
-		// 32
-		staticMethodRef 0.0.0()V;		// java/lang/Object.<init>()V
 		// 33
+		staticMethodRef 0.0.0()V;		// java/lang/Object.<init>()V
+		// 34
 		staticMethodRef 2.13.0(BSZ)Ljavacard/security/Key;;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
 			.descriptor	Ljavacard/security/Key;	2.0;
 
-		// 34
-		classRef 2.20;		// javacard/security/AESKey
 		// 35
-		staticFieldRef byte[] project9/PIN_INIT_VALUE;
+		classRef 2.20;		// javacard/security/AESKey
 		// 36
-		staticFieldRef short project9/KEY_SIZE;
+		staticFieldRef byte[] project9/PIN_INIT_VALUE;
 		// 37
-		staticMethodRef 1.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+		staticFieldRef short project9/KEY_SIZE;
 		// 38
+		staticMethodRef 1.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+		// 39
 		staticMethodRef 2.14.0(B)Ljavacard/security/RandomData;;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
 			.descriptor	Ljavacard/security/RandomData;	2.14;
 
-		// 39
-		virtualMethodRef 2.14.1([BSS)V;		// javacard/security/RandomData.generateData([BSS)V
 		// 40
-		staticMethodRef 1.16.3([BSSB)S;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+		virtualMethodRef 2.14.1([BSS)V;		// javacard/security/RandomData.generateData([BSS)V
 		// 41
-		staticMethodRef 1.16.5(BB)S;		// javacard/framework/Util.makeShort(BB)S
+		staticMethodRef 1.16.3([BSSB)S;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
 		// 42
-		staticFieldRef byte[] project9/TEST_CHECK;
+		staticMethodRef 1.16.5(BB)S;		// javacard/framework/Util.makeShort(BB)S
 		// 43
-		virtualMethodRef 1.9.1([BSB)Z;		// javacard/framework/OwnerPIN.check([BSB)Z
+		staticFieldRef byte[] project9/TEST_CHECK;
 		// 44
-		staticFieldRef byte[] project9/test;
+		virtualMethodRef 1.9.1([BSB)Z;		// javacard/framework/OwnerPIN.check([BSB)Z
 		// 45
-		virtualMethodRef 1.10.7()S;		// javacard/framework/APDU.setOutgoing()S
+		staticFieldRef byte[] project9/test;
 		// 46
-		virtualMethodRef 1.10.9(S)V;		// javacard/framework/APDU.setOutgoingLength(S)V
+		virtualMethodRef 1.10.7()S;		// javacard/framework/APDU.setOutgoing()S
 		// 47
-		staticMethodRef 1.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+		virtualMethodRef 1.10.9(S)V;		// javacard/framework/APDU.setOutgoingLength(S)V
 		// 48
-		virtualMethodRef 1.10.4(SS)V;		// javacard/framework/APDU.sendBytes(SS)V
+		staticMethodRef 1.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 		// 49
-		virtualMethodRef 1.9.2()B;		// javacard/framework/OwnerPIN.getTriesRemaining()B
+		virtualMethodRef 1.10.4(SS)V;		// javacard/framework/APDU.sendBytes(SS)V
 		// 50
-		staticMethodRef project9/CheckPINPolicy([BSB)Z;
+		virtualMethodRef 1.9.2()B;		// javacard/framework/OwnerPIN.getTriesRemaining()B
 		// 51
-		virtualMethodRef 1.9.6()V;		// javacard/framework/OwnerPIN.resetAndUnblock()V
+		staticMethodRef project9/CheckPINPolicy([BSB)Z;
 		// 52
-		staticFieldRef byte project9/lenData;
+		virtualMethodRef 1.9.6()V;		// javacard/framework/OwnerPIN.resetAndUnblock()V
 		// 53
-		staticFieldRef byte[] project9/OpData;
+		staticFieldRef byte project9/lenData;
 		// 54
-		staticMethodRef 1.16.2([BS[BSS)S;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+		staticFieldRef byte[] project9/OpData;
 		// 55
-		staticFieldRef byte project9/lenID;
+		staticMethodRef 1.16.2([BS[BSS)S;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 		// 56
-		staticMethodRef project9/encrypt([B)[B;
+		staticFieldRef byte project9/lenID;
 		// 57
-		staticFieldRef byte[] project9/OpID;
+		staticMethodRef project9/encrypt([B)[B;
 		// 58
-		staticFieldRef byte project9/lenNAME;
+		staticFieldRef byte[] project9/OpID;
 		// 59
-		staticFieldRef byte[] project9/OpNAME;
+		staticFieldRef byte project9/lenNAME;
 		// 60
-		staticFieldRef byte project9/lenDATE;
+		staticFieldRef byte[] project9/OpNAME;
 		// 61
-		staticFieldRef byte[] project9/OpDATE;
+		staticFieldRef byte project9/lenDATE;
 		// 62
-		staticFieldRef byte[] project9/OpPHONE;
+		staticFieldRef byte[] project9/OpDATE;
 		// 63
-		staticFieldRef byte project9/lenPHONE;
+		staticFieldRef byte[] project9/OpPHONE;
 		// 64
-		staticMethodRef project9/decrypt([BB)[B;
+		staticFieldRef byte project9/lenPHONE;
 		// 65
-		virtualMethodRef 1.10.8(SS)V;		// javacard/framework/APDU.setOutgoingAndSend(SS)V
+		staticMethodRef project9/decrypt([BB)[B;
 		// 66
-		virtualMethodRef 1.10.5([BSS)V;		// javacard/framework/APDU.sendBytesLong([BSS)V
+		virtualMethodRef 1.10.8(SS)V;		// javacard/framework/APDU.setOutgoingAndSend(SS)V
 		// 67
-		virtualMethodRef 1.9.5()V;		// javacard/framework/OwnerPIN.reset()V
+		virtualMethodRef 1.10.5([BSS)V;		// javacard/framework/APDU.sendBytesLong([BSS)V
 		// 68
+		virtualMethodRef 1.9.5()V;		// javacard/framework/OwnerPIN.reset()V
+		// 69
+		staticFieldRef byte[] project9/first_logged_ids;
+		// 70
 		virtualMethodRef 3.1.3(Ljavacard/security/Key;B)V;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
 			.descriptor	Ljavacard/security/Key;	2.0;
 
-		// 69
-		virtualMethodRef 3.1.1([BSS[BS)S;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
-		// 70
-		staticMethodRef project9/GenerateKeyPairRSA([B)V;
 		// 71
-		staticMethodRef 1.16.4([BS)S;		// javacard/framework/Util.getShort([BS)S
+		virtualMethodRef 3.1.1([BSS[BS)S;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
 		// 72
+		staticMethodRef project9/GenerateKeyPairRSA([B)V;
+		// 73
+		staticMethodRef 1.16.4([BS)S;		// javacard/framework/Util.getShort([BS)S
+		// 74
 		staticMethodRef project9/getKey(BBS)Ljavacard/security/Key;;
 			.descriptor	Ljavacard/security/Key;	2.0;
 
-		// 73
-		classRef 2.9;		// javacard/security/RSAPublicKey
-		// 74
-		classRef 2.8;		// javacard/security/RSAPrivateKey
 		// 75
-		virtualMethodRef project9/authorizeKeyOp(BB)Z;
+		classRef 2.9;		// javacard/security/RSAPublicKey
 		// 76
-		staticMethodRef 1.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
+		classRef 2.8;		// javacard/security/RSAPrivateKey
 		// 77
-		staticFieldRef byte[] project9/OpImage;
+		virtualMethodRef project9/authorizeKeyOp(BB)Z;
 		// 78
-		classRef 2.16;		// javacard/security/KeyPair
+		staticMethodRef 1.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
 		// 79
+		staticFieldRef byte[] project9/OpImage;
+		// 80
+		classRef 2.16;		// javacard/security/KeyPair
+		// 81
 		staticMethodRef 2.16.1(Ljavacard/security/PublicKey;Ljavacard/security/PrivateKey;)V;		// javacard/security/KeyPair.<init>(Ljavacard/security/PublicKey;Ljavacard/security/PrivateKey;)V
 			.descriptor	Ljavacard/security/PublicKey;	2.3;
 			.descriptor	Ljavacard/security/PrivateKey;	2.2;
 
-		// 80
+		// 82
 		virtualMethodRef 2.16.3()Ljavacard/security/PublicKey;;		// javacard/security/KeyPair.getPublic()Ljavacard/security/PublicKey;
 			.descriptor	Ljavacard/security/PublicKey;	2.3;
 
-		// 81
+		// 83
 		virtualMethodRef 2.16.2()Ljavacard/security/PrivateKey;;		// javacard/security/KeyPair.getPrivate()Ljavacard/security/PrivateKey;
 			.descriptor	Ljavacard/security/PrivateKey;	2.2;
 
-		// 82
-		virtualMethodRef 2.16.1()V;		// javacard/security/KeyPair.genKeyPair()V
-		// 83
-		staticFieldRef byte[] project9/size;
 		// 84
-		classRef 1.9;		// javacard/framework/OwnerPIN
+		virtualMethodRef 2.16.1()V;		// javacard/security/KeyPair.genKeyPair()V
 		// 85
+		staticFieldRef byte[] project9/size;
+		// 86
+		classRef 1.9;		// javacard/framework/OwnerPIN
+		// 87
 		classRef 2.0;		// javacard/security/Key
 	}
 
@@ -246,7 +252,7 @@
 			.locals 0;
 
 				L0:	aload_0;
-					invokespecial 32;		// java/lang/Object.<init>()V
+					invokespecial 33;		// java/lang/Object.<init>()V
 					return;
 		}
 
@@ -313,6 +319,7 @@
 			private static final byte OPT_RSA_PUB_EXP = 1;		// B
 			private static byte[] STD_PUBLIC_ACL;		// [B
 			private static byte[] acl;		// [B
+			private static final byte[] first_logged_ids = {0};		// [B
 			private static short KEY_SIZE = 32;		// S
 			private static byte LENGTH_BLOCK_AES = -128;		// B
 			private static final short OFFSET_GENKEY_ALG = 5;		// S
@@ -343,6 +350,7 @@
 			getShareableInterfaceObject(Ljavacard/framework/AID;B)Ljavacard/framework/Shareable;;
 			select()Z;
 			process(Ljavacard/framework/APDU;)V;
+			select(Ljavacard/framework/APDU;)Z;
 		}
 
 		.packageMethodTable 0 {
@@ -360,34 +368,34 @@
 					sconst_0;
 					putfield_b 0;		// boolean project9/project9.setupDone
 					aload_0;
-					getstatic_a 35;		// reference project9/project9.PIN_INIT_VALUE
+					getstatic_a 36;		// reference project9/project9.PIN_INIT_VALUE
 					sconst_0;
-					getstatic_a 35;		// reference project9/project9.PIN_INIT_VALUE
+					getstatic_a 36;		// reference project9/project9.PIN_INIT_VALUE
 					arraylength;
 					s2b;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L2;
 				L1:	sspush -25345;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	sspush 10000;
 					newarray 11;
-					putstatic_a 77;		// reference project9/project9.OpImage
+					putstatic_a 79;		// reference project9/project9.OpImage
 					bspush 7;
 					newarray 11;
-					putstatic_a 83;		// reference project9/project9.size
+					putstatic_a 85;		// reference project9/project9.size
 					aload_0;
-					new 84;		// javacard/framework/OwnerPIN
+					new 86;		// javacard/framework/OwnerPIN
 					dup;
 					sconst_3;
-					getstatic_a 35;		// reference project9/project9.PIN_INIT_VALUE
+					getstatic_a 36;		// reference project9/project9.PIN_INIT_VALUE
 					arraylength;
 					s2b;
 					invokespecial 9;		// javacard/framework/OwnerPIN.<init>(BB)V
 					putfield_a 1;		// reference project9/project9.pin
 					getfield_a_this 1;		// reference project9/project9.pin
-					getstatic_a 35;		// reference project9/project9.PIN_INIT_VALUE
+					getstatic_a 36;		// reference project9/project9.PIN_INIT_VALUE
 					sconst_0;
-					getstatic_a 35;		// reference project9/project9.PIN_INIT_VALUE
+					getstatic_a 36;		// reference project9/project9.PIN_INIT_VALUE
 					arraylength;
 					s2b;
 					invokevirtual 11;		// javacard/framework/OwnerPIN.update([BSB)V
@@ -396,12 +404,21 @@
 					return;
 		}
 
-		.method public select()Z 6 {
-			.stack 1;
-			.locals 0;
+		.method public select(Ljavacard/framework/APDU;)Z 8 {
+			.stack 3;
+			.locals 1;
 
-				L0:	aload_0;
-					invokespecial 13;		// project9/project9.LogOut()V
+			.descriptor	Ljavacard/framework/APDU;	1.10;
+
+				L0:	aload_1;
+					invokevirtual 13;		// javacard/framework/APDU.getBuffer()[B
+					astore_2;
+				L1:	aload_0;
+					aload_1;
+					aload_2;
+					invokespecial 14;		// project9/project9.CheckFisrtUse(Ljavacard/framework/APDU;[B)V
+					aload_0;
+					invokespecial 15;		// project9/project9.LogOut()V
 					sconst_1;
 					sreturn;
 		}
@@ -411,7 +428,7 @@
 			.locals 0;
 
 				L0:	aload_0;
-					invokespecial 13;		// project9/project9.LogOut()V
+					invokespecial 15;		// project9/project9.LogOut()V
 					return;
 		}
 
@@ -419,12 +436,12 @@
 			.stack 5;
 			.locals 1;
 
-				L0:	new 14;		// project9/project9
+				L0:	new 16;		// project9/project9
 					dup;
 					aload_0;
 					sload_1;
 					sload_2;
-					invokespecial 15;		// project9/project9.<init>([BSB)V
+					invokespecial 17;		// project9/project9.<init>([BSB)V
 					astore_3;
 				L1:	return;
 		}
@@ -436,15 +453,15 @@
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
 				L0:	aload_0;
-					invokevirtual 16;		// javacard/framework/Applet.selectingApplet()Z
+					invokevirtual 18;		// javacard/framework/Applet.selectingApplet()Z
 					ifeq L2;
 				L1:	sspush -28672;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_1;
-					invokevirtual 17;		// javacard/framework/APDU.getBuffer()[B
+					invokevirtual 13;		// javacard/framework/APDU.getBuffer()[B
 					astore_2;
 				L3:	aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					pop;
 					aload_2;
 					sconst_0;
@@ -462,7 +479,7 @@
 					bspush -80;
 					if_scmpeq L8;
 				L7:	sspush 28160;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L8:	aload_2;
 					sconst_1;
 					baload;
@@ -473,81 +490,81 @@
 					bspush 42;
 					if_scmpeq L12;
 				L11:	sspush -25596;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L12:	getfield_b_this 0;		// boolean project9/project9.setupDone
 					ifeq L15;
 				L13:	sload_3;
 					bspush 42;
 					if_scmpne L15;
 				L14:	sspush 27904;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L15:	sload_3;
 					stableswitch L29 42 96 L16 L29 L29 L29 L29 L29 L28 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L29 L17 L29 L18 L29 L19 L29 L20 L22 L23 L29 L29 L29 L29 L29 L29 L29 L29 L29 L24 L29 L25 L29 L26 L29 L27 L29 L29 L29 L29 L29 L29 L29 L21;
 				L16:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 19;		// project9/project9.setup(Ljavacard/framework/APDU;[B)V
+					invokespecial 20;		// project9/project9.setup(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L17:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 20;		// project9/project9.CreatePIN(Ljavacard/framework/APDU;[B)V
+					invokespecial 21;		// project9/project9.CreatePIN(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L18:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 21;		// project9/project9.VerifyPIN(Ljavacard/framework/APDU;[B)V
+					invokespecial 22;		// project9/project9.VerifyPIN(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L19:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 22;		// project9/project9.ChangePIN(Ljavacard/framework/APDU;[B)V
+					invokespecial 23;		// project9/project9.ChangePIN(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L20:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 23;		// project9/project9.UnblockPIN(Ljavacard/framework/APDU;[B)V
+					invokespecial 24;		// project9/project9.UnblockPIN(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L21:	aload_0;
-					invokespecial 13;		// project9/project9.LogOut()V
+					invokespecial 15;		// project9/project9.LogOut()V
 					goto L30;
 				L22:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 24;		// project9/project9.SetupInformation(Ljavacard/framework/APDU;[B)V
+					invokespecial 25;		// project9/project9.SetupInformation(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L23:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 25;		// project9/project9.OutputInformation(Ljavacard/framework/APDU;[B)V
+					invokespecial 26;		// project9/project9.OutputInformation(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L24:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 26;		// project9/project9.SetupImage(Ljavacard/framework/APDU;[B)V
+					invokespecial 27;		// project9/project9.SetupImage(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L25:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 27;		// project9/project9.SetCount(Ljavacard/framework/APDU;[B)V
+					invokespecial 28;		// project9/project9.SetCount(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L26:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 28;		// project9/project9.OuputSize(Ljavacard/framework/APDU;[B)V
+					invokespecial 29;		// project9/project9.OuputSize(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L27:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 29;		// project9/project9.OututImage(Ljavacard/framework/APDU;[B)V
+					invokespecial 30;		// project9/project9.OututImage(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L28:	aload_0;
 					aload_1;
 					aload_2;
-					invokespecial 30;		// project9/project9.GenerateKeyPair(Ljavacard/framework/APDU;[B)V
+					invokespecial 31;		// project9/project9.GenerateKeyPair(Ljavacard/framework/APDU;[B)V
 					goto L30;
 				L29:	sspush 27904;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L30:	return;
 		}
 
@@ -560,44 +577,44 @@
 				L0:	aload_0;
 					bspush 13;
 					sconst_0;
-					invokestatic 31;		// javacardx/crypto/Cipher.getInstance(BZ)Ljavacardx/crypto/Cipher;
+					invokestatic 32;		// javacardx/crypto/Cipher.getInstance(BZ)Ljavacardx/crypto/Cipher;
 					putfield_a 2;		// reference project9/project9.aesCipher
 					aload_0;
 					bspush 15;
 					sspush 128;
 					sconst_0;
-					invokestatic 33;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
-					checkcast 0 34;		// T_CLASSORINTERFACE javacard/security/AESKey
+					invokestatic 34;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					checkcast 0 35;		// T_CLASSORINTERFACE javacard/security/AESKey
 					putfield_a 3;		// reference project9/project9.aesKey
-					getstatic_s 36;		// short project9/project9.KEY_SIZE
+					getstatic_s 37;		// short project9/project9.KEY_SIZE
 					sconst_2;
-					invokestatic 37;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					invokestatic 38;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
 					astore_3;
 				L1:	sconst_2;
-					invokestatic 38;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
+					invokestatic 39;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
 					astore 4;
 				L2:	aload 4;
 					aload_3;
 					sconst_0;
-					getstatic_s 36;		// short project9/project9.KEY_SIZE
-					invokevirtual 39;		// javacard/security/RandomData.generateData([BSS)V
+					getstatic_s 37;		// short project9/project9.KEY_SIZE
+					invokevirtual 40;		// javacard/security/RandomData.generateData([BSS)V
 					getfield_a_this 3;		// reference project9/project9.aesKey
 					aload_3;
 					sconst_0;
-					invokeinterface 3 34 4;		// javacard/security/AESKey
+					invokeinterface 3 35 4;		// javacard/security/AESKey
 				L3:	aload_3;
 					sconst_0;
-					getstatic_s 36;		// short project9/project9.KEY_SIZE
+					getstatic_s 37;		// short project9/project9.KEY_SIZE
 					sconst_0;
-					invokestatic 40;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					invokestatic 41;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
 					pop;
 					goto L6;
 				L4:	astore 5;
 				L5:	aload_3;
 					sconst_0;
-					getstatic_s 36;		// short project9/project9.KEY_SIZE
+					getstatic_s 37;		// short project9/project9.KEY_SIZE
 					sconst_0;
-					invokestatic 40;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					invokestatic 41;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
 					pop;
 					aload 5;
 					athrow;
@@ -626,19 +643,19 @@
 					aload_2;
 					sconst_4;
 					baload;
-					invokestatic 41;		// javacard/framework/Util.makeShort(BB)S
+					invokestatic 42;		// javacard/framework/Util.makeShort(BB)S
 					sstore 4;
 				L2:	aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					sload 4;
 					if_scmpeq L4;
 				L3:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	sload 4;
 					sconst_2;
 					if_scmpge L6;
 				L5:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L6:	aload_2;
 					sconst_5;
 					baload;
@@ -649,17 +666,17 @@
 					sadd;
 					if_scmpge L9;
 				L8:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L9:	aload_0;
 					aload_2;
 					bspush 6;
 					sload 5;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L11;
 				L10:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L11:	aload_0;
-					new 84;		// javacard/framework/OwnerPIN
+					new 86;		// javacard/framework/OwnerPIN
 					dup;
 					sload_3;
 					bspush 16;
@@ -671,42 +688,42 @@
 					sload 5;
 					invokevirtual 11;		// javacard/framework/OwnerPIN.update([BSB)V
 					getfield_a_this 1;		// reference project9/project9.pin
-					getstatic_a 42;		// reference project9/project9.TEST_CHECK
+					getstatic_a 43;		// reference project9/project9.TEST_CHECK
 					sconst_0;
-					getstatic_a 42;		// reference project9/project9.TEST_CHECK
+					getstatic_a 43;		// reference project9/project9.TEST_CHECK
 					arraylength;
 					s2b;
-					invokevirtual 43;		// javacard/framework/OwnerPIN.check([BSB)Z
+					invokevirtual 44;		// javacard/framework/OwnerPIN.check([BSB)Z
 					ifeq L13;
-				L12:	getstatic_a 44;		// reference project9/project9.test
+				L12:	getstatic_a 45;		// reference project9/project9.test
 					sconst_1;
 					sconst_2;
 					bastore;
 					goto L14;
-				L13:	getstatic_a 44;		// reference project9/project9.test
+				L13:	getstatic_a 45;		// reference project9/project9.test
 					sconst_1;
 					sconst_3;
 					bastore;
 				L14:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
-					getstatic_a 44;		// reference project9/project9.test
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_a 45;		// reference project9/project9.test
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					return;
 		}
 
@@ -719,50 +736,50 @@
 				L0:	getfield_a_this 1;		// reference project9/project9.pin
 					ifnonnull L2;
 				L1:	sspush -25584;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_2;
 					sconst_3;
 					baload;
 					ifeq L4;
 				L3:	sspush -25583;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	sconst_0;
 					aload_2;
 					sconst_4;
 					baload;
-					invokestatic 41;		// javacard/framework/Util.makeShort(BB)S
+					invokestatic 42;		// javacard/framework/Util.makeShort(BB)S
 					sstore_3;
 				L5:	sload_3;
 					aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					if_scmpeq L7;
 				L6:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L7:	aload_0;
 					aload_2;
 					sconst_5;
 					sload_3;
 					s2b;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L9;
 				L8:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L9:	getfield_a_this 1;		// reference project9/project9.pin
-					invokevirtual 49;		// javacard/framework/OwnerPIN.getTriesRemaining()B
+					invokevirtual 50;		// javacard/framework/OwnerPIN.getTriesRemaining()B
 					ifne L11;
 				L10:	sspush -25588;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L11:	getfield_a_this 1;		// reference project9/project9.pin
 					aload_2;
 					sconst_5;
 					sload_3;
 					s2b;
-					invokevirtual 43;		// javacard/framework/OwnerPIN.check([BSB)Z
+					invokevirtual 44;		// javacard/framework/OwnerPIN.check([BSB)Z
 					ifne L13;
 				L12:	aload_0;
-					invokespecial 13;		// project9/project9.LogOut()V
+					invokespecial 15;		// project9/project9.LogOut()V
 					sspush -25598;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L13:	aload_0;
 					bspush 16;
 					putfield_s 4;		// short project9/project9.logged_ids
@@ -778,30 +795,30 @@
 				L0:	getfield_a_this 1;		// reference project9/project9.pin
 					ifnonnull L2;
 				L1:	sspush -25584;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_2;
 					sconst_3;
 					baload;
 					ifeq L4;
 				L3:	sspush -25583;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	sconst_0;
 					aload_2;
 					sconst_4;
 					baload;
-					invokestatic 41;		// javacard/framework/Util.makeShort(BB)S
+					invokestatic 42;		// javacard/framework/Util.makeShort(BB)S
 					sstore_3;
 				L5:	aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					sload_3;
 					if_scmpeq L7;
 				L6:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L7:	sload_3;
 					sconst_4;
 					if_scmpge L9;
 				L8:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L9:	aload_2;
 					sconst_5;
 					baload;
@@ -812,15 +829,15 @@
 					sadd;
 					if_scmpge L12;
 				L11:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L12:	aload_0;
 					aload_2;
 					bspush 6;
 					sload 4;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L14;
 				L13:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L14:	aload_2;
 					bspush 6;
 					sload 4;
@@ -835,7 +852,7 @@
 					sadd;
 					if_scmpge L17;
 				L16:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L17:	aload_0;
 					aload_2;
 					bspush 6;
@@ -844,25 +861,25 @@
 					sconst_1;
 					sadd;
 					sload 5;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L19;
 				L18:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L19:	getfield_a_this 1;		// reference project9/project9.pin
-					invokevirtual 49;		// javacard/framework/OwnerPIN.getTriesRemaining()B
+					invokevirtual 50;		// javacard/framework/OwnerPIN.getTriesRemaining()B
 					ifne L21;
 				L20:	sspush -25588;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L21:	getfield_a_this 1;		// reference project9/project9.pin
 					aload_2;
 					bspush 6;
 					sload 4;
-					invokevirtual 43;		// javacard/framework/OwnerPIN.check([BSB)Z
+					invokevirtual 44;		// javacard/framework/OwnerPIN.check([BSB)Z
 					ifne L23;
 				L22:	aload_0;
-					invokespecial 13;		// project9/project9.LogOut()V
+					invokespecial 15;		// project9/project9.LogOut()V
 					sspush -25598;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L23:	getfield_a_this 1;		// reference project9/project9.pin
 					aload_2;
 					bspush 6;
@@ -873,42 +890,42 @@
 					sload 5;
 					invokevirtual 11;		// javacard/framework/OwnerPIN.update([BSB)V
 					getfield_a_this 1;		// reference project9/project9.pin
-					getstatic_a 42;		// reference project9/project9.TEST_CHECK
+					getstatic_a 43;		// reference project9/project9.TEST_CHECK
 					sconst_0;
-					getstatic_a 42;		// reference project9/project9.TEST_CHECK
+					getstatic_a 43;		// reference project9/project9.TEST_CHECK
 					arraylength;
 					s2b;
-					invokevirtual 43;		// javacard/framework/OwnerPIN.check([BSB)Z
+					invokevirtual 44;		// javacard/framework/OwnerPIN.check([BSB)Z
 					ifeq L25;
-				L24:	getstatic_a 44;		// reference project9/project9.test
+				L24:	getstatic_a 45;		// reference project9/project9.test
 					sconst_1;
 					sconst_2;
 					bastore;
 					goto L26;
-				L25:	getstatic_a 44;		// reference project9/project9.test
+				L25:	getstatic_a 45;		// reference project9/project9.test
 					sconst_1;
 					sconst_3;
 					bastore;
 				L26:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
-					getstatic_a 44;		// reference project9/project9.test
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_a 45;		// reference project9/project9.test
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_a 44;		// reference project9/project9.test
+					getstatic_a 45;		// reference project9/project9.test
 					arraylength;
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					aload_0;
 					bspush 16;
 					putfield_s 4;		// short project9/project9.logged_ids
@@ -924,41 +941,41 @@
 				L0:	getfield_a_this 1;		// reference project9/project9.pin
 					ifnonnull L2;
 				L1:	sspush -25584;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	getfield_a_this 1;		// reference project9/project9.pin
-					invokevirtual 49;		// javacard/framework/OwnerPIN.getTriesRemaining()B
+					invokevirtual 50;		// javacard/framework/OwnerPIN.getTriesRemaining()B
 					ifeq L4;
 				L3:	sspush -25597;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	aload_2;
 					sconst_3;
 					baload;
 					ifeq L6;
 				L5:	sspush -25583;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L6:	sconst_0;
 					aload_2;
 					sconst_4;
 					baload;
-					invokestatic 41;		// javacard/framework/Util.makeShort(BB)S
+					invokestatic 42;		// javacard/framework/Util.makeShort(BB)S
 					sstore_3;
 				L7:	sload_3;
 					aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					if_scmpeq L9;
 				L8:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L9:	aload_0;
 					aload_2;
 					sconst_5;
 					sload_3;
 					s2b;
-					invokespecial 50;		// project9/project9.CheckPINPolicy([BSB)Z
+					invokespecial 51;		// project9/project9.CheckPINPolicy([BSB)Z
 					ifne L11;
 				L10:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L11:	getfield_a_this 1;		// reference project9/project9.pin
-					invokevirtual 51;		// javacard/framework/OwnerPIN.resetAndUnblock()V
+					invokevirtual 52;		// javacard/framework/OwnerPIN.resetAndUnblock()V
 					return;
 		}
 
@@ -971,18 +988,18 @@
 				L0:	aload_2;
 					sconst_4;
 					baload;
-					putstatic_b 52;		// byte project9/project9.lenData
-					getstatic_b 52;		// byte project9/project9.lenData
+					putstatic_b 53;		// byte project9/project9.lenData
+					getstatic_b 53;		// byte project9/project9.lenData
 					bspush 60;
 					if_scmple L2;
 				L1:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L2:	aload_2;
 					sconst_5;
-					getstatic_a 53;		// reference project9/project9.OpData
+					getstatic_a 54;		// reference project9/project9.OpData
 					sconst_0;
-					getstatic_b 52;		// byte project9/project9.lenData
-					invokestatic 54;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					getstatic_b 53;		// byte project9/project9.lenData
+					invokestatic 55;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 					pop;
 					sconst_0;
 					sstore_3;
@@ -994,9 +1011,9 @@
 				L5:	sconst_0;
 					sstore 6;
 				L6:	sload 6;
-					getstatic_b 52;		// byte project9/project9.lenData
+					getstatic_b 53;		// byte project9/project9.lenData
 					if_scmpgt_w L51;
-				L7:	getstatic_a 53;		// reference project9/project9.OpData
+				L7:	getstatic_a 54;		// reference project9/project9.OpData
 					sload 6;
 					baload;
 					sconst_2;
@@ -1004,7 +1021,7 @@
 				L8:	sconst_1;
 					sstore_3;
 					goto_w L50;
-				L9:	getstatic_a 53;		// reference project9/project9.OpData
+				L9:	getstatic_a 54;		// reference project9/project9.OpData
 					sload 6;
 					baload;
 					sconst_3;
@@ -1060,7 +1077,7 @@
 					goto L19;
 				L23:	aload 4;
 					sload 5;
-					getstatic_a 53;		// reference project9/project9.OpData
+					getstatic_a 54;		// reference project9/project9.OpData
 					sload 6;
 					baload;
 					bastore;
@@ -1074,78 +1091,78 @@
 					ifne_w L50;
 				L26:	sload 5;
 					ifeq_w L50;
-				L27:	getstatic_b 55;		// byte project9/project9.lenID
+				L27:	getstatic_b 56;		// byte project9/project9.lenID
 					ifne L33;
 				L28:	sload 5;
 					bspush 6;
 					if_scmple L30;
 				L29:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L30:	aload_0;
 					aload 4;
-					invokespecial 56;		// project9/project9.encrypt([B)[B
+					invokespecial 57;		// project9/project9.encrypt([B)[B
 					astore 7;
 				L31:	aload 7;
 					sconst_0;
-					getstatic_a 57;		// reference project9/project9.OpID
+					getstatic_a 58;		// reference project9/project9.OpID
 					sconst_0;
 					aload 7;
 					arraylength;
-					invokestatic 54;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					invokestatic 55;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 					pop;
 					sload 5;
-					putstatic_b 55;		// byte project9/project9.lenID
+					putstatic_b 56;		// byte project9/project9.lenID
 					sconst_0;
 					newarray 11;
 					astore 4;
 				L32:	goto_w L49;
-				L33:	getstatic_b 58;		// byte project9/project9.lenNAME
+				L33:	getstatic_b 59;		// byte project9/project9.lenNAME
 					ifne L39;
 				L34:	sload 5;
 					bspush 25;
 					if_scmple L36;
 				L35:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L36:	aload_0;
 					aload 4;
-					invokespecial 56;		// project9/project9.encrypt([B)[B
+					invokespecial 57;		// project9/project9.encrypt([B)[B
 					astore 7;
 				L37:	aload 7;
 					sconst_0;
-					getstatic_a 59;		// reference project9/project9.OpNAME
+					getstatic_a 60;		// reference project9/project9.OpNAME
 					sconst_0;
 					aload 7;
 					arraylength;
-					invokestatic 54;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					invokestatic 55;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 					pop;
 					sload 5;
-					putstatic_b 58;		// byte project9/project9.lenNAME
+					putstatic_b 59;		// byte project9/project9.lenNAME
 					sconst_0;
 					newarray 11;
 					astore 4;
 				L38:	goto L49;
-				L39:	getstatic_b 60;		// byte project9/project9.lenDATE
+				L39:	getstatic_b 61;		// byte project9/project9.lenDATE
 					ifne L45;
 				L40:	sload 5;
 					bspush 10;
 					if_scmple L42;
 				L41:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L42:	aload_0;
 					aload 4;
-					invokespecial 56;		// project9/project9.encrypt([B)[B
+					invokespecial 57;		// project9/project9.encrypt([B)[B
 					astore 7;
 				L43:	aload 7;
 					sconst_0;
-					getstatic_a 61;		// reference project9/project9.OpDATE
+					getstatic_a 62;		// reference project9/project9.OpDATE
 					sconst_0;
 					aload 7;
 					arraylength;
 					s2b;
-					invokestatic 54;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					invokestatic 55;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 					pop;
 					sload 5;
-					putstatic_b 60;		// byte project9/project9.lenDATE
+					putstatic_b 61;		// byte project9/project9.lenDATE
 					sconst_0;
 					newarray 11;
 					astore 4;
@@ -1154,22 +1171,22 @@
 					bspush 10;
 					if_scmple L47;
 				L46:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L47:	aload_0;
 					aload 4;
-					invokespecial 56;		// project9/project9.encrypt([B)[B
+					invokespecial 57;		// project9/project9.encrypt([B)[B
 					astore 7;
 				L48:	aload 7;
 					sconst_0;
-					getstatic_a 62;		// reference project9/project9.OpPHONE
+					getstatic_a 63;		// reference project9/project9.OpPHONE
 					sconst_0;
 					aload 7;
 					arraylength;
 					s2b;
-					invokestatic 54;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					invokestatic 55;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
 					pop;
 					sload 5;
-					putstatic_b 63;		// byte project9/project9.lenPHONE
+					putstatic_b 64;		// byte project9/project9.lenPHONE
 				L49:	sconst_0;
 					sstore 5;
 				L50:	sinc 6 1;
@@ -1189,25 +1206,25 @@
 					sconst_1;
 					if_scmpne L2;
 				L1:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_b 55;		// byte project9/project9.lenID
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_b 56;		// byte project9/project9.lenID
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
 					aload_0;
-					getstatic_a 57;		// reference project9/project9.OpID
-					getstatic_b 55;		// byte project9/project9.lenID
-					invokespecial 64;		// project9/project9.decrypt([BB)[B
+					getstatic_a 58;		// reference project9/project9.OpID
+					getstatic_b 56;		// byte project9/project9.lenID
+					invokespecial 65;		// project9/project9.decrypt([BB)[B
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_b 55;		// byte project9/project9.lenID
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					getstatic_b 56;		// byte project9/project9.lenID
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_b 55;		// byte project9/project9.lenID
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					getstatic_b 56;		// byte project9/project9.lenID
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					goto_w L8;
 				L2:	aload_2;
 					sconst_2;
@@ -1215,25 +1232,25 @@
 					sconst_2;
 					if_scmpne L4;
 				L3:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_b 58;		// byte project9/project9.lenNAME
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_b 59;		// byte project9/project9.lenNAME
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
 					aload_0;
-					getstatic_a 59;		// reference project9/project9.OpNAME
-					getstatic_b 58;		// byte project9/project9.lenNAME
-					invokespecial 64;		// project9/project9.decrypt([BB)[B
+					getstatic_a 60;		// reference project9/project9.OpNAME
+					getstatic_b 59;		// byte project9/project9.lenNAME
+					invokespecial 65;		// project9/project9.decrypt([BB)[B
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_b 58;		// byte project9/project9.lenNAME
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					getstatic_b 59;		// byte project9/project9.lenNAME
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_b 58;		// byte project9/project9.lenNAME
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					getstatic_b 59;		// byte project9/project9.lenNAME
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					goto L8;
 				L4:	aload_2;
 					sconst_2;
@@ -1241,25 +1258,25 @@
 					sconst_3;
 					if_scmpne L6;
 				L5:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_b 60;		// byte project9/project9.lenDATE
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_b 61;		// byte project9/project9.lenDATE
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
 					aload_0;
-					getstatic_a 61;		// reference project9/project9.OpDATE
-					getstatic_b 60;		// byte project9/project9.lenDATE
-					invokespecial 64;		// project9/project9.decrypt([BB)[B
+					getstatic_a 62;		// reference project9/project9.OpDATE
+					getstatic_b 61;		// byte project9/project9.lenDATE
+					invokespecial 65;		// project9/project9.decrypt([BB)[B
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_b 60;		// byte project9/project9.lenDATE
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					getstatic_b 61;		// byte project9/project9.lenDATE
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_b 60;		// byte project9/project9.lenDATE
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					getstatic_b 61;		// byte project9/project9.lenDATE
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					goto L8;
 				L6:	aload_2;
 					sconst_2;
@@ -1267,25 +1284,25 @@
 					sconst_4;
 					if_scmpne L8;
 				L7:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_1;
-					getstatic_b 63;		// byte project9/project9.lenPHONE
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_b 64;		// byte project9/project9.lenPHONE
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
 					aload_0;
-					getstatic_a 62;		// reference project9/project9.OpPHONE
-					getstatic_b 63;		// byte project9/project9.lenPHONE
-					invokespecial 64;		// project9/project9.decrypt([BB)[B
+					getstatic_a 63;		// reference project9/project9.OpPHONE
+					getstatic_b 64;		// byte project9/project9.lenPHONE
+					invokespecial 65;		// project9/project9.decrypt([BB)[B
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_b 63;		// byte project9/project9.lenPHONE
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					getstatic_b 64;		// byte project9/project9.lenPHONE
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
-					getstatic_b 63;		// byte project9/project9.lenPHONE
-					invokevirtual 48;		// javacard/framework/APDU.sendBytes(SS)V
+					getstatic_b 64;		// byte project9/project9.lenPHONE
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 				L8:	return;
 		}
 
@@ -1307,10 +1324,10 @@
 					sstore 4;
 				L2:	aload_2;
 					sconst_5;
-					getstatic_a 77;		// reference project9/project9.OpImage
+					getstatic_a 79;		// reference project9/project9.OpImage
 					sload 4;
 					sspush 249;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					return;
 		}
@@ -1323,10 +1340,10 @@
 
 				L0:	aload_2;
 					sconst_5;
-					getstatic_a 83;		// reference project9/project9.size
+					getstatic_a 85;		// reference project9/project9.size
 					sconst_0;
 					bspush 7;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					return;
 		}
@@ -1337,18 +1354,18 @@
 
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
-				L0:	getstatic_a 83;		// reference project9/project9.size
+				L0:	getstatic_a 85;		// reference project9/project9.size
 					sconst_0;
 					aload_2;
 					sconst_0;
-					getstatic_a 83;		// reference project9/project9.size
+					getstatic_a 85;		// reference project9/project9.size
 					arraylength;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					sconst_0;
 					bspush 7;
-					invokevirtual 65;		// javacard/framework/APDU.setOutgoingAndSend(SS)V
+					invokevirtual 66;		// javacard/framework/APDU.setOutgoingAndSend(SS)V
 					return;
 		}
 
@@ -1359,7 +1376,7 @@
 			.descriptor	Ljavacard/framework/APDU;	1.10;
 
 				L0:	aload_1;
-					invokevirtual 45;		// javacard/framework/APDU.setOutgoing()S
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
 					pop;
 					aload_2;
 					sconst_2;
@@ -1373,12 +1390,12 @@
 					sstore 4;
 				L2:	aload_1;
 					sspush 249;
-					invokevirtual 46;		// javacard/framework/APDU.setOutgoingLength(S)V
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
 					aload_1;
-					getstatic_a 77;		// reference project9/project9.OpImage
+					getstatic_a 79;		// reference project9/project9.OpImage
 					sload 4;
 					sspush 249;
-					invokevirtual 66;		// javacard/framework/APDU.sendBytesLong([BSS)V
+					invokevirtual 67;		// javacard/framework/APDU.sendBytesLong([BSS)V
 					return;
 		}
 
@@ -1406,7 +1423,33 @@
 					sconst_0;
 					putfield_s 4;		// short project9/project9.logged_ids
 					getfield_a_this 1;		// reference project9/project9.pin
-					invokevirtual 67;		// javacard/framework/OwnerPIN.reset()V
+					invokevirtual 68;		// javacard/framework/OwnerPIN.reset()V
+					return;
+		}
+
+		.method private CheckFisrtUse(Ljavacard/framework/APDU;[B)V {
+			.stack 5;
+			.locals 0;
+
+			.descriptor	Ljavacard/framework/APDU;	1.10;
+
+				L0:	aload_1;
+					invokevirtual 46;		// javacard/framework/APDU.setOutgoing()S
+					pop;
+					aload_1;
+					sconst_1;
+					invokevirtual 47;		// javacard/framework/APDU.setOutgoingLength(S)V
+					getstatic_a 69;		// reference project9/project9.first_logged_ids
+					sconst_0;
+					aload_2;
+					sconst_0;
+					sconst_1;
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					sconst_1;
+					invokevirtual 49;		// javacard/framework/APDU.sendBytes(SS)V
 					return;
 		}
 
@@ -1417,7 +1460,7 @@
 				L0:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					getfield_a_this 3;		// reference project9/project9.aesKey
 					sconst_2;
-					invokevirtual 68;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
+					invokevirtual 70;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
 					sconst_1;
 					sstore_2;
 				L1:	sspush 256;
@@ -1450,7 +1493,7 @@
 				L9:	goto L2;
 				L10:	sspush 256;
 					sconst_2;
-					invokestatic 37;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					invokestatic 38;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
 					astore 4;
 				L11:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					aload_3;
@@ -1458,7 +1501,7 @@
 					sspush 256;
 					aload 4;
 					sconst_0;
-					invokevirtual 69;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
+					invokevirtual 71;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
 					pop;
 					aload 4;
 					areturn;
@@ -1471,10 +1514,10 @@
 				L0:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					getfield_a_this 3;		// reference project9/project9.aesKey
 					sconst_1;
-					invokevirtual 68;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
+					invokevirtual 70;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
 					sspush 256;
 					sconst_2;
-					invokestatic 37;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					invokestatic 38;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
 					astore_3;
 				L1:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					aload_1;
@@ -1482,7 +1525,7 @@
 					sspush 256;
 					aload_3;
 					sconst_0;
-					invokevirtual 69;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
+					invokevirtual 71;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
 					pop;
 					aload_3;
 					areturn;
@@ -1498,14 +1541,14 @@
 					aload_2;
 					sconst_4;
 					baload;
-					invokestatic 41;		// javacard/framework/Util.makeShort(BB)S
+					invokestatic 42;		// javacard/framework/Util.makeShort(BB)S
 					sstore_3;
 				L1:	sload_3;
 					aload_1;
-					invokevirtual 18;		// javacard/framework/APDU.setIncomingAndReceive()S
+					invokevirtual 19;		// javacard/framework/APDU.setIncomingAndReceive()S
 					if_scmpeq L3;
 				L2:	sspush 26368;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L3:	aload_2;
 					sconst_5;
 					baload;
@@ -1514,11 +1557,11 @@
 					stableswitch L7 1 5 L5 L5 L7 L7 L6;
 				L5:	aload_0;
 					aload_2;
-					invokespecial 70;		// project9/project9.GenerateKeyPairRSA([B)V
+					invokespecial 72;		// project9/project9.GenerateKeyPairRSA([B)V
 					goto L8;
 				L6:	goto L8;
 				L7:	sspush -25591;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L8:	return;
 		}
 
@@ -1536,7 +1579,7 @@
 					bspush 16;
 					if_scmplt L4;
 				L3:	sspush -25584;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L4:	aload_1;
 					sconst_3;
 					baload;
@@ -1547,19 +1590,19 @@
 					bspush 16;
 					if_scmplt L8;
 				L7:	sspush -25583;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L8:	sload_3;
 					sload_2;
 					if_scmpne L10;
 				L9:	sspush 27270;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L10:	aload_1;
 					sconst_5;
 					baload;
 					sstore 4;
 				L11:	aload_1;
 					bspush 6;
-					invokestatic 71;		// javacard/framework/Util.getShort([BS)S
+					invokestatic 73;		// javacard/framework/Util.getShort([BS)S
 					sstore 5;
 				L12:	aload_1;
 					bspush 20;
@@ -1569,8 +1612,8 @@
 					sload_3;
 					sconst_4;
 					sload 5;
-					invokespecial 72;		// project9/project9.getKey(BBS)Ljavacard/security/Key;
-					checkcast 0 73;		// T_CLASSORINTERFACE javacard/security/RSAPublicKey
+					invokespecial 74;		// project9/project9.getKey(BBS)Ljavacard/security/Key;
+					checkcast 0 75;		// T_CLASSORINTERFACE javacard/security/RSAPublicKey
 					astore 7;
 				L14:	aload_0;
 					sload_2;
@@ -1581,29 +1624,29 @@
 					goto L17;
 				L16:	bspush 6;
 				L17:	sload 5;
-					invokespecial 72;		// project9/project9.getKey(BBS)Ljavacard/security/Key;
-					checkcast 0 74;		// T_CLASSORINTERFACE javacard/security/RSAPrivateKey
+					invokespecial 74;		// project9/project9.getKey(BBS)Ljavacard/security/Key;
+					checkcast 0 76;		// T_CLASSORINTERFACE javacard/security/RSAPrivateKey
 					astore 8;
 				L18:	aload 7;
-					invokeinterface 1 73 3;		// javacard/security/RSAPublicKey
+					invokeinterface 1 75 3;		// javacard/security/RSAPublicKey
 					ifeq L21;
 				L19:	aload_0;
 					sload_3;
 					sconst_2;
-					invokevirtual 75;		// project9/project9.authorizeKeyOp(BB)Z
+					invokevirtual 77;		// project9/project9.authorizeKeyOp(BB)Z
 					ifne L21;
 				L20:	sspush -25594;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L21:	aload 8;
-					invokeinterface 1 74 3;		// javacard/security/RSAPrivateKey
+					invokeinterface 1 76 3;		// javacard/security/RSAPrivateKey
 					ifeq L24;
 				L22:	aload_0;
 					sload_2;
 					sconst_2;
-					invokevirtual 75;		// project9/project9.authorizeKeyOp(BB)Z
+					invokevirtual 77;		// project9/project9.authorizeKeyOp(BB)Z
 					ifne L24;
 				L23:	sspush -25594;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L24:	aload_1;
 					bspush 8;
 					getfield_a_this 5;		// reference project9/project9.keyACLs
@@ -1611,7 +1654,7 @@
 					bspush 6;
 					smul;
 					bspush 6;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					aload_1;
 					bspush 14;
@@ -1620,28 +1663,28 @@
 					bspush 6;
 					smul;
 					bspush 6;
-					invokestatic 47;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					invokestatic 48;		// javacard/framework/Util.arrayCopy([BS[BSS)S
 					pop;
 					sload 6;
 					slookupswitch L29 2 0 L25 1 L27;
 				L25:	aload 7;
-					invokeinterface 1 73 3;		// javacard/security/RSAPublicKey
+					invokeinterface 1 75 3;		// javacard/security/RSAPublicKey
 					ifeq L30;
 				L26:	aload 7;
-					invokeinterface 1 73 0;		// javacard/security/RSAPublicKey
+					invokeinterface 1 75 0;		// javacard/security/RSAPublicKey
 					goto L30;
 				L27:	aload_1;
 					bspush 21;
-					invokestatic 71;		// javacard/framework/Util.getShort([BS)S
+					invokestatic 73;		// javacard/framework/Util.getShort([BS)S
 					sstore 9;
 				L28:	aload 7;
 					aload_1;
 					bspush 23;
 					sload 9;
-					invokeinterface 4 73 6;		// javacard/security/RSAPublicKey
+					invokeinterface 4 75 6;		// javacard/security/RSAPublicKey
 					goto L30;
 				L29:	sspush -25585;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L30:	getfield_a_this 6;		// reference project9/project9.keyPairs
 					sload_3;
 					aaload;
@@ -1652,11 +1695,11 @@
 					ifnonnull L33;
 				L32:	getfield_a_this 6;		// reference project9/project9.keyPairs
 					sload_3;
-					new 78;		// javacard/security/KeyPair
+					new 80;		// javacard/security/KeyPair
 					dup;
 					aload 7;
 					aload 8;
-					invokespecial 79;		// javacard/security/KeyPair.<init>(Ljavacard/security/PublicKey;Ljavacard/security/PrivateKey;)V
+					invokespecial 81;		// javacard/security/KeyPair.<init>(Ljavacard/security/PublicKey;Ljavacard/security/PrivateKey;)V
 					aastore;
 					getfield_a_this 6;		// reference project9/project9.keyPairs
 					sload_2;
@@ -1673,23 +1716,23 @@
 					aaload;
 					if_acmpeq L35;
 				L34:	sspush -25597;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L35:	getfield_a_this 6;		// reference project9/project9.keyPairs
 					sload_3;
 					aaload;
 					astore 9;
 				L36:	aload 9;
-					invokevirtual 80;		// javacard/security/KeyPair.getPublic()Ljavacard/security/PublicKey;
+					invokevirtual 82;		// javacard/security/KeyPair.getPublic()Ljavacard/security/PublicKey;
 					aload 7;
 					if_acmpne L38;
 				L37:	aload 9;
-					invokevirtual 81;		// javacard/security/KeyPair.getPrivate()Ljavacard/security/PrivateKey;
+					invokevirtual 83;		// javacard/security/KeyPair.getPrivate()Ljavacard/security/PrivateKey;
 					aload 8;
 					if_acmpeq L39;
 				L38:	sspush -25345;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L39:	aload 9;
-					invokevirtual 82;		// javacard/security/KeyPair.genKeyPair()V
+					invokevirtual 84;		// javacard/security/KeyPair.genKeyPair()V
 					return;
 		}
 
@@ -1713,29 +1756,29 @@
 				L3:	getfield_b_this 8;		// byte project9/project9.create_key_ACL
 					ifeq L5;
 				L4:	sspush -25594;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L5:	getfield_a_this 7;		// reference project9/project9.keys
 					sload_1;
 					sload_2;
 					sload_3;
 					sconst_0;
-					invokestatic 33;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					invokestatic 34;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
 					aastore;
 					goto L9;
 				L6:	getfield_a_this 7;		// reference project9/project9.keys
 					sload_1;
 					aaload;
-					invokeinterface 1 85 1;		// javacard/security/Key
+					invokeinterface 1 87 1;		// javacard/security/Key
 					sload_3;
 					if_scmpne L8;
 				L7:	getfield_a_this 7;		// reference project9/project9.keys
 					sload_1;
 					aaload;
-					invokeinterface 1 85 2;		// javacard/security/Key
+					invokeinterface 1 87 2;		// javacard/security/Key
 					sload_2;
 					if_scmpeq L9;
 				L8:	sspush -25597;
-					invokestatic 76;		// javacard/framework/ISOException.throwIt(S)V
+					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
 				L9:	getfield_a_this 7;		// reference project9/project9.keys
 					sload_1;
 					aaload;
@@ -1754,7 +1797,7 @@
 					sstore_3;
 				L1:	getfield_a_this 5;		// reference project9/project9.keyACLs
 					sload_3;
-					invokestatic 71;		// javacard/framework/Util.getShort([BS)S
+					invokestatic 73;		// javacard/framework/Util.getShort([BS)S
 					sstore 4;
 				L2:	sload 4;
 					sconst_m1;
@@ -1776,7 +1819,7 @@
 
 				L0:	aload_1;
 					sload_2;
-					invokestatic 71;		// javacard/framework/Util.getShort([BS)S
+					invokestatic 73;		// javacard/framework/Util.getShort([BS)S
 					sstore_3;
 				L1:	sload_3;
 					sconst_m1;

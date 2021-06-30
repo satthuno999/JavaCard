@@ -88,6 +88,7 @@ public class project9 extends Applet
 	private OwnerPIN pin, ublk_pin;
 	/** ghi trng thi ng nhp*/
 	private short logged_ids;
+	private final static byte[] first_logged_ids = new byte[]{(byte)0};
 	
 	// Key objects (allocated on demand)
 	private Key[] keys;
@@ -148,7 +149,6 @@ public class project9 extends Applet
 		/* Ci gi tr pin khi to*/
 		pin = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
 		pin.update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
-		
 		register();
 	}
 	public boolean select() {
@@ -516,6 +516,12 @@ public class project9 extends Applet
 	private void LogOut() {
 		logged_ids = (short) 0x0000; 
 		pin.reset();
+	}
+	private void CheckFisrtUse(APDU apdu,byte[] buffer){
+		apdu.setOutgoing();
+		apdu.setOutgoingLength((short)1);
+		Util.arrayCopy(first_logged_ids,(short)0,buffer,(short)0,(short)1);
+		apdu.sendBytes((short)0,(short)1);
 	}
 	
 	/*AES*/
