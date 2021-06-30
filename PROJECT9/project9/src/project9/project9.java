@@ -166,11 +166,11 @@ public class project9 extends Applet
 
 	public void process(APDU apdu)
 	{
+		byte[] buffer = apdu.getBuffer();
 		if (selectingApplet())
+			CheckFisrtUse(apdu,buffer);
 			ISOException.throwIt(ISO7816.SW_NO_ERROR);
 
-		byte[] buffer = apdu.getBuffer();
-		
 		apdu.setIncomingAndReceive();
 		if ((buffer[ISO7816.OFFSET_CLA] == 0) && (buffer[ISO7816.OFFSET_INS] == (byte) 0xA4))
 			return;
