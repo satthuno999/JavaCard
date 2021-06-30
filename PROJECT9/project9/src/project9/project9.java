@@ -57,8 +57,8 @@ public class project9 extends Applet
 	private final static byte INS_CHANGE_PIN = (byte) 0x44;
 	private final static byte INS_UNBLOCK_PIN = (byte) 0x46;
 	
-	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
-	private final static byte INS_OUT_INFORMATION = (byte)0x51;
+	private final static byte INS_CREATE_INFORMATION = (byte)0x47;
+	private final static byte INS_OUT_INFORMATION = (byte)0x48;
 	private final static byte OUT_ID = (byte)0x01;
 	private final static byte OUT_NAME = (byte)0x02;
 	private final static byte OUT_DATE = (byte)0x03;
@@ -168,6 +168,8 @@ public class project9 extends Applet
 			ISOException.throwIt(ISO7816.SW_NO_ERROR);
 
 		byte[] buffer = apdu.getBuffer();
+		
+		apdu.setIncomingAndReceive();
 		if ((buffer[ISO7816.OFFSET_CLA] == 0) && (buffer[ISO7816.OFFSET_INS] == (byte) 0xA4))
 			return;
 		if (buffer[ISO7816.OFFSET_CLA] != project9_CLA)
@@ -386,8 +388,8 @@ public class project9 extends Applet
 			Util.arrayCopyNonAtomic(buffer,ISO7816.OFFSET_CDATA,OpData,(short) 0x00,lenData);
 					
 			short flag = (short)0;
-			byte[] objData = new byte[6];
-			byte objDatai = 0;
+			byte[] objData = new byte[0];
+			byte objDatalen = (short)0;
 			for(short i=0;i<=lenData;i++){
 				if((byte)(OpData[i]) == (byte)0x02){
 					flag = (short)1;
@@ -395,49 +397,59 @@ public class project9 extends Applet
 				}
 				else if((byte)(OpData[i]) == (byte)0x03){
 					flag = (short)0;
+					objData = new byte[0];
 				};
-					
 				if(flag == (short)1){
-					objData[objDatai] = OpData[i];
-					objDatai++;
+					byte[] temp = new byte[objDatalen];
+					if(objDatalen>0){
+						for(short t=0;t<(short)temp.length;t++){
+							temp[t] = objData[t];
+						}
+					}
+					objData = new byte[objDatalen+1];
+					for(short j=0;j<(short)objData.length;t++){
+						objData[j] = temp[j];
+					}
+					objData[objDatalen] = OpData[i];
+					objDatalen++;
 				}
-				else if(flag == (short)0 && objDatai != (byte)0){
+				else if(flag == (short)0 && objDatalen != (byte)0){
 					if(lenID == (byte)0){
-						if(objDatai > 6){
+						if(objDatalen > 6){
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpID,(short)0x00,(byte)(temp.length));
-						lenID = (byte)(objDatai);
+						lenID = (byte)(objDatalen);
 						objData = new byte[25];
 					}
 					else if(lenNAME == (byte)0){
-						if(objDatai > 25){
+						if(objDatalen > 25){
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpNAME,(short)0x00,(byte)(temp.length));
-						lenNAME = (byte)(objDatai);
+						lenNAME = (byte)(objDatalen);
 						objData = new byte[10];
 					}
 					else if(lenDATE == (byte)0){
-						if(objDatai > 10){
+						if(objDatalen > 10){
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpDATE,(short)0x00,(byte)(temp.length));
-						lenDATE = (byte)(objDatai);
+						lenDATE = (byte)(objDatalen);
 						objData = new byte[10];
 					}
 					else{
-						if(objDatai > 10){
+						if(objDatalen > 10){
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpPHONE,(short)0x00,(byte)(temp.length));
-						lenPHONE = (byte)(objDatai);
+						lenPHONE = (byte)(objDatalen);
 					}
-					objDatai = (short)0;
+					objDatalen = (short)0;
 				};
 			}
 	}
