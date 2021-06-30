@@ -1,5 +1,5 @@
 // converted by version 1.3
-// on Wed Jun 30 20:08:28 ICT 2021
+// on Thu Jul 01 00:15:33 ICT 2021
 
 .package project9 {
 	.aid 0x25:0x10:0x19:0x99:0x0:0x0;
@@ -275,13 +275,13 @@
 			private byte key_it 13;		// B
 			public static byte[] OpData 0 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
 			public static byte lenData 1;		// B
-			public static byte[] OpID 2 = {0,0,0,0,0,0};		// [B
+			public static byte[] OpID 2 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
 			public static byte lenID 3;		// B
-			public static byte[] OpNAME 4 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
+			public static byte[] OpNAME 4 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
 			public static byte lenNAME 5;		// B
-			public static byte[] OpDATE 6 = {0,0,0,0,0,0,0,0,0,0};		// [B
+			public static byte[] OpDATE 6 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
 			public static byte lenDATE 7;		// B
-			public static byte[] OpPHONE 8 = {0,0,0,0,0,0,0,0,0,0};		// [B
+			public static byte[] OpPHONE 8 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};		// [B
 			public static byte lenPHONE 9;		// B
 			public static byte[] OpImage 10;		// [B
 			public static byte[] size 11;		// [B
@@ -318,6 +318,7 @@
 			private static byte[] STD_PUBLIC_ACL;		// [B
 			private static byte[] acl;		// [B
 			private static short KEY_SIZE = 32;		// S
+			private static byte LENGTH_BLOCK_AES = -128;		// B
 			private static final short OFFSET_GENKEY_ALG = 5;		// S
 			private static final short OFFSET_GENKEY_SIZE = 6;		// S
 			private static final short OFFSET_GENKEY_PRV_ACL = 8;		// S
@@ -998,7 +999,7 @@
 					sstore 6;
 				L6:	sload 6;
 					getstatic_b 52;		// byte project9/project9.lenData
-					if_scmpgt_w L45;
+					if_scmpgt_w L51;
 				L7:	getstatic_a 53;		// reference project9/project9.OpData
 					sload 6;
 					baload;
@@ -1006,7 +1007,7 @@
 					if_scmpne L9;
 				L8:	sconst_1;
 					sstore_3;
-					goto_w L44;
+					goto_w L50;
 				L9:	getstatic_a 53;		// reference project9/project9.OpData
 					sload 6;
 					baload;
@@ -1014,12 +1015,9 @@
 					if_scmpne L11;
 				L10:	sconst_0;
 					sstore_3;
-					sconst_0;
-					newarray 11;
-					astore 4;
 				L11:	sload_3;
 					sconst_1;
-					if_scmpne L19;
+					if_scmpne L25;
 				L12:	sload 5;
 					newarray 11;
 					astore 7;
@@ -1044,7 +1042,27 @@
 					sadd;
 					newarray 11;
 					astore 4;
+					sload 5;
+					ifle L23;
+				L18:	sconst_0;
+					sstore 8;
+				L19:	sload 8;
 					aload 4;
+					arraylength;
+					if_scmpge L23;
+				L20:	sload 8;
+					aload 7;
+					arraylength;
+					if_scmpeq L22;
+				L21:	aload 4;
+					sload 8;
+					aload 7;
+					sload 8;
+					baload;
+					bastore;
+				L22:	sinc 8 1;
+					goto L19;
+				L23:	aload 4;
 					sload 5;
 					getstatic_a 53;		// reference project9/project9.OpData
 					sload 6;
@@ -1055,23 +1073,23 @@
 					sadd;
 					s2b;
 					sstore 5;
-				L18:	goto_w L44;
-				L19:	sload_3;
-					ifne_w L44;
-				L20:	sload 5;
-					ifeq_w L44;
-				L21:	getstatic_b 55;		// byte project9/project9.lenID
-					ifne L27;
-				L22:	sload 5;
+				L24:	goto_w L50;
+				L25:	sload_3;
+					ifne_w L50;
+				L26:	sload 5;
+					ifeq_w L50;
+				L27:	getstatic_b 55;		// byte project9/project9.lenID
+					ifne L33;
+				L28:	sload 5;
 					bspush 6;
-					if_scmple L24;
-				L23:	sspush 26368;
+					if_scmple L30;
+				L29:	sspush 26368;
 					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
-				L24:	aload_0;
+				L30:	aload_0;
 					aload 4;
 					invokespecial 56;		// project9/project9.encrypt([B)[B
 					astore 7;
-				L25:	aload 7;
+				L31:	aload 7;
 					sconst_0;
 					getstatic_a 57;		// reference project9/project9.OpID
 					sconst_0;
@@ -1085,19 +1103,19 @@
 					bspush 25;
 					newarray 11;
 					astore 4;
-				L26:	goto_w L43;
-				L27:	getstatic_b 58;		// byte project9/project9.lenNAME
-					ifne L33;
-				L28:	sload 5;
+				L32:	goto_w L49;
+				L33:	getstatic_b 58;		// byte project9/project9.lenNAME
+					ifne L39;
+				L34:	sload 5;
 					bspush 25;
-					if_scmple L30;
-				L29:	sspush 26368;
+					if_scmple L36;
+				L35:	sspush 26368;
 					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
-				L30:	aload_0;
+				L36:	aload_0;
 					aload 4;
 					invokespecial 56;		// project9/project9.encrypt([B)[B
 					astore 7;
-				L31:	aload 7;
+				L37:	aload 7;
 					sconst_0;
 					getstatic_a 59;		// reference project9/project9.OpNAME
 					sconst_0;
@@ -1111,19 +1129,19 @@
 					bspush 10;
 					newarray 11;
 					astore 4;
-				L32:	goto L43;
-				L33:	getstatic_b 60;		// byte project9/project9.lenDATE
-					ifne L39;
-				L34:	sload 5;
+				L38:	goto L49;
+				L39:	getstatic_b 60;		// byte project9/project9.lenDATE
+					ifne L45;
+				L40:	sload 5;
 					bspush 10;
-					if_scmple L36;
-				L35:	sspush 26368;
+					if_scmple L42;
+				L41:	sspush 26368;
 					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
-				L36:	aload_0;
+				L42:	aload_0;
 					aload 4;
 					invokespecial 56;		// project9/project9.encrypt([B)[B
 					astore 7;
-				L37:	aload 7;
+				L43:	aload 7;
 					sconst_0;
 					getstatic_a 61;		// reference project9/project9.OpDATE
 					sconst_0;
@@ -1137,17 +1155,17 @@
 					bspush 10;
 					newarray 11;
 					astore 4;
-				L38:	goto L43;
-				L39:	sload 5;
+				L44:	goto L49;
+				L45:	sload 5;
 					bspush 10;
-					if_scmple L41;
-				L40:	sspush 26368;
+					if_scmple L47;
+				L46:	sspush 26368;
 					invokestatic 78;		// javacard/framework/ISOException.throwIt(S)V
-				L41:	aload_0;
+				L47:	aload_0;
 					aload 4;
 					invokespecial 56;		// project9/project9.encrypt([B)[B
 					astore 7;
-				L42:	aload 7;
+				L48:	aload 7;
 					sconst_0;
 					getstatic_a 62;		// reference project9/project9.OpPHONE
 					sconst_0;
@@ -1158,11 +1176,11 @@
 					pop;
 					sload 5;
 					putstatic_b 63;		// byte project9/project9.lenPHONE
-				L43:	sconst_0;
+				L49:	sconst_0;
 					sstore 5;
-				L44:	sinc 6 1;
+				L50:	sinc 6 1;
 					goto_w L6;
-				L45:	return;
+				L51:	return;
 		}
 
 		.method private OutputInformation(Ljavacard/framework/APDU;[B)V {
@@ -1396,32 +1414,62 @@
 
 		.method private encrypt([B)[B {
 			.stack 6;
-			.locals 2;
+			.locals 4;
 
 				L0:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					getfield_a_this 3;		// reference project9/project9.aesKey
 					sconst_2;
 					invokevirtual 68;		// javacardx/crypto/Cipher.init(Ljavacard/security/Key;B)V
-					aload_0;
+					sconst_1;
+					sstore_2;
+				L1:	sspush 256;
+					newarray 11;
+					astore_3;
+				L2:	sload_2;
+					sconst_1;
+					if_scmpne L10;
+				L3:	sconst_0;
+					sstore 4;
+				L4:	sload 4;
 					aload_1;
+					arraylength;
+					if_scmpgt L9;
+				L5:	sload 4;
+					aload_1;
+					arraylength;
+					if_scmpeq L7;
+				L6:	aload_3;
+					sload 4;
+					aload_1;
+					sload 4;
+					baload;
+					bastore;
+					goto L8;
+				L7:	sconst_0;
+					sstore_2;
+				L8:	sinc 4 1;
+					goto L4;
+				L9:	goto L2;
+				L10:	aload_0;
+					aload_3;
 					sconst_0;
 					aload_1;
 					arraylength;
 					invokespecial 69;		// project9/project9.addPadding([BSS)S
-					sstore_2;
-				L1:	sload_2;
+					sstore 4;
+				L11:	sload 4;
 					sconst_2;
 					invokestatic 37;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
-					astore_3;
-				L2:	getfield_a_this 2;		// reference project9/project9.aesCipher
-					aload_1;
-					sconst_0;
-					sload_2;
+					astore 5;
+				L12:	getfield_a_this 2;		// reference project9/project9.aesCipher
 					aload_3;
+					sconst_0;
+					sload 4;
+					aload 5;
 					sconst_0;
 					invokevirtual 70;		// javacardx/crypto/Cipher.doFinal([BSS[BS)S
 					pop;
-					aload_3;
+					aload 5;
 					areturn;
 		}
 

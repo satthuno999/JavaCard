@@ -28,13 +28,13 @@ public class project9 extends Applet
 	public static byte[] OpData = new byte[60];
 	public static byte lenData = (byte)0;
 	
-	public static byte[] OpID = new byte[6];
+	public static byte[] OpID = new byte[256];
 	public static byte lenID = (byte)0;
-	public static byte[] OpNAME = new byte[25];
+	public static byte[] OpNAME = new byte[256];
 	public static byte lenNAME = (byte)0;
-	public static byte[] OpDATE = new byte[10];
+	public static byte[] OpDATE = new byte[256];
 	public static byte lenDATE= (byte)0;
-	public static byte[] OpPHONE = new byte[10];
+	public static byte[] OpPHONE = new byte[256];
 	public static byte lenPHONE= (byte)0;
 	
 	public static byte[] OpImage,size;
@@ -100,7 +100,9 @@ public class project9 extends Applet
 	//crypt
 	private Cipher aesCipher;
 	private AESKey aesKey;
-	private static short KEY_SIZE= 32;
+	private static short KEY_SIZE = 32;
+	//define
+	private static byte LENGTH_BLOCK_AES = (byte)128;
 	/*****
 	*RSA**
 	*****/
@@ -397,7 +399,6 @@ public class project9 extends Applet
 				}
 				else if((byte)(OpData[i]) == (byte)0x03){
 					flag = (short)0;
-					objData = new byte[0];
 				};
 				if(flag == (short)1){
 					byte[] temp = new byte[objDatalen];
@@ -405,10 +406,16 @@ public class project9 extends Applet
 						for(short t=0;t<(short)temp.length;t++){
 							temp[t] = objData[t];
 						}
+						
 					}
+					
 					objData = new byte[objDatalen+1];
-					for(short j=0;j<(short)objData.length;t++){
-						objData[j] = temp[j];
+					if(objDatalen>0){
+						for(short j=0;j<(short)objData.length;j++){
+							if(j!=(short)temp.length){
+								objData[j] = temp[j];
+							}
+						}
 					}
 					objData[objDatalen] = OpData[i];
 					objDatalen++;
@@ -515,10 +522,23 @@ public class project9 extends Applet
     /**Encrypt*/
 	private byte[] encrypt(byte[] encryptData) {
         aesCipher.init(aesKey, Cipher.MODE_ENCRYPT);
-        short newLength = addPadding(encryptData, (short) 0, (short) encryptData.length);
-        byte[] temp = JCSystem.makeTransientByteArray(newLength, JCSystem.CLEAR_ON_DESELECT);
-        aesCipher.doFinal(encryptData, (short) 0 , newLength, temp, (short) 0x00);
-        return temp;
+        short flag = (short) 1;
+	    byte[] temp = new byte[256];
+    	while(flag == (short)1){
+    		for(short i=0;i<=(short) encryptData.length;i++){
+    			if(i!=(short) encryptData.length){
+					temp[i] = encryptData[i];
+    			}
+    			else{
+	    			flag = (short) 0;
+    			}
+    		}
+    	}
+        short newLength = addPadding(temp, (short) 0, (short) encryptData.length);
+        byte[] dataEncrypted = JCSystem.makeTransientByteArray(newLength, JCSystem.CLEAR_ON_DESELECT);
+        
+        aesCipher.doFinal(temp, (short) 0 , newLength, dataEncrypted, (short) 0x00);
+        return dataEncrypted;
     }
 
     /**Decrypt
