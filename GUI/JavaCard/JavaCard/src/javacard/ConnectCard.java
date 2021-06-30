@@ -12,14 +12,17 @@ import java.util.List;
 import javax.smartcardio.*;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Spark_Mac
  */
 public class ConnectCard {
-    public void connectapplet(){
+    public String[] output;
+    public String connectapplet(){
         try{
+            
             TerminalFactory factory = TerminalFactory.getDefault();
             List<CardTerminal> terminals = factory.terminals().list();
             
@@ -31,8 +34,16 @@ public class ConnectCard {
             
             byte[] aid = {(byte)0x25,(byte)0x10,(byte)0x19,(byte)0x99,(byte)0x00,(byte)0x00,(byte)0x00};
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0x00,0xA4,0x04,0x00,aid));
+            String kq = answer.toString();
+            //System.out.println("answer: " + kq);
+            output = kq.split("=");
+            //System.out.println(output[1]);
+            //JOptionPane.showMessageDialog(null, answer.toString());
+            return answer.toString();
+            
         }
         catch(Exception ex){
+            return "Error";
         }
     }
 }
