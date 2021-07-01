@@ -26,6 +26,22 @@ public class objError {
         };
     }
     
+    public boolean CompareByteArray(byte [] a,byte[] b) {
+        if(a.length != b.length){
+            return false;
+        }
+        else{
+            int i = 0;
+            while (i<a.length) {
+                if(a[i] != b[i]){
+                    return false;
+                }
+                i++;
+            }
+            return true;
+        }
+    }
+    
     private static byte[] intToBytes(final int data) {
         return new byte[] {
             (byte)((data >> 24) & 0xff),

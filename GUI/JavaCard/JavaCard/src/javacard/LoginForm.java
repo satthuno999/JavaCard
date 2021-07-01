@@ -6,18 +6,23 @@
 package javacard;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javacard.ConnectCard;
+import javacard.objError;
+
 /**
  *
  * @author Bawcs
  */
 public class LoginForm extends javax.swing.JFrame {
-    boolean firstUse = true;
-    
-    ConnectCard connect = new ConnectCard();
+
+    private static int firstUSE;
+
     /**
      * Creates new form LoginForm
      */
@@ -28,7 +33,7 @@ public class LoginForm extends javax.swing.JFrame {
         checkbox.setEnabled(false);
         btnLogin.setEnabled(false);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,56 +128,60 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void checkboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkboxActionPerformed
         // TODO add your handling code here:
-        if(checkbox.isSelected()){
-            txtPIN.setEchoChar((char)0);
-        }else txtPIN.setEchoChar('*');
+        if (checkbox.isSelected()) {
+            txtPIN.setEchoChar((char) 0);
+        } else {
+            txtPIN.setEchoChar('*');
+        }
     }//GEN-LAST:event_checkboxActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        try {
-            // TODO add your handling code here:
-            String pin = txtPIN.getText();
-            byte[] pinByte = pin.getBytes(pin);
-            if(pin.equals("1")){
-                AdminForm admin = new AdminForm();
-                admin.setVisible(true);
+
+        String pin = txtPIN.getText();
+        ConnectCard connect = new ConnectCard();
+        
+        if (connect.verifyPin(pin)) {
+            System.out.println(firstUSE);
+            if (firstUSE == 1) {
+                PinForm pinform = new PinForm();
+                pinform.setVisible(true);
                 this.dispose();
-            }
-            else{
+                
+            } else {
                 HomeForm home = new HomeForm();
                 home.setVisible(true);
                 this.dispose();
             }
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+
+        } else {
+            System.out.println("sai");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
-          objError errorrReturn = new objError();
-          byte[] response = connect.connectapplet();
-          
-//          if(response.equals()){
-//              JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
-//          }
-//          else{
-//              if(response[1]==(byte)0x90 && response[2] == (byte)0x00){
-//                    JOptionPane.showMessageDialog(null, "Kết nối thẻ thành công");    
-//                    jlbLogin.setEnabled(true);
-//                    txtPIN.setEnabled(true);
-//                    checkbox.setEnabled(true);
-//                    btnLogin.setEnabled(true);
-//              }
-//              else{
-//                  JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
-//              }
-//          }
+        ConnectCard connect = new ConnectCard();
+        String response = connect.connectapplet();
+        if (response.equals("Error")) {
+            JOptionPane.showMessageDialog(null, "Kết nối bị lỗi");
+        } else {
+            if ((response.split("="))[1].equals("9000")) {
+                JOptionPane.showMessageDialog(null, "Kết nối thẻ thành công");
+                jlbLogin.setEnabled(true);
+                txtPIN.setEnabled(true);
+                checkbox.setEnabled(true);
+                btnLogin.setEnabled(true);
+                firstUSE = (int) ((connect.data)[0] & 0xFF);
+                connect.setUp();
+            } else {
+                JOptionPane.showMessageDialog(null, "Kết nối bị lỗi");
+            }
+        }
     }//GEN-LAST:event_btnConnectMouseClicked
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+        public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

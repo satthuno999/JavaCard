@@ -172,7 +172,7 @@ public class project9 extends Applet
 			CheckFisrtUse(apdu,buffer);
 			ISOException.throwIt(ISO7816.SW_NO_ERROR);
 		}
-		apdu.setIncomingAndReceive();
+		//apdu.setIncomingAndReceive();
 		if ((buffer[ISO7816.OFFSET_CLA] == 0) && (buffer[ISO7816.OFFSET_INS] == (byte) 0xA4))
 			return;
 		if (buffer[ISO7816.OFFSET_CLA] != project9_CLA)
