@@ -6,6 +6,11 @@
 package javacard;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.Timer;
 
 /**
  *
@@ -20,8 +25,28 @@ public class HomeForm extends javax.swing.JFrame {
         initComponents();
         jpnInfo.setVisible(true);
         jpnPIN.setVisible(false);
+        jpanleAttendance.setVisible(false);
         txtTencoquan.setText("Học Viện Kỹ Thuật Mật Mã");
         txtTencoquan.setEnabled(false);
+        showDate();
+        showTime();
+        
+    }
+    void showDate(){
+        Date date = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        lableDate.setText(s.format(date));
+    }
+    void showTime(){
+        new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date d = new Date();
+                SimpleDateFormat s = new SimpleDateFormat("hh:mm:ss a");
+                lableTime.setText(s.format(d));
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        }).start();
     }
 
     /**
@@ -47,6 +72,7 @@ public class HomeForm extends javax.swing.JFrame {
         jlbPIN = new javax.swing.JLabel();
         jPanelConnect = new javax.swing.JPanel();
         jlbConnect = new javax.swing.JLabel();
+        jlbPIN1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jpnPIN = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
@@ -71,6 +97,11 @@ public class HomeForm extends javax.swing.JFrame {
         txtTencoquan = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jpanleAttendance = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        btnAttendance = new javax.swing.JButton();
+        lableDate = new javax.swing.JLabel();
+        lableTime = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,6 +180,16 @@ public class HomeForm extends javax.swing.JFrame {
         });
         jPanelConnect.add(jlbConnect, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 189, 36));
 
+        jlbPIN1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jlbPIN1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlbPIN1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-attendance-32.png"))); // NOI18N
+        jlbPIN1.setText("Điểm danh");
+        jlbPIN1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlbPIN1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -156,6 +197,7 @@ public class HomeForm extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(114, 114, 114)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlbPIN1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanelPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -178,7 +220,9 @@ public class HomeForm extends javax.swing.JFrame {
                 .addComponent(jPanelPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
+                .addGap(9, 9, 9)
+                .addComponent(jlbPIN1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelConnect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -405,6 +449,65 @@ public class HomeForm extends javax.swing.JFrame {
 
         jPanel4.add(jpnInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jpanleAttendance.setBackground(new java.awt.Color(255, 255, 255));
+        jpanleAttendance.setPreferredSize(new java.awt.Dimension(712, 465));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Điểm danh");
+
+        btnAttendance.setBackground(new java.awt.Color(0, 102, 153));
+        btnAttendance.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnAttendance.setForeground(new java.awt.Color(255, 255, 255));
+        btnAttendance.setText("Điểm danh");
+        btnAttendance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAttendanceActionPerformed(evt);
+            }
+        });
+
+        lableDate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lableDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lableTime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lableTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jpanleAttendanceLayout = new javax.swing.GroupLayout(jpanleAttendance);
+        jpanleAttendance.setLayout(jpanleAttendanceLayout);
+        jpanleAttendanceLayout.setHorizontalGroup(
+            jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                        .addGap(241, 241, 241)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                        .addGap(228, 228, 228)
+                        .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lableTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                                .addComponent(lableDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(222, Short.MAX_VALUE))
+        );
+        jpanleAttendanceLayout.setVerticalGroup(
+            jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(lableTime)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(132, 132, 132))
+        );
+
+        jpanleAttendanceLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lableDate, lableTime});
+
+        jPanel4.add(jpanleAttendance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         jButton4.setBackground(new java.awt.Color(102, 102, 102));
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
@@ -458,6 +561,7 @@ public class HomeForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         jpnPIN.setVisible(true);
         jpnInfo.setVisible(false);
+        jpanleAttendance.setVisible(false);
         jPanelPIN.setBackground(Color.white);
         //jpnInfor.setBackground(new Color(240,240,240));
         jlbInfo.setBackground(new Color(240,240,240));
@@ -468,6 +572,7 @@ public class HomeForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         jpnInfo.setVisible(true);
         jpnPIN.setVisible(false);
+        jpanleAttendance.setVisible(false);
         jpnInfor.setBackground(Color.white);
         //jPanelPIN.setBackground(new Color(240,240,240));
         //jPanelConnect.setBackground(new Color(240,240,240));
@@ -487,6 +592,17 @@ public class HomeForm extends javax.swing.JFrame {
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jlbPIN1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbPIN1MouseClicked
+        // TODO add your handling code here:
+        jpanleAttendance.setVisible(true);
+        jpnInfo.setVisible(false);
+        jpnPIN.setVisible(false);
+    }//GEN-LAST:event_jlbPIN1MouseClicked
+
+    private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAttendanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -524,6 +640,7 @@ public class HomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAttendance;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -543,6 +660,7 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -559,9 +677,13 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JLabel jlbConnect;
     private javax.swing.JLabel jlbInfo;
     private javax.swing.JLabel jlbPIN;
+    private javax.swing.JLabel jlbPIN1;
+    private javax.swing.JPanel jpanleAttendance;
     private javax.swing.JPanel jpnInfo;
     private javax.swing.JPanel jpnInfor;
     private javax.swing.JPanel jpnPIN;
+    private javax.swing.JLabel lableDate;
+    private javax.swing.JLabel lableTime;
     private javax.swing.JTextField txtTencoquan;
     // End of variables declaration//GEN-END:variables
 }
