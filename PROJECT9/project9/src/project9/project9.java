@@ -57,8 +57,8 @@ public class project9 extends Applet
 	private final static byte INS_CHANGE_PIN = (byte) 0x44;
 	private final static byte INS_UNBLOCK_PIN = (byte) 0x46;
 	
-	private final static byte INS_CREATE_INFORMATION = (byte)0x47;
-	private final static byte INS_OUT_INFORMATION = (byte)0x48;
+	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
+	private final static byte INS_OUT_INFORMATION = (byte)0x51;
 	private final static byte OUT_ID = (byte)0x01;
 	private final static byte OUT_NAME = (byte)0x02;
 	private final static byte OUT_DATE = (byte)0x03;
@@ -88,7 +88,7 @@ public class project9 extends Applet
 	private OwnerPIN pin, ublk_pin;
 	/** ghi trng thi ng nhp*/
 	private short logged_ids;
-	private final static byte[] first_logged_ids = new byte[]{(byte)0};
+	private final static byte[] first_logged_ids = new byte[]{(byte)0x01};
 	
 	// Key objects (allocated on demand)
 	private Key[] keys;
@@ -294,13 +294,12 @@ public class project9 extends Applet
 		//ublk_pins[pin_nb].update(buffer, pin_size, ucode_size);
 	}
 	private void VerifyPIN(APDU apdu, byte[] buffer) {
-		//pin_nb: th t ca pin trong mng cc pin
+		//send CLA:B0 INS:42
 		if (pin == null)
 			ISOException.throwIt(SW_INCORRECT_P1);
 		if (buffer[ISO7816.OFFSET_P2] != 0x00)
 			ISOException.throwIt(SW_INCORRECT_P2);
 		short numBytes = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		
 		if (numBytes != apdu.setIncomingAndReceive())
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 		if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))

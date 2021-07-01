@@ -5,6 +5,9 @@
  */
 package javacard;
 
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javacard.ConnectCard;
 /**
@@ -12,6 +15,8 @@ import javacard.ConnectCard;
  * @author Bawcs
  */
 public class LoginForm extends javax.swing.JFrame {
+    boolean firstUse = true;
+    
     ConnectCard connect = new ConnectCard();
     /**
      * Creates new form LoginForm
@@ -23,7 +28,7 @@ public class LoginForm extends javax.swing.JFrame {
         checkbox.setEnabled(false);
         btnLogin.setEnabled(false);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,43 +129,44 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_checkboxActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-        String pin = txtPIN.getText();
-        if(pin.equals("1")){
-            AdminForm admin = new AdminForm();
-            admin.setVisible(true);
-            this.dispose();
-        }
-        else{
-            HomeForm home = new HomeForm();
-            home.setVisible(true);
-            this.dispose();
+        try {
+            // TODO add your handling code here:
+            String pin = txtPIN.getText();
+            byte[] pinByte = pin.getBytes(pin);
+            if(pin.equals("1")){
+                AdminForm admin = new AdminForm();
+                admin.setVisible(true);
+                this.dispose();
+            }
+            else{
+                HomeForm home = new HomeForm();
+                home.setVisible(true);
+                this.dispose();
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
-        // TODO add your handling code here:
-        
+          objError errorrReturn = new objError();
+          byte[] response = connect.connectapplet();
           
-          
-          //connect.connectapplet();
-          String response = connect.connectapplet();
-          if(response.equals("Error")){
-              JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
-              
-          }
-          else{
-              if(connect.output[1].equals("9000")){
-              JOptionPane.showMessageDialog(null, "Kết nối thẻ thành công");    
-              jlbLogin.setEnabled(true);
-              txtPIN.setEnabled(true);
-              checkbox.setEnabled(true);
-              btnLogin.setEnabled(true);
-              }
-              else{
-                  JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
-              }
-          }
+//          if(response.equals()){
+//              JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
+//          }
+//          else{
+//              if(response[1]==(byte)0x90 && response[2] == (byte)0x00){
+//                    JOptionPane.showMessageDialog(null, "Kết nối thẻ thành công");    
+//                    jlbLogin.setEnabled(true);
+//                    txtPIN.setEnabled(true);
+//                    checkbox.setEnabled(true);
+//                    btnLogin.setEnabled(true);
+//              }
+//              else{
+//                  JOptionPane.showMessageDialog(null,"Kết nối bị lỗi");
+//              }
+//          }
     }//GEN-LAST:event_btnConnectMouseClicked
 
     /**
