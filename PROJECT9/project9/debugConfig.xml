@@ -2,6 +2,7 @@
 <USER>
 <PKG name="project9" aid="25 10 19 99 00 00" major="1" minor="0">
 <APPLET aid="25 10 19 99 00 00 00" instanceaid="" parameter="" authority="" privileges="" index="1632" name="project9"/>
+<APPLET aid="25 10 19 99 00 00 01" instanceaid="" parameter="" authority="" privileges="" index="17680" name="DeselectApplet"/>
 </PKG>
 <Libs/>
 </USER>
