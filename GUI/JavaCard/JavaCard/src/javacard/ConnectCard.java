@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class ConnectCard {
     public String[] output;
-    public String connectapplet(){
+    public byte [] connectapplet(){
         try{
             
             TerminalFactory factory = TerminalFactory.getDefault();
@@ -34,16 +34,14 @@ public class ConnectCard {
             
             byte[] aid = {(byte)0x25,(byte)0x10,(byte)0x19,(byte)0x99,(byte)0x00,(byte)0x00,(byte)0x00};
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0x00,0xA4,0x04,0x00,aid));
-            String kq = answer.toString();
-            //System.out.println("answer: " + kq);
-            output = kq.split("=");
-            //System.out.println(output[1]);
-            //JOptionPane.showMessageDialog(null, answer.toString());
-            return answer.toString();
+            byte[] kq = answer.getData();
+            System.out.println(kq);
+            return kq;
             
         }
         catch(Exception ex){
-            return "Error";
+            byte[] Error = new byte[]{(byte) 0x6F, (byte) 0x00};
+            return Error;
         }
     }
 }

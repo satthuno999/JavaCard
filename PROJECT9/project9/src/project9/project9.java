@@ -18,23 +18,21 @@ public class project9 extends Applet
 	// CLA
     final static byte project9_CLA =(byte)0xB0;
     /** test v TESTCHECK  kim tra pin sau khi thay i*/
-	private final static byte[] test = new byte[8];
-	private final static byte[] TEST_CHECK = new byte[]{(byte)0x01,(byte)0x02,(byte)0x03,(byte)0x04,(byte)0x05};
     //Kch thc m pin
 	private final static byte PIN_MIN_SIZE = (byte) 4;
 	private final static byte PIN_MAX_SIZE = (byte) 16;
 	private final static byte[] PIN_INIT_VALUE={(byte)'S',(byte)'p',(byte)'a',(byte)'r',(byte)'k',(byte)'9',(byte)'9'};
 	//Information
-	public static byte[] OpData = new byte[60];
+	public static byte[] OpData = new byte[256];
 	public static byte lenData = (byte)0;
 	
-	public static byte[] OpID = new byte[256];
+	public static byte[] OpID;
 	public static byte lenID = (byte)0;
-	public static byte[] OpNAME = new byte[256];
+	public static byte[] OpNAME;
 	public static byte lenNAME = (byte)0;
-	public static byte[] OpDATE = new byte[256];
+	public static byte[] OpDATE;
 	public static byte lenDATE= (byte)0;
-	public static byte[] OpPHONE = new byte[256];
+	public static byte[] OpPHONE;
 	public static byte lenPHONE= (byte)0;
 	
 	public static byte[] OpImage,size;
@@ -57,8 +55,8 @@ public class project9 extends Applet
 	private final static byte INS_CHANGE_PIN = (byte) 0x44;
 	private final static byte INS_UNBLOCK_PIN = (byte) 0x46;
 	
-	private final static byte INS_CREATE_INFORMATION = (byte)0x47;
-	private final static byte INS_OUT_INFORMATION = (byte)0x48;
+	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
+	private final static byte INS_OUT_INFORMATION = (byte)0x51;
 	private final static byte OUT_ID = (byte)0x01;
 	private final static byte OUT_NAME = (byte)0x02;
 	private final static byte OUT_DATE = (byte)0x03;
@@ -86,8 +84,12 @@ public class project9 extends Applet
 	//PIN - m s nhn dng c nhn lu trong pins
 	//PUK - m m kho c nhn lu trong unlk_pins
 	private OwnerPIN pin, ublk_pin;
+	
+	private byte[] tmpBuffer;
 	/** ghi trng thi ng nhp*/
 	private short logged_ids;
+	//check first connect
+	private final static byte[] first_logged_ids = new byte[]{(byte)0x01};
 	
 	// Key objects (allocated on demand)
 	private Key[] keys;
@@ -102,7 +104,7 @@ public class project9 extends Applet
 	private AESKey aesKey;
 	private static short KEY_SIZE = 32;
 	//define
-	private static byte LENGTH_BLOCK_AES = (byte)128;
+	private static short LENGTH_BLOCK_AES = (short)64;
 	/*****
 	*RSA**
 	*****/
@@ -148,7 +150,6 @@ public class project9 extends Applet
 		/* Ci gi tr pin khi to*/
 		pin = new OwnerPIN((byte) 3, (byte) PIN_INIT_VALUE.length);
 		pin.update(PIN_INIT_VALUE, (short) 0, (byte) PIN_INIT_VALUE.length);
-		
 		register();
 	}
 	public boolean select() {
@@ -166,11 +167,11 @@ public class project9 extends Applet
 
 	public void process(APDU apdu)
 	{
-		if (selectingApplet())
-			ISOException.throwIt(ISO7816.SW_NO_ERROR);
-
 		byte[] buffer = apdu.getBuffer();
-		
+		if (selectingApplet()){
+			CheckFisrtUse(apdu,buffer);
+			ISOException.throwIt(ISO7816.SW_NO_ERROR);
+		}
 		apdu.setIncomingAndReceive();
 		if ((buffer[ISO7816.OFFSET_CLA] == 0) && (buffer[ISO7816.OFFSET_INS] == (byte) 0xA4))
 			return;
@@ -230,18 +231,24 @@ public class project9 extends Applet
 	}
 	/*SETUP*/
 	private void setup(APDU apdu, byte[] buffer) {
+		try {
+			tmpBuffer = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
+		} catch (SystemException e) {
+			tmpBuffer = new byte[(short) 256];
+		}
 		
 		aesCipher = Cipher.getInstance(Cipher.ALG_AES_BLOCK_128_CBC_NOPAD, false);
         aesKey = (AESKey) KeyBuilder.buildKey(KeyBuilder.TYPE_AES, KeyBuilder.LENGTH_AES_128, false);
-        byte[] keyBytes = JCSystem.makeTransientByteArray(KEY_SIZE, JCSystem.CLEAR_ON_DESELECT);
+        Sha512.init();
+		HMacSHA512.init(tmpBuffer);
+        byte[] keyBytes = JCSystem.makeTransientByteArray(LENGTH_BLOCK_AES, JCSystem.CLEAR_ON_DESELECT);
         try {
-            RandomData rng = RandomData.getInstance(RandomData.ALG_SECURE_RANDOM);
-            rng.generateData(keyBytes, (short) 0, KEY_SIZE);
+            HMacSHA512.computeHmacSha512(PIN_INIT_VALUE,(short)0x00,(short)PIN_INIT_VALUE.length,keyBytes,(short)0);
             aesKey.setKey(keyBytes, (short) 0);
         } finally {
-            Util.arrayFillNonAtomic(keyBytes, (short) 0, KEY_SIZE, (byte) 0);
+            Util.arrayFillNonAtomic(keyBytes, (short) 0, LENGTH_BLOCK_AES, (byte) 0);
         }
-		
+		first_logged_ids[0] = (byte)0x00;
 		setupDone = true;
 	}
 	private void CreatePIN(APDU apdu, byte[] buffer) {
@@ -273,20 +280,7 @@ public class project9 extends Applet
 			
 		pin = new OwnerPIN(num_tries, PIN_MAX_SIZE);
 		pin.update(buffer, (short) (ISO7816.OFFSET_CDATA + 1), pin_size);
-		
-		/*===CHECK PIN===*/
-		if(pin.check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
-			test[1] = (byte)0x02;
-		}
-		else{
-			test[1] = (byte)0x03;
-		}
-		apdu.setOutgoing();
-		apdu.setOutgoingLength((short)test.length);
-		Util.arrayCopy(test,(short)0,buffer,(short)0,(short)test.length);
-		apdu.sendBytes((short)0,(short)test.length);
-		/*===END CHECK PIN===*/
-		
+
 		////unblock
 		//ublk_pins[pin_nb] = new OwnerPIN((byte) 3, PIN_MAX_SIZE);
 		// Recycle variable pin_size
@@ -294,13 +288,12 @@ public class project9 extends Applet
 		//ublk_pins[pin_nb].update(buffer, pin_size, ucode_size);
 	}
 	private void VerifyPIN(APDU apdu, byte[] buffer) {
-		//pin_nb: th t ca pin trong mng cc pin
+		//send CLA:B0 INS:42
 		if (pin == null)
 			ISOException.throwIt(SW_INCORRECT_P1);
 		if (buffer[ISO7816.OFFSET_P2] != 0x00)
 			ISOException.throwIt(SW_INCORRECT_P2);
 		short numBytes = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		
 		if (numBytes != apdu.setIncomingAndReceive())
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 		if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
@@ -344,18 +337,7 @@ public class project9 extends Applet
 			ISOException.throwIt(SW_AUTH_FAILED);
 		}
 		pin.update(buffer, (short) (ISO7816.OFFSET_CDATA + 1 + pin_size + 1), new_pin_size);
-		/*===CHECK PIN===*/
-		if(pin.check(TEST_CHECK,(short)0,(byte)TEST_CHECK.length)){
-			test[1] = (byte)0x02;
-		}
-		else{
-			test[1] = (byte)0x03;
-		}
-		apdu.setOutgoing();
-		apdu.setOutgoingLength((short)test.length);
-		Util.arrayCopy(test,(short)0,buffer,(short)0,(short)test.length);
-		apdu.sendBytes((short)0,(short)test.length);
-		/*===END CHECK PIN===*/
+		
 		logged_ids = (short) (0x0010);
 	}
 	private void UnblockPIN(APDU apdu, byte[] buffer) {
@@ -426,6 +408,7 @@ public class project9 extends Applet
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
+						OpID = new byte[128];
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpID,(short)0x00,(short)(temp.length));
 						lenID = (byte)(objDatalen);
 						objData = new byte[0];
@@ -435,6 +418,7 @@ public class project9 extends Applet
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
+						OpNAME = new byte[128];
 						Util.arrayCopyNonAtomic(temp,(short)0x00,OpNAME,(short)0x00,(short)(temp.length));
 						lenNAME = (byte)(objDatalen);
 						objData = new byte[0];
@@ -444,7 +428,8 @@ public class project9 extends Applet
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
-						Util.arrayCopyNonAtomic(temp,(short)0x00,OpDATE,(short)0x00,(byte)(temp.length));
+						OpDATE = new byte[128];
+						Util.arrayCopyNonAtomic(temp,(short)0x00,OpDATE,(short)0x00,(short)(temp.length));
 						lenDATE = (byte)(objDatalen);
 						objData = new byte[0];
 					}
@@ -453,7 +438,8 @@ public class project9 extends Applet
 							ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 						}
 						byte[] temp = encrypt(objData);
-						Util.arrayCopyNonAtomic(temp,(short)0x00,OpPHONE,(short)0x00,(byte)(temp.length));
+						OpPHONE = new byte[128];
+						Util.arrayCopyNonAtomic(temp,(short)0x00,OpPHONE,(short)0x00,(short)(temp.length));
 						lenPHONE = (byte)(objDatalen);
 					}
 					objDatalen = (short)0;
@@ -517,13 +503,19 @@ public class project9 extends Applet
 		logged_ids = (short) 0x0000; 
 		pin.reset();
 	}
+	private void CheckFisrtUse(APDU apdu,byte[] buffer){
+		apdu.setOutgoing();
+		apdu.setOutgoingLength((short)1);
+		Util.arrayCopy(first_logged_ids,(short)0,buffer,(short)0,(short)1);
+		apdu.sendBytes((short)0,(short)1);
+	}
 	
 	/*AES*/
     /**Encrypt*/
 	private byte[] encrypt(byte[] encryptData) {
         aesCipher.init(aesKey, Cipher.MODE_ENCRYPT);
         short flag = (short) 1;
-	    byte[] temp = new byte[256];
+	    byte[] temp = new byte[128];
     	while(flag == (short)1){
     		for(short i=0;i<=(short) encryptData.length;i++){
     			if(i!=(short) encryptData.length){
@@ -535,9 +527,9 @@ public class project9 extends Applet
     		}
     	}
         // short newLength = addPadding(temp, (short) 0, (short) encryptData.length);
-        byte[] dataEncrypted = JCSystem.makeTransientByteArray((short)256, JCSystem.CLEAR_ON_DESELECT);
+        byte[] dataEncrypted = JCSystem.makeTransientByteArray((short)128, JCSystem.CLEAR_ON_DESELECT);
         
-        aesCipher.doFinal(temp, (short) 0 , (short)256, dataEncrypted, (short) 0x00);
+        aesCipher.doFinal(temp, (short) 0 , (short)128, dataEncrypted, (short) 0x00);
         return dataEncrypted;
     }
 
@@ -546,8 +538,8 @@ public class project9 extends Applet
      */
     private byte[] decrypt(byte[] decryptData, byte length) {
         aesCipher.init(aesKey, Cipher.MODE_DECRYPT);
-        byte[] dataDecrypted = JCSystem.makeTransientByteArray((short) 256, JCSystem.CLEAR_ON_DESELECT);
-        aesCipher.doFinal(decryptData, (short) 0, (short) 256, dataDecrypted, (short) 0x00);
+        byte[] dataDecrypted = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
+        aesCipher.doFinal(decryptData, (short) 0, (short) 128, dataDecrypted, (short) 0x00);
         // short newLength = removePadding(dataDecrypted, (short) length);
         return dataDecrypted;
     }
@@ -596,9 +588,6 @@ public class project9 extends Applet
 			case KeyPair.ALG_RSA:
 			case KeyPair.ALG_RSA_CRT:
 				GenerateKeyPairRSA(buffer);
-				break;
-			case KeyPair.ALG_EC_FP:
-				//GenerateKeyPairECFP(buffer);
 				break;
 			default:
 				ISOException.throwIt(SW_INCORRECT_ALG);
