@@ -23,6 +23,10 @@ public class HomeForm extends javax.swing.JFrame {
      */
     public HomeForm() {
         initComponents();
+        ConnectCard connect = new ConnectCard();
+        if(connect.ReadInformation()){
+            jTextField1.setText(connect.strID);
+        }
         jpnInfo.setVisible(true);
         jpnPIN.setVisible(false);
         jpanleAttendance.setVisible(false);
@@ -357,7 +361,6 @@ public class HomeForm extends javax.swing.JFrame {
 
         jDateChooser1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
-        txtTencoquan.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtTencoquan.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -367,6 +370,11 @@ public class HomeForm extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Cập nhật");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpnInfoLayout = new javax.swing.GroupLayout(jpnInfo);
         jpnInfo.setLayout(jpnInfoLayout);
@@ -603,6 +611,56 @@ public class HomeForm extends javax.swing.JFrame {
     private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAttendanceActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
+        String strId = jTextField1.getText();
+        String strName = jTextField1.getText();
+        String strDate = jTextField1.getText();
+        String strPhone = jTextField1.getText();
+        
+        byte[] byteID = strId.getBytes();
+        byte[] byteName = strName.getBytes();
+        byte[] byteDate = strDate.getBytes();
+        byte[] bytePhone = strPhone.getBytes();
+        
+        ConnectCard connect = new ConnectCard();
+        byte[] data = new byte[byteID.length+byteName.length+byteDate.length+bytePhone.length+8];
+        int offSet = 0;
+        data[0] = (byte)0x02;
+        offSet += 1;
+        System.arraycopy(byteID, 0,data, offSet, byteID.length);
+        offSet += byteID.length;
+        data[offSet] = (byte)0x03;
+        offSet += 1;
+        data[offSet] = (byte)0x02;
+        offSet += 1;
+        System.arraycopy(byteName, 0,data, offSet, byteName.length);
+        offSet += byteName.length;
+        data[offSet] = (byte) 0x03;
+        offSet += 1;
+        data[offSet] = (byte) 0x02;
+        offSet += 1;
+        System.arraycopy(byteDate, 0, data, offSet, byteDate.length);
+        offSet += byteDate.length;
+        data[offSet] = (byte)0x03;
+        offSet += 1;
+        data[offSet] = (byte)0x02;
+        System.arraycopy(bytePhone, 0, data, offSet, byteDate.length);
+        offSet += byteDate.length;
+        data[offSet] = (byte)0x03;
+        
+        if(connect.EditInformation(data)){
+            HomeForm home = new HomeForm();
+            home.setVisible(true);
+            this.dispose();
+            System.out.println("Success");
+        }
+        else{
+            System.out.println("Sending Error");
+        }
+        
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments

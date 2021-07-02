@@ -11,6 +11,7 @@ import jdk.nashorn.internal.ir.Terminal;
 import java.util.List;
 import javax.smartcardio.*;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
@@ -21,6 +22,10 @@ import javax.swing.JOptionPane;
 public class ConnectCard {
     public byte [] data;
     public String message;
+    public String strID;
+    public String strName;
+    public String strDate;
+    public String strPhone;
     public String connectapplet(){
         try{
             
@@ -63,11 +68,12 @@ public class ConnectCard {
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x42,0x00,0x00,pinbyte));
             
             message = answer.toString();
-            switch ((message.split("="))[1]) {
+            switch (((message.split("="))[1]).toUpperCase()) {
                 case "9000":
                     return true;
-                case "9C0F":
+                case "9C02":
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
+                    return false;
                 case "9C0C":
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
                     return false;
@@ -81,7 +87,7 @@ public class ConnectCard {
         }
     }
     
-        public boolean createPIN(String pin){
+    public boolean createPIN(String pin){
         
         byte[] pinbyte =  pin.getBytes();
         byte lengt = (byte) pinbyte.length;
@@ -137,5 +143,63 @@ public class ConnectCard {
             //return "Error";
         }
     
+    }
+    
+    public boolean EditInformation(byte [] data){
+        try{
+            
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x50,0x00,0x00,data));
+            
+            message = answer.toString();
+            switch (((message.split("="))[1]).toUpperCase()) {
+                case "9000":
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
+                    return true;
+                case "9C02":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
+                    return false;
+                case "9C0C":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
+                    return false;
+                default:
+                    return false;
+            }
+            
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+    public boolean ReadInformation(){
+        try{
+            
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            ResponseAPDU answerID = channel.transmit(new CommandAPDU(0xB0,0x50,0x01,0x00));
+            strID = new String(answerID.getData(),StandardCharsets.UTF_8);
+            JOptionPane.showMessageDialog(null, strID);
+            message = answerID.toString();
+            return true;
+            
+        }
+        catch(Exception ex){
+            return false;
+        }
     }
 }
