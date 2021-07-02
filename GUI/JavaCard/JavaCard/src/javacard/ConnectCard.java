@@ -63,12 +63,17 @@ public class ConnectCard {
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x42,0x00,0x00,pinbyte));
             
             message = answer.toString();
-            if((message.split("="))[1].equals("9000")){
-                
-                return true;
-            
+            switch ((message.split("="))[1]) {
+                case "9000":
+                    return true;
+                case "9C0F":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
+                case "9C0C":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
+                    return false;
+                default:
+                    return false;
             }
-            else return false;
             
         }
         catch(Exception ex){

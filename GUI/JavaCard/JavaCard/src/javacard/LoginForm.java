@@ -141,7 +141,6 @@ public class LoginForm extends javax.swing.JFrame {
         ConnectCard connect = new ConnectCard();
         
         if (connect.verifyPin(pin)) {
-            System.out.println(firstUSE);
             if (firstUSE == 1) {
                 PinForm pinform = new PinForm();
                 pinform.setVisible(true);
