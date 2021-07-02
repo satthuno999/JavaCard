@@ -21,17 +21,26 @@ import javacard.objError;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    private static int firstUSE;
+    private int firstUSE;
+    private static int login_status = 0; 
 
     /**
      * Creates new form LoginForm
      */
     public LoginForm() {
         initComponents();
-        jlbLogin.setEnabled(false);
-        txtPIN.setEnabled(false);
-        checkbox.setEnabled(false);
-        btnLogin.setEnabled(false);
+        if(login_status == 0){
+            jlbLogin.setEnabled(false);
+            txtPIN.setEnabled(false);
+            checkbox.setEnabled(false);
+            btnLogin.setEnabled(false);
+        }
+        else{
+            jlbLogin.setEnabled(true);
+            txtPIN.setEnabled(true);
+            checkbox.setEnabled(true);
+            btnLogin.setEnabled(true);
+        }
     }
 
     /**
@@ -151,7 +160,7 @@ public class LoginForm extends javax.swing.JFrame {
                 home.setVisible(true);
                 this.dispose();
             }
-
+            login_status = 1;
         } else {
             System.out.println("sai");
         }

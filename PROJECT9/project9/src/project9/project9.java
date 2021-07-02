@@ -57,6 +57,7 @@ public class project9 extends Applet
 	
 	private final static byte INS_CREATE_INFORMATION = (byte)0x50;
 	private final static byte INS_OUT_INFORMATION = (byte)0x51;
+	private final static byte INS_CHANGE_INFORMATION = (byte)0x52;
 	private final static byte OUT_ID = (byte)0x01;
 	private final static byte OUT_NAME = (byte)0x02;
 	private final static byte OUT_DATE = (byte)0x03;
@@ -68,6 +69,7 @@ public class project9 extends Applet
 	private final static byte INS_OUT_IMAGE = (byte)0x58;
 	
 	private final static byte INS_LOGOUT_ALL = (byte) 0x60;
+	private final static byte INS_CHECK_LOGIN = (byte) 0x61;
 	// Cipher Modes admitted in ComputeCrypt
 	private final static byte OPT_DEFAULT = (byte) 0x00; // Use JC defaults
 	private final static byte OPT_RSA_PUB_EXP = (byte) 0x01; // RSA: provide public exponent
@@ -201,6 +203,9 @@ public class project9 extends Applet
 		case INS_UNBLOCK_PIN:
 			UnblockPIN(apdu, buffer);
 			break;
+		case INS_CHECK_LOGIN:
+			CheckLogin(apdu,buffer);
+			break;
 		case INS_LOGOUT_ALL:
 			LogOut();
 			break;
@@ -210,9 +215,12 @@ public class project9 extends Applet
 		case INS_OUT_INFORMATION:
 			OutputInformation(apdu,buffer);
 			break;
-		case INS_CREATE_IMAGE:
-			SetupImage(apdu,buffer);
+		case INS_CHANGE_INFORMATION:
+			ChangeInformation(apdu,buffer);
 			break;
+		// case INS_CREATE_IMAGE:
+			// SetupImage(apdu,buffer);
+			// break;
 		case INS_CREATE_SIZEIMAGE:
 			SetCount(apdu,buffer);
 			break;
@@ -364,7 +372,10 @@ public class project9 extends Applet
 		pin.resetAndUnblock();
 	}
 	private void SetupInformation(APDU apdu, byte[] buffer){
+			ChangeInformation(apdu,buffer);
+			apdu.setIncomingAndReceive();
 			lenData = buffer[ISO7816.OFFSET_LC];
+			
 			if(lenData>(byte) 0x3C){
 				ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
 			}
@@ -447,6 +458,7 @@ public class project9 extends Applet
 			}
 	}
 	private void OutputInformation(APDU apdu, byte[] buffer){
+		apdu.setIncomingAndReceive();
 			if(buffer[ISO7816.OFFSET_P1] == OUT_ID){
 				apdu.setOutgoing();
 				apdu.setOutgoingLength(lenID);
@@ -472,7 +484,12 @@ public class project9 extends Applet
 				apdu.sendBytes((short)0,lenPHONE);
 			}
 	}
-	
+	private void ChangeInformation(APDU APDU,byte[] buffer){
+		lenID = (byte) 0;
+		lenDATE = (byte) 0;
+		lenNAME = (byte) 0;
+		lenPHONE = (byte) 0;
+	}
 	//Input Image
 	private void SetupImage(APDU apdu, byte[] buffer){
 		short p1 = (short)(buffer[ISO7816.OFFSET_P1]&0xff);
@@ -509,6 +526,13 @@ public class project9 extends Applet
 		Util.arrayCopy(first_logged_ids,(short)0,buffer,(short)0,(short)1);
 		apdu.sendBytes((short)0,(short)1);
 	}
+	private void CheckLogin(APDU apdu,byte[] buffer){
+		apdu.setOutgoing();
+		apdu.setOutgoingLength((short)1);
+		byte[] bytelog = new byte[]{(byte)logged_ids};
+		Util.arrayCopy(bytelog,(short)0,buffer,(short)0,(short)1);
+		apdu.sendBytes((short)0,(short)1);
+	}
 	
 	/*AES*/
     /**Encrypt*/
@@ -527,8 +551,13 @@ public class project9 extends Applet
     		}
     	}
         // short newLength = addPadding(temp, (short) 0, (short) encryptData.length);
-        byte[] dataEncrypted = JCSystem.makeTransientByteArray((short)128, JCSystem.CLEAR_ON_DESELECT);
+        byte[] dataEncrypted; 
         
+        try{
+				dataEncrypted = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
+			} catch(SystemException e){
+				dataEncrypted = new byte[(short)128];
+			}
         aesCipher.doFinal(temp, (short) 0 , (short)128, dataEncrypted, (short) 0x00);
         return dataEncrypted;
     }
@@ -537,11 +566,22 @@ public class project9 extends Applet
      * Decrypt data.
      */
     private byte[] decrypt(byte[] decryptData, byte length) {
-        aesCipher.init(aesKey, Cipher.MODE_DECRYPT);
-        byte[] dataDecrypted = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
-        aesCipher.doFinal(decryptData, (short) 0, (short) 128, dataDecrypted, (short) 0x00);
-        // short newLength = removePadding(dataDecrypted, (short) length);
-        return dataDecrypted;
+    	if(length != (short)0){
+			aesCipher.init(aesKey, Cipher.MODE_DECRYPT);
+			byte[] dataDecrypted;
+			try{
+				dataDecrypted = JCSystem.makeTransientByteArray((short) 128, JCSystem.CLEAR_ON_DESELECT);
+			} catch(SystemException e){
+				dataDecrypted = new byte[(short)128];
+			}
+			aesCipher.doFinal(decryptData, (short) 0, (short) 128, dataDecrypted, (short) 0x00);
+			return dataDecrypted;
+    	}
+    	else{
+    		byte[] dataDecrypted = new byte[1];
+	    	return dataDecrypted;
+    	}
+        // short newLength = removePadding(dataDecrypted, (short) length);;
     }
 	 /**Add padding
      * Add padding for AES encryption.

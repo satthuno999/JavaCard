@@ -124,6 +124,57 @@ public class ConnectCard {
         }
     }
     
+        public boolean ChangePIN(String oldPin,String newPin){
+        
+        byte[] pinOldByte =  oldPin.getBytes();
+        byte lengtOld = (byte) pinOldByte.length;
+        
+        byte[] pinNewByte =  newPin.getBytes();
+        byte lengtNew = (byte) pinNewByte.length;
+        
+        byte[] send = new byte[lengtNew+lengtOld+2];
+        int offSet = 0;
+        send[offSet] = lengtOld;
+        offSet+=1;
+        System.arraycopy(pinOldByte, 0, send, offSet, lengtOld);
+        offSet+=lengtOld;
+        send[offSet] = lengtNew;
+        offSet+=1;
+        System.arraycopy(pinNewByte, 0, send, offSet, lengtNew);
+        try{
+            
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x44,0x00,0x00,send));
+            
+            message = answer.toString();
+            switch (((message.split("="))[1]).toUpperCase()) {
+                case "9000":
+                    JOptionPane.showMessageDialog(null, "Cập nhật PIN thành công!");
+                    return true;
+                case "9C02":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
+                    return false;
+                case "9C0C":
+                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
+                    return false;
+                default:
+                    return false;
+            }
+            
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+    
     public void setUp(){
         
         try{
@@ -138,6 +189,7 @@ public class ConnectCard {
             CardChannel channel = card.getBasicChannel();
             
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x2A,0x00,0x00));
+            
         }
         catch(Exception ex){
             //return "Error";
@@ -154,6 +206,9 @@ public class ConnectCard {
             CardTerminal terminal = terminals.get(0);
             
             Card card = terminal.connect("*");
+            
+            CardChannel channel0 = card.getBasicChannel();
+            ResponseAPDU resetData = channel0.transmit(new CommandAPDU(0xB0,0x52,0x00,0x00));
             
             CardChannel channel = card.getBasicChannel();
             
@@ -191,10 +246,21 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answerID = channel.transmit(new CommandAPDU(0xB0,0x50,0x01,0x00));
-            strID = new String(answerID.getData(),StandardCharsets.UTF_8);
-            JOptionPane.showMessageDialog(null, strID);
-            message = answerID.toString();
+            ResponseAPDU answerID = channel.transmit(new CommandAPDU(0xB0,0x51,0x01,0x00));
+            strID = new String(answerID.getData());
+            
+            CardChannel channel1 = card.getBasicChannel();
+            ResponseAPDU answerName = channel1.transmit(new CommandAPDU(0xB0,0x51,0x02,0x00));
+            strName = new String(answerName.getData());
+            
+            CardChannel channel3 = card.getBasicChannel();
+            ResponseAPDU answerDate = channel3.transmit(new CommandAPDU(0xB0,0x51,0x03,0x00));
+            strDate = new String(answerDate.getData());
+            
+            CardChannel channel4 = card.getBasicChannel();
+            ResponseAPDU answerPhone = channel4.transmit(new CommandAPDU(0xB0,0x51,0x04,0x00));
+            strPhone = new String(answerPhone.getData());
+            
             return true;
             
         }
@@ -202,4 +268,5 @@ public class ConnectCard {
             return false;
         }
     }
+    
 }
