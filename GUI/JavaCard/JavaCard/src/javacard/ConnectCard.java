@@ -5,14 +5,19 @@
  */
 package javacard;
 
+import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import javax.smartcardio.CardTerminal;
 import javax.smartcardio.TerminalFactory;
 import jdk.nashorn.internal.ir.Terminal;
 import java.util.List;
 import javax.smartcardio.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
@@ -262,11 +267,119 @@ public class ConnectCard {
             strPhone = new String(answerPhone.getData());
             
             return true;
-            
         }
         catch(Exception ex){
             return false;
         }
+    }   
+    public boolean UploadImage(File file, String type){
+        try{
+            
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            BufferedImage bImage = ImageIO.read(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, type, bos);
+            
+            byte[] napanh = bos.toByteArray();
+            
+            int soLan = napanh.length / 249;
+            
+            String strsend = soLan + "S" + napanh.length % 249;
+            
+            byte[] send = strsend.getBytes();
+            
+            ResponseAPDU response = channel.transmit(new CommandAPDU(0xB0,0x54,0x00,0x01,send));
+            String check = Integer.toHexString(response.getSW());
+            
+            if(check.equals("9000")){
+                for(int i = 0;i<=soLan ;i++){
+                    byte p1 = (byte) i;
+                    int start = 0, end = 0;
+                    start = i * 249;
+                    if(i != soLan){
+                        end = (i+1) *249;
+                    }
+                    else{
+                        end = napanh.length;
+                    }
+                    byte[] slice = Arrays.copyOfRange(napanh, start, end);
+                    response = channel.transmit(new CommandAPDU(0xB0,0x53,p1,0x01,slice));
+                    String checkSlide = Integer.toHexString(response.getSW());
+                    if(!checkSlide.equals("9000")){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return true;
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+    public BufferedImage DownloadImage(){
+        try {
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            int size = 0;
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x56,0x01,0x01));
+            String check = Integer.toHexString(answer.getSW());
+            if(check.equals("9000")){
+                byte[] sizeAnh = answer.getData();
+                
+                if(ConvertData.isByteArrayAllZero(sizeAnh)){
+                    return null;
+                }
+                
+                byte[] arrAnh = new byte[10000];
+                String strSizeAnh = new String(sizeAnh);
+                String[] outPut1 = strSizeAnh.split("S");
+                
+                int lan = Integer.parseInt(outPut1[0].replaceAll("\\D", ""));
+                int du = Integer.parseInt(outPut1[1].replaceAll("\\D", ""));
+                
+                int count = size / 249;
+                
+                for(int j=0;j<=count;j++){
+                    answer = channel.transmit(new CommandAPDU(0xB0,0x58,(byte)j,0x01));
+                    String check1 = Integer.toHexString(answer.getSW());
+                    if(check1.equals("9000")){
+                        byte[] result = answer.getData();
+                        int leng = 249;
+                        if(j == count){
+                            leng = size % 249;
+                        }
+                        System.arraycopy(result, 0, arrAnh, j*249, leng);
+                    }
+                }
+                
+                ByteArrayInputStream bais = new ByteArrayInputStream(arrAnh);
+                try {
+                    BufferedImage image  = ImageIO.read(bais);
+                    return image;
+                } catch (Exception e) {
+                    System.err.println("Error image");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("error dowloadimage");
+        }
+        return null;
     }
     
 }

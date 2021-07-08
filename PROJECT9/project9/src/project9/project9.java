@@ -63,7 +63,7 @@ public class project9 extends Applet
 	private final static byte OUT_DATE = (byte)0x03;
 	private final static byte OUT_PHONE = (byte)0x04;
 	
-	private final static byte INS_CREATE_IMAGE = (byte)0x52;
+	private final static byte INS_CREATE_IMAGE = (byte)0x53;
 	private final static byte INS_CREATE_SIZEIMAGE = (byte)0x54;
 	private final static byte INS_OUT_SIZEIMAGE = (byte)0x56;
 	private final static byte INS_OUT_IMAGE = (byte)0x58;
@@ -218,9 +218,9 @@ public class project9 extends Applet
 		case INS_CHANGE_INFORMATION:
 			ChangeInformation(apdu,buffer);
 			break;
-		// case INS_CREATE_IMAGE:
-			// SetupImage(apdu,buffer);
-			// break;
+		case INS_CREATE_IMAGE:
+			 SetupImage(apdu,buffer);
+			 break;
 		case INS_CREATE_SIZEIMAGE:
 			SetCount(apdu,buffer);
 			break;
@@ -230,9 +230,9 @@ public class project9 extends Applet
 		case INS_OUT_IMAGE:
 			OututImage(apdu,buffer);
 			break;
-		case INS_GEN_KEYPAIR:
-			GenerateKeyPair(apdu, buffer);
-			break;
+		// case INS_GEN_KEYPAIR:
+			// GenerateKeyPair(apdu, buffer);
+			//break;
 		default:
 			ISOException.throwIt(ISO7816.SW_INS_NOT_SUPPORTED);
 		}
@@ -619,98 +619,5 @@ public class project9 extends Applet
     /************RSA
     *     RSA   *
     *************/
-    private void GenerateKeyPair(APDU apdu, byte[] buffer) {
-		short bytesLeft = Util.makeShort((byte) 0x00, buffer[ISO7816.OFFSET_LC]);
-		if (bytesLeft != apdu.setIncomingAndReceive())
-			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-		byte alg_id = buffer[OFFSET_GENKEY_ALG];
-		switch (alg_id) {
-			case KeyPair.ALG_RSA:
-			case KeyPair.ALG_RSA_CRT:
-				GenerateKeyPairRSA(buffer);
-				break;
-			default:
-				ISOException.throwIt(SW_INCORRECT_ALG);
-		}
-	}
-    // Data has already been received 
-	private void GenerateKeyPairRSA(byte[] buffer) {
-		byte prv_key_nb = buffer[ISO7816.OFFSET_P1];
-		if ((prv_key_nb < 0) || (prv_key_nb >= MAX_NUM_KEYS))
-			ISOException.throwIt(SW_INCORRECT_P1);
-		byte pub_key_nb = buffer[ISO7816.OFFSET_P2];
-		if ((pub_key_nb < 0) || (pub_key_nb >= MAX_NUM_KEYS))
-			ISOException.throwIt(SW_INCORRECT_P2);
-		if (pub_key_nb == prv_key_nb)
-			ISOException.throwIt(ISO7816.SW_INCORRECT_P1P2);
-		byte alg_id = buffer[OFFSET_GENKEY_ALG];
-		short key_size = Util.getShort(buffer, OFFSET_GENKEY_SIZE);
-		byte options = buffer[OFFSET_GENKEY_OPTIONS];
-		RSAPublicKey pub_key = (RSAPublicKey) getKey(pub_key_nb, KeyBuilder.TYPE_RSA_PUBLIC, key_size);
-		RSAPrivateKey prv_key = (RSAPrivateKey) getKey(prv_key_nb, alg_id == KeyPair.ALG_RSA ? KeyBuilder.TYPE_RSA_PRIVATE : KeyBuilder.TYPE_RSA_CRT_PRIVATE,	key_size);
-		/* If we're going to overwrite a keyPair's contents, check ACL */
-		if (pub_key.isInitialized() && !authorizeKeyOp(pub_key_nb,ACL_WRITE))
-			ISOException.throwIt(SW_UNAUTHORIZED);
-		if (prv_key.isInitialized() && !authorizeKeyOp(prv_key_nb,ACL_WRITE))
-			ISOException.throwIt(SW_UNAUTHORIZED);
-		/* Store private key ACL */
-		Util.arrayCopy(buffer, OFFSET_GENKEY_PRV_ACL, keyACLs, (short) (prv_key_nb * KEY_ACL_SIZE), KEY_ACL_SIZE);
-		/* Store public key ACL */
-		Util.arrayCopy(buffer, OFFSET_GENKEY_PUB_ACL, keyACLs, (short) (pub_key_nb * KEY_ACL_SIZE), KEY_ACL_SIZE);
-		switch (options) {
-		case OPT_DEFAULT:
-			if (pub_key.isInitialized())
-				pub_key.clearKey();
-			break;
-		case OPT_RSA_PUB_EXP:
-			short exp_length = Util.getShort(buffer, OFFSET_GENKEY_RSA_PUB_EXP_LENGTH);
-			pub_key.setExponent(buffer, OFFSET_GENKEY_RSA_PUB_EXP_VALUE, exp_length);
-			break;
-		default:
-			ISOException.throwIt(SW_INVALID_PARAMETER);
-		}
-		if ((keyPairs[pub_key_nb] == null) && (keyPairs[prv_key_nb] == null)) {
-			keyPairs[pub_key_nb] = new KeyPair(pub_key, prv_key);
-			keyPairs[prv_key_nb] = keyPairs[pub_key_nb];
-		} else if (keyPairs[pub_key_nb] != keyPairs[prv_key_nb])
-			ISOException.throwIt(SW_OPERATION_NOT_ALLOWED);
-		KeyPair kp = keyPairs[pub_key_nb];
-		if ((kp.getPublic() != pub_key) || (kp.getPrivate() != prv_key))
-			// This should never happen according with this Applet policies
-			ISOException.throwIt(SW_INTERNAL_ERROR);
-		// We Rely on genKeyPair() to make all necessary checks about types
-		kp.genKeyPair();
-	}
-	
-	//get Key
-	private Key getKey(byte key_nb, byte key_type, short key_size) {
-		
-		if (keys[key_nb] == null) {
-			// We have to create the Key
-
-			/* Check that Identity n.0 is logged */
-			if ((create_key_ACL == (byte) 0xFF)
-					|| (((logged_ids & create_key_ACL) == (short) 0x0000) && (create_key_ACL != (byte) 0x00)))
-				ISOException.throwIt(SW_UNAUTHORIZED);
-			
-			keys[key_nb] = KeyBuilder.buildKey(key_type, key_size, false);
-			
-		} else {
-			if ((keys[key_nb].getSize() != key_size) || (keys[key_nb].getType() != key_type))
-				ISOException.throwIt(SW_OPERATION_NOT_ALLOWED);
-		}
-		return keys[key_nb];
-	}
-	/** Check from key_nb key ACL if an operation can be done */
-	boolean authorizeKeyOp(byte key_nb, byte op) {
-		short acl_offset = (short) (key_nb * KEY_ACL_SIZE+ op);
-		short required_ids = Util.getShort(keyACLs, acl_offset);
-		return ((required_ids != (short) 0xFFFF) && ((short) (required_ids & logged_ids) == required_ids));
-	}
-	
-	/** Check from ACL if the corresponding key can be overwritten */
-	boolean authorizeKeyOp(byte[] ACL, byte op) {
-		short required_ids = Util.getShort(ACL, (short)op);
-		return ((required_ids != (short) 0xFFFF) && ((short) (required_ids & logged_ids) == required_ids));
-	}
+    
 }
