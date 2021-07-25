@@ -31,6 +31,14 @@ public class ConnectCard {
     public String strName;
     public String strDate;
     public String strPhone;
+    
+    private static ConnectCard instance;
+    public static ConnectCard getInstance() {
+        if (instance == null) {
+            instance = new ConnectCard();
+        }
+        return instance;
+    }
     public String connectapplet(){
         try{
             
