@@ -336,35 +336,34 @@ public class ConnectCard {
     public BufferedImage DownloadImage(){
         try {
             TerminalFactory factory = TerminalFactory.getDefault();
+            
             List<CardTerminal> terminals = factory.terminals().list();
             
             CardTerminal terminal = terminals.get(0);
             
             Card card = terminal.connect("*");
             
-            CardChannel channel = card.getBasicChannel();
+            CardChannel channelImage = card.getBasicChannel();
             
             int size = 0;
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x56,0x01,0x01));
+            ResponseAPDU answer = channelImage.transmit(new CommandAPDU(0xB0,0x55,0x01,0x01));
             String check = Integer.toHexString(answer.getSW());
             if(check.equals("9000")){
                 byte[] sizeAnh = answer.getData();
-                
                 if(ConvertData.isByteArrayAllZero(sizeAnh)){
                     return null;
                 }
-                
                 byte[] arrAnh = new byte[10000];
                 String strSizeAnh = new String(sizeAnh);
                 String[] outPut1 = strSizeAnh.split("S");
                 
                 int lan = Integer.parseInt(outPut1[0].replaceAll("\\D", ""));
                 int du = Integer.parseInt(outPut1[1].replaceAll("\\D", ""));
-                
+                size = lan * 249 + du;
                 int count = size / 249;
-                
+                System.err.println(count);
                 for(int j=0;j<=count;j++){
-                    answer = channel.transmit(new CommandAPDU(0xB0,0x58,(byte)j,0x01));
+                    answer = channelImage.transmit(new CommandAPDU(0xB0,0x56,(byte)j,0x01));
                     String check1 = Integer.toHexString(answer.getSW());
                     if(check1.equals("9000")){
                         byte[] result = answer.getData();

@@ -64,9 +64,9 @@ public class project9 extends Applet
 	private final static byte OUT_PHONE = (byte)0x04;
 	
 	private final static byte INS_CREATE_IMAGE = (byte)0x53;
-	private final static byte INS_CREATE_SIZEIMAGE = (byte)0x54;
-	private final static byte INS_OUT_SIZEIMAGE = (byte)0x56;
-	private final static byte INS_OUT_IMAGE = (byte)0x58;
+	private final static byte INS_CREATE_SIZEIMAGE = (byte)0x54;//countanh
+	private final static byte INS_OUT_SIZEIMAGE = (byte)0x55;
+	private final static byte INS_OUT_IMAGE = (byte)0x56;
 	
 	private final static byte INS_LOGOUT_ALL = (byte) 0x60;
 	private final static byte INS_CHECK_LOGIN = (byte) 0x61;
@@ -492,18 +492,24 @@ public class project9 extends Applet
 	}
 	//Input Image
 	private void SetupImage(APDU apdu, byte[] buffer){
+		apdu.setIncomingAndReceive();
 		short p1 = (short)(buffer[ISO7816.OFFSET_P1]&0xff);
 		short count = (short)(249 * p1);
 		Util.arrayCopy(buffer, ISO7816.OFFSET_CDATA, OpImage, count, (short)249);
 	}
 	private void SetCount(APDU apdu, byte[] buffer){
+		apdu.setIncomingAndReceive();
 		Util.arrayCopy(buffer, ISO7816.OFFSET_CDATA, size, (short)0, (short)7);
 	}
 	private void OuputSize(APDU apdu, byte[] buffer){
+		apdu.setIncomingAndReceive();
+		apdu.setOutgoing();
+		apdu.setOutgoingLength((short)7);
 		Util.arrayCopy(size, (short)0, buffer, (short)0, (short)(size.length));
-		apdu.setOutgoingAndSend((short)0,(short)7);
+		apdu.sendBytes((short)0,(short)7);
 	}
 	private void OututImage(APDU apdu, byte[] buffer){
+		apdu.setIncomingAndReceive();
 		apdu.setOutgoing();
 		short p = (short)(buffer[ISO7816.OFFSET_P1]&0xff);
 		short count = (short)(249 * p);

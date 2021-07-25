@@ -369,9 +369,9 @@ public class HomeForm extends javax.swing.JFrame {
                                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnInfoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpnInfoLayout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
@@ -760,7 +760,8 @@ public class HomeForm extends javax.swing.JFrame {
 
     }
     public void getImage() {
-        BufferedImage imageBuf = ConnectCard.getInstance().DownloadImage();
+        ConnectCard connect = new ConnectCard();
+        BufferedImage imageBuf = connect.DownloadImage();
         if (imageBuf != null) {
             image.setIcon(new ImageIcon(imageBuf));
         } else {
