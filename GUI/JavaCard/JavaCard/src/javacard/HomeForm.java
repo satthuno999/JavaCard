@@ -36,10 +36,10 @@ public class HomeForm extends javax.swing.JFrame {
         initComponents();
         ConnectCard connect = new ConnectCard();
         if(connect.ReadInformation()){
-            jTextField1.setText(connect.strID);
-            jTextField2.setText(connect.strName);
-            jTextField3.setText(connect.strDate);
-            jTextField4.setText(connect.strPhone);
+            txtID.setText(connect.strID);
+            txtName.setText(connect.strName);
+            txtDate.setText(connect.strDate);
+            txtPhone.setText(connect.strPhone);
         }
         jpnInfo.setVisible(true);
         jpnPIN.setVisible(false);
@@ -47,6 +47,11 @@ public class HomeForm extends javax.swing.JFrame {
         jpanleAttendance.setVisible(false);
         txtTencoquan.setText("Học Viện Kỹ Thuật Mật Mã");
         txtTencoquan.setEnabled(false);
+        txtName.setEnabled(false);
+        txtDate.setEnabled(false);
+        txtPhone.setEnabled(false);
+        txtID.setEnabled(false);
+        txtID.setText("001");
         showDate();
         showTime();
         
@@ -101,14 +106,15 @@ public class HomeForm extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         txtTencoquan = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
+        txtDate = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         image = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
         jpnPIN = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -278,16 +284,16 @@ public class HomeForm extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setText("Ảnh cá nhân");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txtID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtID.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txtName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
         txtTencoquan.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txtPhone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtPhone.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 153));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -299,12 +305,22 @@ public class HomeForm extends javax.swing.JFrame {
             }
         });
 
-        jTextField3.setToolTipText("");
+        txtDate.setToolTipText("");
 
         jButton5.setText("chọn ảnh");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setBackground(new java.awt.Color(0, 102, 153));
+        jButton6.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("Sửa");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -323,17 +339,15 @@ public class HomeForm extends javax.swing.JFrame {
                 .addGap(77, 77, 77)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpnInfoLayout.createSequentialGroup()
-                        .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTencoquan)
-                                .addComponent(jTextField4)))
+                        .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTencoquan)
+                            .addComponent(txtPhone))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnInfoLayout.createSequentialGroup()
                         .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+                            .addComponent(txtDate)
+                            .addComponent(txtName)
+                            .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                         .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpnInfoLayout.createSequentialGroup()
@@ -345,11 +359,17 @@ public class HomeForm extends javax.swing.JFrame {
                                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton5)
                                     .addComponent(jLabel14)))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnInfoLayout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(206, 206, 206))
         );
 
         jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel10, jLabel11, jLabel12, jLabel13, jLabel14, jLabel9});
 
-        jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField1, jTextField2, jTextField4, txtTencoquan});
+        jpnInfoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtID, txtName, txtPhone, txtTencoquan});
 
         jpnInfoLayout.setVerticalGroup(
             jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,18 +384,18 @@ public class HomeForm extends javax.swing.JFrame {
                             .addGroup(jpnInfoLayout.createSequentialGroup()
                                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(33, 33, 33)
                                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jpnInfoLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
@@ -386,15 +406,19 @@ public class HomeForm extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
-                .addComponent(jButton1)
+                .addGroup(jpnInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel10, jLabel11, jLabel12, jLabel13, jLabel14, jLabel9});
 
-        jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField1, jTextField2, jTextField4, txtTencoquan});
+        jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtID, txtName, txtPhone, txtTencoquan});
+
+        jpnInfoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton6});
 
         jPanel4.add(jpnInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -528,13 +552,15 @@ public class HomeForm extends javax.swing.JFrame {
                         .addGap(241, 241, 241)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpanleAttendanceLayout.createSequentialGroup()
-                        .addGap(228, 228, 228)
-                        .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lableTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                                .addComponent(lableDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(222, Short.MAX_VALUE))
+                        .addGap(107, 107, 107)
+                        .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
+                        .addComponent(lableTime, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(136, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanleAttendanceLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(218, 218, 218))
         );
         jpanleAttendanceLayout.setVerticalGroup(
             jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,12 +568,12 @@ public class HomeForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(lableTime)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lableTime))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(132, 132, 132))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         jpanleAttendanceLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lableDate, lableTime});
@@ -652,10 +678,10 @@ public class HomeForm extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         
-        String strId = jTextField1.getText();
-        String strName = jTextField2.getText();
-        String strDate = jTextField3.getText();
-        String strPhone = jTextField4.getText();
+        String strId = txtID.getText();
+        String strName = txtName.getText();
+        String strDate = txtDate.getText();
+        String strPhone = txtPhone.getText();
         
         byte[] byteID = strId.getBytes();
         byte[] byteName = strName.getBytes();
@@ -740,6 +766,16 @@ public class HomeForm extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+//        txtID.setEnabled(false);
+//        txtID.setText("001");
+        txtTencoquan.setEnabled(true);
+        txtName.setEnabled(true);
+        txtDate.setEnabled(true);
+        txtPhone.setEnabled(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
     public class JPEGImageFileFilter extends FileFilter {
 
         @Override
@@ -813,6 +849,7 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -838,10 +875,6 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JPasswordField jPasswordField3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel jlbConnect;
     private javax.swing.JLabel jlbInfo;
     private javax.swing.JLabel jlbPIN;
@@ -852,6 +885,10 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JPanel jpnPIN;
     private javax.swing.JLabel lableDate;
     private javax.swing.JLabel lableTime;
+    private javax.swing.JTextField txtDate;
+    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTencoquan;
     // End of variables declaration//GEN-END:variables
 }
