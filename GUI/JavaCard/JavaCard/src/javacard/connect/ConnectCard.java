@@ -73,7 +73,7 @@ public class ConnectCard {
     
     
     public boolean verifyPin(String pin){
-        
+        connectapplet();
         byte[] pinbyte =  pin.getBytes();
         try{
             
@@ -87,9 +87,8 @@ public class ConnectCard {
             CardChannel channel = card.getBasicChannel();
             
             ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_VERIFY_PIN,0x00,0x00,pinbyte));
-            
-            message = answer.toString();
-            switch (((message.split("="))[1]).toUpperCase()) {
+            message = Integer.toHexString(answer.getSW());
+            switch (message.toUpperCase()) {
                 case RESPONS.SW_NO_ERROR:
                     return true;
                 case RESPONS.SW_AUTH_FAILED:
@@ -97,6 +96,9 @@ public class ConnectCard {
                     return false;
                 case RESPONS.SW_IDENTITY_BLOCKED:
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
+                    return false;
+                case RESPONS.SW_INVALID_PARAMETER:
+                    JOptionPane.showMessageDialog(null, "Độ dài pin chưa hợp lệ");
                     return false;
                 default:
                     return false;
@@ -152,7 +154,7 @@ public class ConnectCard {
     }
     
     public boolean ChangePIN(String oldPin,String newPin){
-        
+        connectapplet();
         byte[] pinOldByte =  oldPin.getBytes();
         byte lengtOld = (byte) pinOldByte.length;
         
@@ -201,6 +203,46 @@ public class ConnectCard {
             return false;
         }
     }
+    public boolean UnblockPin(byte [] aid){
+        try{
+            
+            TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            
+            ResponseAPDU selectBlockcard = channel.transmit(new CommandAPDU(0x00,0xA4,0x00,0x00,aid));
+            
+            String check = Integer.toHexString(selectBlockcard.getSW());
+            
+            if(check.equals(RESPONS.SW_NO_ERROR)){
+                CardChannel channel2 = card.getBasicChannel();
+            
+            ResponseAPDU unblockCard = channel2.transmit(new CommandAPDU(APPLET.CLA,APPLET.INS_UNBLOCK_PIN,0x00,0x00));
+                message = unblockCard.toString();
+                switch (((message.split("="))[1]).toUpperCase()) {
+                    case RESPONS.SW_NO_ERROR:
+                        JOptionPane.showMessageDialog(null, "Mở khoá thẻ thành công");
+                        return true;
+                    case RESPONS.SW_OPERATION_NOT_ALLOWED:
+                        JOptionPane.showMessageDialog(null, "Thẻ không bị khoá vui lòng kiểm tra lại!");
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
     
     public void setUp(){
         
@@ -225,6 +267,7 @@ public class ConnectCard {
     }
     
     public boolean EditInformation(byte [] data){
+        connectapplet();
         try{
             
             TerminalFactory factory = TerminalFactory.getDefault();
@@ -259,6 +302,7 @@ public class ConnectCard {
         }
     }
     public boolean ReadInformation(){
+        connectapplet();
         try{
             
             TerminalFactory factory = TerminalFactory.getDefault();
@@ -291,6 +335,7 @@ public class ConnectCard {
         }
     }   
     public boolean UploadImage(File file, String type){
+        connectapplet();
         try{
             
             TerminalFactory factory = TerminalFactory.getDefault();
@@ -344,6 +389,7 @@ public class ConnectCard {
         }
     }
     public BufferedImage DownloadImage(){
+        connectapplet();
         try {
             TerminalFactory factory = TerminalFactory.getDefault();
             

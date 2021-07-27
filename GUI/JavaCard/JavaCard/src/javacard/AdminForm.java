@@ -6,6 +6,8 @@
 package javacard;
 
 import java.awt.Color;
+import javacard.connect.ConnectCard;
+import javacard.define.APPLET;
 
 /**
  *
@@ -468,6 +470,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnUnlock.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         btnUnlock.setForeground(new java.awt.Color(255, 255, 255));
         btnUnlock.setText("Mở khóa thẻ");
+        btnUnlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUnlockActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpanelUnlockLayout = new javax.swing.GroupLayout(jpanelUnlock);
         jpanelUnlock.setLayout(jpanelUnlockLayout);
@@ -477,12 +484,10 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGap(117, 117, 117)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
-                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanelUnlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnUnlock, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(182, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanelUnlockLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnUnlock, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(247, 247, 247))
         );
         jpanelUnlockLayout.setVerticalGroup(
             jpanelUnlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,9 +496,9 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGroup(jpanelUnlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(138, 138, 138)
+                .addGap(143, 143, 143)
                 .addComponent(btnUnlock, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
 
         jpanelUnlockLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel7, txtID});
@@ -646,6 +651,12 @@ public class AdminForm extends javax.swing.JFrame {
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnUnlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnlockActionPerformed
+        // TODO add your handling code here:
+        ConnectCard connect = new ConnectCard();
+        connect.UnblockPin(APPLET.AID_APPLET);
+    }//GEN-LAST:event_btnUnlockActionPerformed
 
     /**
      * @param args the command line arguments

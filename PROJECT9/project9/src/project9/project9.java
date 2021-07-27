@@ -364,8 +364,8 @@ public class project9 extends Applet
 		
 		if (numBytes != apdu.setIncomingAndReceive())
 			ISOException.throwIt(ISO7816.SW_WRONG_LENGTH);
-		if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
-			ISOException.throwIt(SW_INVALID_PARAMETER);
+		// if (!CheckPINPolicy(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
+			// ISOException.throwIt(SW_INVALID_PARAMETER);
 		// if (!ublk_pin.check(buffer, ISO7816.OFFSET_CDATA, (byte) numBytes))
 			// ISOException.throwIt(SW_AUTH_FAILED);
 		//
