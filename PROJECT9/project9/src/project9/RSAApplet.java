@@ -95,5 +95,4 @@ public class RSAApplet extends Applet
 		 
 		apdu.sendBytesLong(sig_buffer, (short)0, sigLen);
 	}
-
 }

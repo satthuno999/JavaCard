@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javacard;
+package javacard.connect;
 
+import javacard.utils.ConvertData;
 import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -17,6 +18,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import javacard.define.APPLET;
+import javacard.define.RESPONS;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
@@ -32,6 +35,12 @@ public class ConnectCard {
     public String strDate;
     public String strPhone;
     
+    private Card card;
+    private TerminalFactory factory;
+    public CardChannel channel;
+    private CardTerminal terminal;
+    private List<CardTerminal> terminals;
+    
     private static ConnectCard instance;
     public static ConnectCard getInstance() {
         if (instance == null) {
@@ -42,17 +51,16 @@ public class ConnectCard {
     public String connectapplet(){
         try{
             
-            TerminalFactory factory = TerminalFactory.getDefault();
-            List<CardTerminal> terminals = factory.terminals().list();
+            factory = TerminalFactory.getDefault();
+            terminals = factory.terminals().list();
             
-            CardTerminal terminal = terminals.get(0);
+            terminal = terminals.get(0);
             
-            Card card = terminal.connect("*");
+            card = terminal.connect("*");
             
-            CardChannel channel = card.getBasicChannel();
+            channel = card.getBasicChannel();
             
-            byte[] aid = {(byte)0x25,(byte)0x10,(byte)0x19,(byte)0x99,(byte)0x00,(byte)0x00,(byte)0x00};
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0x00,0xA4,0x04,0x00,aid));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0x00,0xA4,0x04,0x00,APPLET.AID_APPLET));
             String kq = answer.toString();
             data = answer.getData();
             return kq;
@@ -78,16 +86,16 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x42,0x00,0x00,pinbyte));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_VERIFY_PIN,0x00,0x00,pinbyte));
             
             message = answer.toString();
             switch (((message.split("="))[1]).toUpperCase()) {
-                case "9000":
+                case RESPONS.SW_NO_ERROR:
                     return true;
-                case "9C02":
+                case RESPONS.SW_AUTH_FAILED:
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
                     return false;
-                case "9C0C":
+                case RESPONS.SW_IDENTITY_BLOCKED:
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
                     return false;
                 default:
@@ -121,15 +129,21 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x40,0x00,0x03,send));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_CREATE_PIN,0x00,0x03,send));
             
             message = answer.toString();
-            if((message.split("="))[1].equals("9000")){
-                
-                return true;
-            
+            switch (((message.split("="))[1]).toUpperCase()) {
+                case RESPONS.SW_NO_ERROR:
+                    return true;
+                case RESPONS.SW_INVALID_PARAMETER:
+                    JOptionPane.showMessageDialog(null, "Lỗi độ dài pin");
+                    return false;
+                case RESPONS.SW_WRONG_LENGTH:
+                    JOptionPane.showMessageDialog(null, "Lỗi SW_WRONG_LENGTH");
+                    return false;
+                default:
+                    return false;
             }
-            else return false;
             
         }
         catch(Exception ex){
@@ -137,7 +151,7 @@ public class ConnectCard {
         }
     }
     
-        public boolean ChangePIN(String oldPin,String newPin){
+    public boolean ChangePIN(String oldPin,String newPin){
         
         byte[] pinOldByte =  oldPin.getBytes();
         byte lengtOld = (byte) pinOldByte.length;
@@ -165,17 +179,17 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x44,0x00,0x00,send));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_CHANGE_PIN,0x00,0x00,send));
             
             message = answer.toString();
             switch (((message.split("="))[1]).toUpperCase()) {
-                case "9000":
+                case RESPONS.SW_NO_ERROR:
                     JOptionPane.showMessageDialog(null, "Cập nhật PIN thành công!");
                     return true;
-                case "9C02":
+                case RESPONS.SW_AUTH_FAILED:
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
                     return false;
-                case "9C0C":
+                case RESPONS.SW_IDENTITY_BLOCKED:
                     JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
                     return false;
                 default:
@@ -201,7 +215,7 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x2A,0x00,0x00));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_SETUP,0x00,0x00));
             
         }
         catch(Exception ex){
@@ -221,22 +235,19 @@ public class ConnectCard {
             Card card = terminal.connect("*");
             
             CardChannel channel0 = card.getBasicChannel();
-            ResponseAPDU resetData = channel0.transmit(new CommandAPDU(0xB0,0x52,0x00,0x00));
+            ResponseAPDU resetData = channel0.transmit(new CommandAPDU(0xB0,APPLET.INS_CHANGE_INFORMATION,0x00,0x00));
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,0x50,0x00,0x00,data));
+            ResponseAPDU answer = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_CREATE_INFORMATION,0x00,0x00,data));
             
             message = answer.toString();
             switch (((message.split("="))[1]).toUpperCase()) {
                 case "9000":
                     JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
                     return true;
-                case "9C02":
-                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai PIN");
-                    return false;
-                case "9C0C":
-                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá số lần thử!Thẻ đã bị khoá");
+                case RESPONS.SW_WRONG_LENGTH:
+                    JOptionPane.showMessageDialog(null, "Dữ liệu quá lớn, vui lòng kiểm tra lại!");
                     return false;
                 default:
                     return false;
@@ -259,21 +270,20 @@ public class ConnectCard {
             
             CardChannel channel = card.getBasicChannel();
             
-            ResponseAPDU answerID = channel.transmit(new CommandAPDU(0xB0,0x51,0x01,0x00));
+            ResponseAPDU answerID = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_INFORMATION,APPLET.OUT_ID,0x00));
             strID = new String(answerID.getData());
             
             CardChannel channel1 = card.getBasicChannel();
-            ResponseAPDU answerName = channel1.transmit(new CommandAPDU(0xB0,0x51,0x02,0x00));
+            ResponseAPDU answerName = channel1.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_INFORMATION,APPLET.OUT_NAME,0x00));
             strName = new String(answerName.getData());
             
             CardChannel channel3 = card.getBasicChannel();
-            ResponseAPDU answerDate = channel3.transmit(new CommandAPDU(0xB0,0x51,0x03,0x00));
+            ResponseAPDU answerDate = channel3.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_INFORMATION,APPLET.OUT_DATE,0x00));
             strDate = new String(answerDate.getData());
             
             CardChannel channel4 = card.getBasicChannel();
-            ResponseAPDU answerPhone = channel4.transmit(new CommandAPDU(0xB0,0x51,0x04,0x00));
+            ResponseAPDU answerPhone = channel4.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_INFORMATION,APPLET.OUT_PHONE,0x00));
             strPhone = new String(answerPhone.getData());
-            
             return true;
         }
         catch(Exception ex){
@@ -304,10 +314,10 @@ public class ConnectCard {
             
             byte[] send = strsend.getBytes();
             
-            ResponseAPDU response = channel.transmit(new CommandAPDU(0xB0,0x54,0x00,0x01,send));
+            ResponseAPDU response = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_CREATE_SIZEIMAGE,0x00,0x01,send));
             String check = Integer.toHexString(response.getSW());
             
-            if(check.equals("9000")){
+            if(check.equals(RESPONS.SW_NO_ERROR)){
                 for(int i = 0;i<=soLan ;i++){
                     byte p1 = (byte) i;
                     int start = 0, end = 0;
@@ -319,9 +329,9 @@ public class ConnectCard {
                         end = napanh.length;
                     }
                     byte[] slice = Arrays.copyOfRange(napanh, start, end);
-                    response = channel.transmit(new CommandAPDU(0xB0,0x53,p1,0x01,slice));
+                    response = channel.transmit(new CommandAPDU(0xB0,APPLET.INS_CREATE_IMAGE,p1,0x01,slice));
                     String checkSlide = Integer.toHexString(response.getSW());
-                    if(!checkSlide.equals("9000")){
+                    if(!checkSlide.equals(RESPONS.SW_NO_ERROR)){
                         return false;
                     }
                 }
@@ -346,9 +356,9 @@ public class ConnectCard {
             CardChannel channelImage = card.getBasicChannel();
             
             int size = 0;
-            ResponseAPDU answer = channelImage.transmit(new CommandAPDU(0xB0,0x55,0x01,0x01));
+            ResponseAPDU answer = channelImage.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_SIZEIMAGE,0x01,0x01));
             String check = Integer.toHexString(answer.getSW());
-            if(check.equals("9000")){
+            if(check.equals(RESPONS.SW_NO_ERROR)){
                 byte[] sizeAnh = answer.getData();
                 if(ConvertData.isByteArrayAllZero(sizeAnh)){
                     return null;
@@ -363,9 +373,9 @@ public class ConnectCard {
                 int count = size / 249;
                 System.err.println(count);
                 for(int j=0;j<=count;j++){
-                    answer = channelImage.transmit(new CommandAPDU(0xB0,0x56,(byte)j,0x01));
+                    answer = channelImage.transmit(new CommandAPDU(0xB0,APPLET.INS_OUT_IMAGE,(byte)j,0x01));
                     String check1 = Integer.toHexString(answer.getSW());
-                    if(check1.equals("9000")){
+                    if(check1.equals(RESPONS.SW_NO_ERROR)){
                         byte[] result = answer.getData();
                         int leng = 249;
                         if(j == count){

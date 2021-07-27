@@ -5,15 +5,13 @@
  */
 package javacard;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.security.PublicKey;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javacard.ConnectCard;
-import javacard.objError;
+import javacard.connect.ConnectCard;
+import javacard.connect.RSAAppletHelper;
+import javax.smartcardio.CardException;
 
 /**
  *
@@ -151,6 +149,7 @@ public class LoginForm extends javax.swing.JFrame {
         
         if (connect.verifyPin(pin)) {
             if (firstUSE == 1) {
+                
                 PinForm pinform = new PinForm();
                 pinform.setVisible(true);
                 this.dispose();

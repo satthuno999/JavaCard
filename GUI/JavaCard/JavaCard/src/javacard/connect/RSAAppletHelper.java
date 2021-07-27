@@ -3,20 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javacard;
+package javacard.connect;
 
-import drivercardhostapp.commons.constants.APPLET_CONSTANTS;
-import drivercardhostapp.commons.constants.AUTH_CONSTANTS;
-import drivercardhostapp.commons.constants.INFO_CONSTANTS;
-import drivercardhostapp.commons.constants.ISO7816;
-import drivercardhostapp.commons.constants.RSA_CONSTANTS;
-import drivercardhostapp.commons.utils.ConvertData;
-import drivercardhostapp.commons.utils.RSAData;
-import drivercardhostapp.model.Person;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javacard.define.APPLET;
+import javacard.define.RESPONS;
+import javacard.define.RSA;
+import javacard.utils.RSAData;
 import javax.smartcardio.Card;
 import javax.smartcardio.CardChannel;
 import javax.smartcardio.CardException;
@@ -46,7 +42,6 @@ public class RSAAppletHelper {
     public static RSAAppletHelper getInstance(CardChannel channel) {
         if (instance == null) {
             instance = new RSAAppletHelper(channel);
-
         }
         return instance;
     }
@@ -54,10 +49,17 @@ public class RSAAppletHelper {
     public byte[] requestSign(byte[] data) throws CardException {
         try {
             if (selectRSAApplet()) {
-                ResponseAPDU response = sendAPDU(
-                        APPLET_CONSTANTS.CLA, RSA_CONSTANTS.INS_SIGN, 0, 0, data);
+                TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+            ResponseAPDU response = channel.transmit(new CommandAPDU(APPLET.CLA,RSA.INS_SIGN,0x00,0x00,data));
                 String check = Integer.toHexString(response.getSW());
-                if (check.equals(ISO7816.SW_NO_ERROR)) {
+                if (check.equals(RESPONS.SW_NO_ERROR)) {
                       return response.getData();
                 }
             }
@@ -71,15 +73,22 @@ public class RSAAppletHelper {
     public PublicKey getPublicKey() throws CardException {
         try {
             if (selectRSAApplet()) {
-                ResponseAPDU response = sendAPDU(
-                        APPLET_CONSTANTS.CLA, RSA_CONSTANTS.INS_GET_PUB_MODULUS, 0, 0, null);
+                TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
+                ResponseAPDU response = channel.transmit(new CommandAPDU(APPLET.CLA,RSA.INS_GET_PUB_MODULUS,0x00,0x00));
                 String check = Integer.toHexString(response.getSW());
-                if (check.equals(ISO7816.SW_NO_ERROR)) {
+                if (check.equals(RESPONS.SW_NO_ERROR)) {
                     byte[] modulusBytes = response.getData();
-                    ResponseAPDU response1 = sendAPDU(
-                            APPLET_CONSTANTS.CLA, RSA_CONSTANTS.INS_GET_PUB_EXPONENT, 0, 0, null);
+                    CardChannel channel1 = card.getBasicChannel();
+                ResponseAPDU response1 = channel1.transmit(new CommandAPDU(APPLET.CLA,RSA.INS_GET_PUB_EXPONENT,0x00,0x00));
                     String check1 = Integer.toHexString(response1.getSW());
-                    if (check1.equals(ISO7816.SW_NO_ERROR)) {
+                    if (check1.equals(RESPONS.SW_NO_ERROR)) {
                         byte[] exponentBytes = response1.getData();
                         PublicKey publicKey= RSAData.initPublicKey(modulusBytes, exponentBytes);
                         if(publicKey!=null){
@@ -91,6 +100,7 @@ public class RSAAppletHelper {
             }
         } catch (CardException ex) {
             Logger.getLogger(RSAAppletHelper.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("GETPUBLISHKEY-ERROR");
             throw ex;
         }
         return null;
@@ -98,25 +108,14 @@ public class RSAAppletHelper {
 
     public boolean selectRSAApplet() throws CardException {
         try {
-            System.out.println();
-            System.out.println("||===================||");
-            System.out.println("||   SELECT RSA...  ||");
-            System.out.println("||===================||");
-            ResponseAPDU response = selectApplet(APPLET_CONSTANTS.AID_RSA_APPLET);
+            ResponseAPDU response = selectApplet(APPLET.AID_RSA);
             String check = Integer.toHexString(response.getSW());
 
-            if (check.equals(ISO7816.SW_NO_ERROR)) {
-                byte[] baCardUid = response.getData();
-
-                System.out.print("Card UID = 0x");
-                for (int i = 0; i < baCardUid.length; i++) {
-                    System.out.printf("%02X ", baCardUid[i]);
-                }
-                System.out.println("");
+            if (check.equals(RESPONS.SW_NO_ERROR)) {
+                
                 return true;
             }
         } catch (CardException ex) {
-            Logger.getLogger(HostAppHelper.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Lỗi select info applet");
             throw ex;
         }
@@ -128,7 +127,7 @@ public class RSAAppletHelper {
             int cla, int ins, int p1, int p2, byte[] data
     ) throws CardException {
         if (channel == null) {
-            throw new CardException(ISO7816.SW_UNKNOWN);
+            throw new CardException(RESPONS.SW_UNKNOWN);
         }
         return channel.transmit(new CommandAPDU(
                 cla, ins, p1, p2, data));
@@ -136,8 +135,17 @@ public class RSAAppletHelper {
 
     // select
     private ResponseAPDU selectApplet(byte[] aid) throws CardException {
+            
+         TerminalFactory factory = TerminalFactory.getDefault();
+            List<CardTerminal> terminals = factory.terminals().list();
+            
+            CardTerminal terminal = terminals.get(0);
+            
+            Card card = terminal.connect("*");
+            
+            CardChannel channel = card.getBasicChannel();
         ResponseAPDU response = channel.transmit(new CommandAPDU(
-                0x00, (byte) 0xA4,
+                0x00, 0xA4,
                 0x04, 0x00,
                 aid)
         );

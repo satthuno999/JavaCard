@@ -6,6 +6,12 @@
 
 package javacard;
 
+import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javacard.connect.ConnectCard;
+import javacard.connect.RSAAppletHelper;
+import javax.smartcardio.CardException;
 import javax.swing.JOptionPane;
 
 /**
@@ -167,7 +173,7 @@ public class PinForm extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                 JOptionPane.showMessageDialog(null, "Lêu lêu");
+                 JOptionPane.showMessageDialog(null, "Lỗi khi lưu pin");
             
             }
             

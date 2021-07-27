@@ -5,6 +5,7 @@
  */
 package javacard;
 
+import javacard.connect.ConnectCard;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

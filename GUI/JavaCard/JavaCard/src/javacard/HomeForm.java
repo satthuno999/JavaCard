@@ -5,15 +5,28 @@
  */
 package javacard;
 
+import javacard.connect.ConnectCard;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javacard.connect.RSAAppletHelper;
+import javacard.utils.RSAData;
+import javacard.utils.RandomUtil;
+import javax.smartcardio.CardException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,7 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -32,6 +44,9 @@ public class HomeForm extends javax.swing.JFrame {
     /**
      * Creates new form HomeForm
      */
+    private int CheckEnd = 0;
+    private String startTime = "";
+
     public HomeForm() {
         initComponents();
         ConnectCard connect = new ConnectCard();
@@ -52,9 +67,9 @@ public class HomeForm extends javax.swing.JFrame {
         txtPhone.setEnabled(false);
         txtID.setEnabled(false);
         txtID.setText("001");
+        TextAreaLog.setEditable(false);
         showDate();
         showTime();
-        
     }
     void showDate(){
         Date date = new Date();
@@ -72,7 +87,105 @@ public class HomeForm extends javax.swing.JFrame {
             }
         }).start();
     }
+    void ResetCheckTime(){
+        this.CheckEnd = 0;
+    }
+    
+    public boolean hasObject(File f) {
+        // thu doc xem co object nao chua
+        FileInputStream fi;
+        boolean check = true;
+        try {
+            fi = new FileInputStream(f);
+            ObjectInputStream inStream = new ObjectInputStream(fi);
+            if (inStream.readObject() == null) {
+                check = false;
+            }
+            inStream.close();
+ 
+        } catch (FileNotFoundException e) {
+            check = false;
+        } catch (IOException e) {
+            check = false;
+        } catch (ClassNotFoundException e) {
+            check = false;
+            e.printStackTrace();
+        }
+        return check;
+    }
+    void inputTime(String dateString,String startTimeString,String endTimeString){
+        try {
+ 
+            File f = new File("C:/smartcarddata.bin");
+            FileOutputStream fo;
+            ObjectOutputStream oStream = null;
+            if (!f.exists()) {
+                fo = new FileOutputStream(f);
+                oStream = new ObjectOutputStream(fo);
+            } else { 
+                if (!hasObject(f)) {
+                    fo = new FileOutputStream(f);
+                    oStream = new ObjectOutputStream(fo);
+                } else { // neu co roi thi ghi them vao
+ 
+                    fo = new FileOutputStream(f, true);
+ 
+                    oStream = new ObjectOutputStream(fo) {
+                        protected void writeStreamHeader() throws IOException {
+                            reset();
+                        }
+                    };
+                }
+            }
+            StockFile s = new StockFile(dateString, startTimeString, endTimeString);
+            oStream.writeObject(s);
+            oStream.close();
+ 
+        } catch (IOException e) {
+            System.out.println("javacard.HomeForm.inputTime()" + e);
+        }
+    }
+    void outputTime(){
+        try {
+            File f = new File("C:/smartcarddata.bin");
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream inStream = new ObjectInputStream(fis);
+            Object s;
+            int i = 0;
+            TextAreaLog.setText("");
+            while (true) {
+                s = inStream.readObject();
+                String log = ++i + ":" + s.toString() + "\n";
+                TextAreaLog.append(log);
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("javacard.HomeForm.outputTime()" + e);
+        }
+    }
+    private boolean rsaAuthentication() {
+        try {
+            PublicKey publicKeys = RSAData.getPublicKey();
+            if (publicKeys == null) {
+                return false;
+            }
+            System.out.println("publicKeys: " + Arrays.toString(publicKeys.getEncoded()));
+            byte[] data = RandomUtil.randomData(20);
 
+            byte[] signed = RSAAppletHelper.getInstance(
+                    ConnectCard.getInstance().channel).requestSign(data);
+
+            if (signed == null) {
+                return false;
+            }
+
+            System.out.println("signed: " + Arrays.toString(signed));
+
+            return RSAData.verify(publicKeys, signed, data);
+        } catch (CardException ex) {
+        }
+
+        return false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,6 +242,9 @@ public class HomeForm extends javax.swing.JFrame {
         btnAttendance = new javax.swing.JButton();
         lableDate = new javax.swing.JLabel();
         lableTime = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TextAreaLog = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -542,25 +658,44 @@ public class HomeForm extends javax.swing.JFrame {
         lableTime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lableTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jButton7.setText("reset");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        TextAreaLog.setColumns(20);
+        TextAreaLog.setRows(5);
+        jScrollPane1.setViewportView(TextAreaLog);
+
         javax.swing.GroupLayout jpanleAttendanceLayout = new javax.swing.GroupLayout(jpanleAttendance);
         jpanleAttendance.setLayout(jpanleAttendanceLayout);
         jpanleAttendanceLayout.setHorizontalGroup(
             jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanleAttendanceLayout.createSequentialGroup()
                 .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanleAttendanceLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136)
+                        .addComponent(jButton7))
                     .addGroup(jpanleAttendanceLayout.createSequentialGroup()
-                        .addGap(241, 241, 241)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpanleAttendanceLayout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(61, 61, 61)
-                        .addComponent(lableTime, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                        .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                                .addGap(241, 241, 241)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpanleAttendanceLayout.createSequentialGroup()
+                                .addGap(107, 107, 107)
+                                .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(lableTime, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanleAttendanceLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(218, 218, 218))
+                .addGap(0, 90, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
         );
         jpanleAttendanceLayout.setVerticalGroup(
             jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,8 +707,12 @@ public class HomeForm extends javax.swing.JFrame {
                     .addComponent(lableDate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lableTime))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addGroup(jpanleAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jpanleAttendanceLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lableDate, lableTime});
@@ -670,10 +809,32 @@ public class HomeForm extends javax.swing.JFrame {
         jpanleAttendance.setVisible(true);
         jpnInfo.setVisible(false);
         jpnPIN.setVisible(false);
+        outputTime();
     }//GEN-LAST:event_jlbPIN1MouseClicked
 
     private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
         // TODO add your handling code here:
+        if(rsaAuthentication()){
+            String date = lableDate.getText();
+            String time = lableTime.getText();
+            switch (CheckEnd) {
+                case 0:
+                    this.startTime = time;
+                    this.CheckEnd = 1;
+                    break;
+                case 1:
+                    inputTime(date, startTime, time);
+                    outputTime();
+                    this.CheckEnd = 2;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Bạn đã điểm danh ngày hôm nay! Vui lòng quay lại vào ngày mai");
+                    break;
+            }
+        }
+        else{
+            System.out.println("RSA ERROR");
+        }
     }//GEN-LAST:event_btnAttendanceActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -716,9 +877,16 @@ public class HomeForm extends javax.swing.JFrame {
         data[offSet] = (byte)0x03;
         
         if(connect.EditInformation(data)){
+            try {
+                PublicKey publicKeys = RSAAppletHelper.getInstance(
+                        ConnectCard.getInstance().channel).getPublicKey();
+            } catch (CardException ex) {
+                Logger.getLogger(HomeForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
             HomeForm home = new HomeForm();
             home.setVisible(true);
             this.dispose();
+            
             System.out.println("Success");
         }
         else{
@@ -776,6 +944,12 @@ public class HomeForm extends javax.swing.JFrame {
         txtDate.setEnabled(true);
         txtPhone.setEnabled(true);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        ResetCheckTime();
+        this.startTime = "";
+    }//GEN-LAST:event_jButton7ActionPerformed
     public class JPEGImageFileFilter extends FileFilter {
 
         @Override
@@ -842,6 +1016,7 @@ public class HomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea TextAreaLog;
     private javax.swing.JButton btnAttendance;
     private javax.swing.JLabel image;
     private javax.swing.JButton jButton1;
@@ -850,6 +1025,7 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -875,6 +1051,7 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JPasswordField jPasswordField3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlbConnect;
     private javax.swing.JLabel jlbInfo;
     private javax.swing.JLabel jlbPIN;
