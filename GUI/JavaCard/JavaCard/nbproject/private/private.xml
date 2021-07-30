@@ -5,12 +5,10 @@
         <group>
             <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/LoginForm.java</file>
             <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/ReviewAvatarUI.java</file>
-            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/RSAAppletHelper.java</file>
-            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/ConnectCard.java</file>
+            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/AdminForm.java</file>
             <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/HomeForm.java</file>
+            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/PinForm.java</file>
             <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/Main.java</file>
-            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/StockFile.java</file>
-            <file>file:/C:/Users/Spark_Mac/Documents/GitHub/JavaCard/GUI/JavaCard/JavaCard/src/javacard/ConvertData.java</file>
         </group>
     </open-files>
 </project-private>

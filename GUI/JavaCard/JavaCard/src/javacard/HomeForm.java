@@ -830,11 +830,13 @@ public class HomeForm extends javax.swing.JFrame {
                 case 0:
                     this.startTime = time;
                     this.CheckEnd = 1;
+                    JOptionPane.showMessageDialog(null, "Điểm danh đến thành công! Chúc bạn một ngày làm việc vui vẻ");
                     break;
                 case 1:
                     inputTime(date, startTime, time);
                     outputTime();
                     this.CheckEnd = 2;
+                    JOptionPane.showMessageDialog(null, "Điểm danh thành công!");
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Bạn đã điểm danh ngày hôm nay! Vui lòng quay lại vào ngày mai");
@@ -1023,6 +1025,7 @@ public class HomeForm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new LoginForm().setVisible(true);
             }
